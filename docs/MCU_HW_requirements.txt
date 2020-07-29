@@ -1,0 +1,11 @@
+Upgrader v3 enabled hardware features:
+--------------------------------------
+MCU - PIC16F1789
+
+Internal clock - 16MHz, PLL enabled
+
+Watchdog enabled while running and disabled in Sleep, 1:4194304, Timer period - 135.30013 seconds
+
+EUSART - RC6-TX, RC7-RX, speed 9600
+
+MSSP - SPI Master mode, RC3-SCK, RC4-SDI, RC5-SDO, speed 250000, Fosc/64
