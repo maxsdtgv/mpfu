@@ -16,8 +16,6 @@ extern "C" {
 #include "apps/api/serial.h"
 #include "apps/api/bootloader.h"
 
-
-
 #ifdef	__cplusplus
 }
 #endif

@@ -53,7 +53,8 @@ void main(void)
     SYSTEM_Initialize();
 
     uint8_t recv_frame[BL_MAX_RECV_DATA];
-    uint8_t send_frame[BL_MAX_SEND_DATA];    
+    uint8_t send_frame[BL_MAX_SEND_DATA];
+    uint8_t send_frame_full[BL_MAX_SEND_DATA+2];
     uint8_t i = 0;
     uint8_t byte = 0;
     bool    processing_status = false;
@@ -61,16 +62,15 @@ void main(void)
     clearArray(recv_frame);
     clearArray(send_frame);
 
-                // Push lines on Host side
-                send_frame[0] = 0x46;               // Send letter F
-                send_frame[1] = 0x0A;
-                UART_dataWrite(send_frame, 0x02);   // Send NL 
+    UART_dataWrite(send_frame, 0x00); // Will send empty line, just PREAM + LF  
 
-    clearArray(recv_frame);
-    clearArray(send_frame);
 
     while (1)
     {
+
+// Temporary solution to clear WDT.
+CLRWDT();                                   // Clear WDT;
+
         if (UART_preamFound())                          // Try to found PREAM_RECV_FROM_HOST in the byte [0] of frame header
             {
             CLRWDT();                                   // Clear WDT;
@@ -98,22 +98,13 @@ void main(void)
 
                 default:
                     processing_status = defineError(send_frame);
-
                 }
 
         // Send response if processing status is TRUE
             if ((processing_status == true) && (send_frame[0] != 0x00))
                 {
-
-                byte = PREAM_SEND_TO_HOST;
-                UART_dataWrite(&byte, 0x01);          // Send preambula to Host
-
-                UART_dataWrite(send_frame, send_frame[0]);
-
-                send_frame[0] = 0x0A;
-                UART_dataWrite(send_frame, 0x01);          // Send NL               
-
-                processing_status = false;              // Finish processing
+                UART_dataWrite(send_frame, send_frame[0]);          // Send frame to uart
+                processing_status = false;            // Finish processing
                 }
 
             clearArray(recv_frame);

@@ -23,9 +23,9 @@ SPI_DEFAULT 0
 [v _pingRequest pingRequest `(a  1 e 1 0 ]
 "3 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
 [v _UART_dataWrite UART_dataWrite `(uc  1 e 1 0 ]
-"16
+"22
 [v _UART_byteRead UART_byteRead `(uc  1 e 1 0 ]
-"20
+"26
 [v _UART_preamFound UART_preamFound `(a  1 e 1 0 ]
 "49 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
 [v _main main `(v  1 e 1 0 ]
@@ -101,7 +101,7 @@ SPI_DEFAULT 0
 [v _TRISD TRISD `VEuc  1 e 1 @143 ]
 "1562
 [v _TRISE TRISE `VEuc  1 e 1 @144 ]
-[s S395 . 1 `uc 1 PS0 1 0 :1:0 
+[s S396 . 1 `uc 1 PS0 1 0 :1:0 
 `uc 1 PS1 1 0 :1:1 
 `uc 1 PS2 1 0 :1:2 
 `uc 1 PSA 1 0 :1:3 
@@ -111,13 +111,13 @@ SPI_DEFAULT 0
 `uc 1 nWPUEN 1 0 :1:7 
 ]
 "1847
-[s S404 . 1 `uc 1 PS 1 0 :3:0 
+[s S405 . 1 `uc 1 PS 1 0 :3:0 
 `uc 1 . 1 0 :1:3 
 `uc 1 T0SE 1 0 :1:4 
 `uc 1 T0CS 1 0 :1:5 
 ]
-[u S409 . 1 `S395 1 . 1 0 `S404 1 . 1 0 ]
-[v _OPTION_REGbits OPTION_REGbits `VES409  1 e 1 @149 ]
+[u S410 . 1 `S396 1 . 1 0 `S405 1 . 1 0 ]
+[v _OPTION_REGbits OPTION_REGbits `VES410  1 e 1 @149 ]
 "1964
 [v _WDTCON WDTCON `VEuc  1 e 1 @151 ]
 "2023
@@ -274,17 +274,15 @@ SPI_DEFAULT 0
 "49 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"56
-[v main@send_frame send_frame `[66]uc  1 a 66 0 ]
 "55
 [v main@recv_frame recv_frame `[66]uc  1 a 66 0 ]
-"57
-[v main@i i `uc  1 a 1 10 ]
-"59
-[v main@processing_status processing_status `a  1 a 1 9 ]
+"56
+[v main@send_frame send_frame `[66]uc  1 a 66 0 ]
 "58
-[v main@byte byte `uc  1 a 1 8 ]
-"123
+[v main@i i `uc  1 a 1 10 ]
+"60
+[v main@processing_status processing_status `a  1 a 1 9 ]
+"114
 } 0
 "16 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
 [v _pingRequest pingRequest `(a  1 e 1 0 ]
@@ -317,12 +315,12 @@ SPI_DEFAULT 0
 [v clearArray@array array `*.4uc  1 a 1 1 ]
 "8
 } 0
-"20 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+"26 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
 [v _UART_preamFound UART_preamFound `(a  1 e 1 0 ]
 {
-"21
+"27
 [v UART_preamFound@byte byte `uc  1 a 1 1 ]
-"29
+"35
 } 0
 "99 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
 [v _EUSART_is_rx_ready EUSART_is_rx_ready `(a  1 e 1 0 ]
@@ -339,7 +337,7 @@ SPI_DEFAULT 0
 [v UART_dataWrite@data_ptr data_ptr `*.4uc  1 a 1 wreg ]
 [v UART_dataWrite@size size `uc  1 p 1 1 ]
 [v UART_dataWrite@data_ptr data_ptr `*.4uc  1 a 1 3 ]
-"14
+"20
 } 0
 "94 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
 [v _EUSART_is_tx_ready EUSART_is_tx_ready `(a  1 e 1 0 ]
@@ -359,10 +357,10 @@ SPI_DEFAULT 0
 [v EUSART_Write@txData txData `uc  1 a 1 0 ]
 "141
 } 0
-"16 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+"22 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
 [v _UART_byteRead UART_byteRead `(uc  1 e 1 0 ]
 {
-"18
+"24
 } 0
 "113 /home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
 [v _EUSART_Read EUSART_Read `(uc  1 e 1 0 ]
