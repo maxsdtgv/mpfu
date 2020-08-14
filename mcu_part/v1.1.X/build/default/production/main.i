@@ -11220,8 +11220,8 @@ void WDT_Initialize(void);
 # 15 "./apps/api/serial.h"
 # 1 "./apps/api/../../main.h" 1
 # 16 "./apps/api/serial.h" 2
-# 25 "./apps/api/serial.h"
-uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size);
+# 26 "./apps/api/serial.h"
+uint8_t UART_dataWrite(uint8_t*, uint8_t);
 
 uint8_t UART_byteRead(void);
 
@@ -11232,11 +11232,11 @@ _Bool UART_preamFound(void);
 # 1 "./apps/api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
 # 41 "./apps/api/bootloader.h"
-void clearArray(uint8_t *array);
+void clearArray(uint8_t*);
 
-_Bool defineError(uint8_t *send_frame);
+_Bool defineError(uint8_t*);
 
-_Bool pingRequest(uint8_t *recv_frame, uint8_t *send_frame);
+_Bool pingRequest(uint8_t*, uint8_t*);
 # 18 "./apps/api/../../main.h" 2
 # 44 "main.c" 2
 
@@ -11252,6 +11252,7 @@ void main(void)
 
     uint8_t recv_frame[66];
     uint8_t send_frame[66];
+    uint8_t send_frame_full[66 +2];
     uint8_t i = 0;
     uint8_t byte = 0;
     _Bool processing_status = 0;
@@ -11259,16 +11260,15 @@ void main(void)
     clearArray(recv_frame);
     clearArray(send_frame);
 
+    UART_dataWrite(send_frame, 0x00);
 
-                send_frame[0] = 0x46;
-                send_frame[1] = 0x0A;
-                UART_dataWrite(send_frame, 0x02);
-
-    clearArray(recv_frame);
-    clearArray(send_frame);
 
     while (1)
     {
+
+
+__asm("clrwdt");
+
         if (UART_preamFound())
             {
             __asm("clrwdt");
@@ -11296,21 +11296,12 @@ void main(void)
 
                 default:
                     processing_status = defineError(send_frame);
-
                 }
 
 
             if ((processing_status == 1) && (send_frame[0] != 0x00))
                 {
-
-                byte = 0xAA;
-                UART_dataWrite(&byte, 0x01);
-
                 UART_dataWrite(send_frame, send_frame[0]);
-
-                send_frame[0] = 0x0A;
-                UART_dataWrite(send_frame, 0x01);
-
                 processing_status = 0;
                 }
 

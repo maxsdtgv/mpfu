@@ -11224,15 +11224,15 @@ void WDT_Initialize(void);
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
 # 41 "./apps/api/bootloader.h"
-void clearArray(uint8_t *array);
+void clearArray(uint8_t*);
 
-_Bool defineError(uint8_t *send_frame);
+_Bool defineError(uint8_t*);
 
-_Bool pingRequest(uint8_t *recv_frame, uint8_t *send_frame);
+_Bool pingRequest(uint8_t*, uint8_t*);
 # 18 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/serial.h" 2
-# 25 "./apps/api/serial.h"
-uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size);
+# 26 "./apps/api/serial.h"
+uint8_t UART_dataWrite(uint8_t*, uint8_t);
 
 uint8_t UART_byteRead(void);
 
@@ -11245,9 +11245,15 @@ uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size){
      _delay((unsigned long)((300)*(16000000/4000000.0)));
     }
     if (EUSART_is_tx_ready()){
+
+        EUSART_Write(0xAA);
+
         for (i = 0; i < size; i++){
             EUSART_Write(data_ptr[i]);
         }
+
+        EUSART_Write(0x0A);
+
     }
     return i;
 }

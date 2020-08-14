@@ -11221,8 +11221,8 @@ void WDT_Initialize(void);
 # 15 "./apps/api/serial.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/serial.h" 2
-# 25 "./apps/api/serial.h"
-uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size);
+# 26 "./apps/api/serial.h"
+uint8_t UART_dataWrite(uint8_t*, uint8_t);
 
 uint8_t UART_byteRead(void);
 
@@ -11232,11 +11232,11 @@ _Bool UART_preamFound(void);
 # 18 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/bootloader.h" 2
 # 41 "./apps/api/bootloader.h"
-void clearArray(uint8_t *array);
+void clearArray(uint8_t*);
 
-_Bool defineError(uint8_t *send_frame);
+_Bool defineError(uint8_t*);
 
-_Bool pingRequest(uint8_t *recv_frame, uint8_t *send_frame);
+_Bool pingRequest(uint8_t*, uint8_t*);
 # 2 "apps/src/bootloader.c" 2
 
 

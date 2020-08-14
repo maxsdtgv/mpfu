@@ -4,22 +4,22 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;./mcc_generated_files/mcc.h: 71: void SYSTEM_Initialize(void);
 [v _SYSTEM_Initialize `(v ~T0 @X0 0 ef ]
 "41 ./apps/api/bootloader.h
-[; ;./apps/api/bootloader.h: 41: void clearArray(uint8_t *array);
+[; ;./apps/api/bootloader.h: 41: void clearArray(uint8_t*);
 [v _clearArray `(v ~T0 @X0 0 ef1`*uc ]
-"25 ./apps/api/serial.h
-[; ;./apps/api/serial.h: 25: uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size);
+"26 ./apps/api/serial.h
+[; ;./apps/api/serial.h: 26: uint8_t UART_dataWrite(uint8_t*, uint8_t);
 [v _UART_dataWrite `(uc ~T0 @X0 0 ef2`*uc`uc ]
-"29
-[; ;./apps/api/serial.h: 29: _Bool UART_preamFound(void);
+"30
+[; ;./apps/api/serial.h: 30: _Bool UART_preamFound(void);
 [v _UART_preamFound `(a ~T0 @X0 0 ef ]
-"27
-[; ;./apps/api/serial.h: 27: uint8_t UART_byteRead(void);
+"28
+[; ;./apps/api/serial.h: 28: uint8_t UART_byteRead(void);
 [v _UART_byteRead `(uc ~T0 @X0 0 ef ]
 "45 ./apps/api/bootloader.h
-[; ;./apps/api/bootloader.h: 45: _Bool pingRequest(uint8_t *recv_frame, uint8_t *send_frame);
+[; ;./apps/api/bootloader.h: 45: _Bool pingRequest(uint8_t*, uint8_t*);
 [v _pingRequest `(a ~T0 @X0 0 ef2`*uc`*uc ]
 "43
-[; ;./apps/api/bootloader.h: 43: _Bool defineError(uint8_t *send_frame);
+[; ;./apps/api/bootloader.h: 43: _Bool defineError(uint8_t*);
 [v _defineError `(a ~T0 @X0 0 ef1`*uc ]
 "54 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 54: __asm("INDF0 equ 00h");
@@ -1051,44 +1051,38 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;main.c: 56:     uint8_t send_frame[66];
 [v _send_frame `uc ~T0 @X0 -> 66 `i a ]
 "57
-[; ;main.c: 57:     uint8_t i = 0;
+[; ;main.c: 57:     uint8_t send_frame_full[66 +2];
+[v _send_frame_full `uc ~T0 @X0 -> 68 `i a ]
+"58
+[; ;main.c: 58:     uint8_t i = 0;
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-"58
-[; ;main.c: 58:     uint8_t byte = 0;
+"59
+[; ;main.c: 59:     uint8_t byte = 0;
 [v _byte `uc ~T0 @X0 1 a ]
 [e = _byte -> -> 0 `i `uc ]
-"59
-[; ;main.c: 59:     _Bool processing_status = 0;
+"60
+[; ;main.c: 60:     _Bool processing_status = 0;
 [v _processing_status `a ~T0 @X0 1 a ]
 [e = _processing_status -> -> 0 `i `a ]
-"61
-[; ;main.c: 61:     clearArray(recv_frame);
-[e ( _clearArray (1 &U _recv_frame ]
 "62
-[; ;main.c: 62:     clearArray(send_frame);
+[; ;main.c: 62:     clearArray(recv_frame);
+[e ( _clearArray (1 &U _recv_frame ]
+"63
+[; ;main.c: 63:     clearArray(send_frame);
 [e ( _clearArray (1 &U _send_frame ]
 "65
-[; ;main.c: 65:                 send_frame[0] = 0x46;
-[e = *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux -> -> 70 `i `uc ]
-"66
-[; ;main.c: 66:                 send_frame[1] = 0x0A;
-[e = *U + &U _send_frame * -> -> -> 1 `i `ui `ux -> -> # *U &U _send_frame `ui `ux -> -> 10 `i `uc ]
-"67
-[; ;main.c: 67:                 UART_dataWrite(send_frame, 0x02);
-[e ( _UART_dataWrite (2 , &U _send_frame -> -> 2 `i `uc ]
-"69
-[; ;main.c: 69:     clearArray(recv_frame);
-[e ( _clearArray (1 &U _recv_frame ]
-"70
-[; ;main.c: 70:     clearArray(send_frame);
-[e ( _clearArray (1 &U _send_frame ]
-"72
-[; ;main.c: 72:     while (1)
+[; ;main.c: 65:     UART_dataWrite(send_frame, 0x00);
+[e ( _UART_dataWrite (2 , &U _send_frame -> -> 0 `i `uc ]
+"68
+[; ;main.c: 68:     while (1)
 [e :U 763 ]
-"73
-[; ;main.c: 73:     {
+"69
+[; ;main.c: 69:     {
 {
+"72
+[; ;main.c: 72: __asm("clrwdt");
+[; <" clrwdt ;# ">
 "74
 [; ;main.c: 74:         if (UART_preamFound())
 [e $ ! != -> ( _UART_preamFound ..  `i -> 0 `i 765  ]
@@ -1163,59 +1157,47 @@ Version 4.0 HI-TECH Software Intermediate Code
 "100
 [; ;main.c: 100:                     processing_status = defineError(send_frame);
 [e = _processing_status ( _defineError (1 &U _send_frame ]
-"102
-[; ;main.c: 102:                 }
+"101
+[; ;main.c: 101:                 }
 }
 [e $U 772  ]
 [e :U 773 ]
 [e [\ -> *U + &U _recv_frame * -> -> -> 1 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i , $ -> 1 `i 774
  775 ]
 [e :U 772 ]
-"105
-[; ;main.c: 105:             if ((processing_status == 1) && (send_frame[0] != 0x00))
+"104
+[; ;main.c: 104:             if ((processing_status == 1) && (send_frame[0] != 0x00))
 [e $ ! && == -> _processing_status `i -> 1 `i != -> *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux `i -> 0 `i 776  ]
-"106
-[; ;main.c: 106:                 {
+"105
+[; ;main.c: 105:                 {
 {
-"108
-[; ;main.c: 108:                 byte = 0xAA;
-[e = _byte -> -> 170 `i `uc ]
-"109
-[; ;main.c: 109:                 UART_dataWrite(&byte, 0x01);
-[e ( _UART_dataWrite (2 , &U _byte -> -> 1 `i `uc ]
-"111
-[; ;main.c: 111:                 UART_dataWrite(send_frame, send_frame[0]);
+"106
+[; ;main.c: 106:                 UART_dataWrite(send_frame, send_frame[0]);
 [e ( _UART_dataWrite (2 , &U _send_frame *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux ]
-"113
-[; ;main.c: 113:                 send_frame[0] = 0x0A;
-[e = *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux -> -> 10 `i `uc ]
-"114
-[; ;main.c: 114:                 UART_dataWrite(send_frame, 0x01);
-[e ( _UART_dataWrite (2 , &U _send_frame -> -> 1 `i `uc ]
-"116
-[; ;main.c: 116:                 processing_status = 0;
+"107
+[; ;main.c: 107:                 processing_status = 0;
 [e = _processing_status -> -> 0 `i `a ]
-"117
-[; ;main.c: 117:                 }
+"108
+[; ;main.c: 108:                 }
 }
 [e :U 776 ]
-"119
-[; ;main.c: 119:             clearArray(recv_frame);
+"110
+[; ;main.c: 110:             clearArray(recv_frame);
 [e ( _clearArray (1 &U _recv_frame ]
-"120
-[; ;main.c: 120:             clearArray(send_frame);
+"111
+[; ;main.c: 111:             clearArray(send_frame);
 [e ( _clearArray (1 &U _send_frame ]
-"121
-[; ;main.c: 121:             }
+"112
+[; ;main.c: 112:             }
 }
 [e :U 765 ]
-"122
-[; ;main.c: 122:     }
+"113
+[; ;main.c: 113:     }
 }
 [e :U 762 ]
 [e $U 763  ]
 [e :U 764 ]
-"123
-[; ;main.c: 123: }
+"114
+[; ;main.c: 114: }
 [e :UE 761 ]
 }

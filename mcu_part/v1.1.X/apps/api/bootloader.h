@@ -38,11 +38,11 @@ extern "C" {
 
 // Function registration
 
-void clearArray(uint8_t *array);
+void clearArray(uint8_t*);
 
-bool defineError(uint8_t *send_frame);
+bool defineError(uint8_t*);
 
-bool pingRequest(uint8_t *recv_frame, uint8_t *send_frame);
+bool pingRequest(uint8_t*, uint8_t*);
 
 #ifdef	__cplusplus
 }
