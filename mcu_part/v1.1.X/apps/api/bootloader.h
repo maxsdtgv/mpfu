@@ -16,33 +16,30 @@ extern "C" {
 
 // Parameters definitions
 
-#define BL_MAX_RECV_DATA		66
-#define BL_MAX_SEND_DATA		66
+#define BL_MAX_RECV_DATA	66
+#define BL_MAX_SEND_DATA	66
 
+//=============    SUPPORTED COMMANDS ================
+#define MAJOR_VERSION		0x01
+#define MINOR_VERSION		0x01
 //=============    SUPPORTED COMMANDS ================
 #define ERROR_CODE			0xFF
 #define SUCCESS_CODE		0xEE
-#define PING_REQUEST		0x01
-#define PING_REPLY			0x01
-#define VERSION_REQUEST		0x02
-#define VERSION_REPLY		0x02
-#define FLASH_ADDR_SET		0x03
-#define FLASH_ADDR_REQ		0x04
-#define DATA_ARRAY_SET		0x05
-#define DATA_ARRAY_REQ		0x06
-#define FLASH_READ_REQ		0x07
-#define FLASH_WRITE_REQ		0x08
+//#define PING_REQUEST		0x01
+#define READ_FROM_MEM		0x02	
+
 #define START_APPLICATION	0x0F
 //====================================================
 
-
 // Function registration
 
-void clearArray(uint8_t*);
+void ClearArray(uint8_t*);
 
-bool defineError(uint8_t*);
+bool DefineError(uint8_t*);
 
-bool pingRequest(uint8_t*, uint8_t*);
+//bool PingRequest(uint8_t*, uint8_t*);
+
+bool ReadFromMem(uint8_t*, uint8_t*);
 
 #ifdef	__cplusplus
 }

@@ -54,13 +54,12 @@ void main(void)
 
     uint8_t recv_frame[BL_MAX_RECV_DATA];
     uint8_t send_frame[BL_MAX_SEND_DATA];
-    uint8_t send_frame_full[BL_MAX_SEND_DATA+2];
     uint8_t i = 0;
     uint8_t byte = 0;
     bool    processing_status = false;
 
-    clearArray(recv_frame);
-    clearArray(send_frame);
+    ClearArray(recv_frame);
+    ClearArray(send_frame);
 
     UART_dataWrite(send_frame, 0x00); // Will send empty line, just PREAM + LF  
 
@@ -90,14 +89,16 @@ CLRWDT();                                   // Clear WDT;
             
             switch (recv_frame[1])             // Analize first byte of the received array
                 {
-                case PING_REQUEST:              // 0x01 - Ping request. MCU will returned the same Payload back to Host with CMD 0x01
-                    processing_status = pingRequest(recv_frame, send_frame); // Send_frame will be filled after execution
-                    break;
+//                case PING_REQUEST:              // 0x01 - Ping request.
+//                    processing_status = pingRequest(recv_frame, send_frame); // Send_frame will be filled after execution
+//                    break;
                 
-
+                case READ_FROM_MEM:              // 0x02 - Read from mem with any address requested.
+                    processing_status = ReadFromMem(recv_frame, send_frame); // Send_frame will be filled after execution
+                    break;
 
                 default:
-                    processing_status = defineError(send_frame);
+                    processing_status = DefineError(send_frame);
                 }
 
         // Send response if processing status is TRUE
@@ -107,8 +108,8 @@ CLRWDT();                                   // Clear WDT;
                 processing_status = false;            // Finish processing
                 }
 
-            clearArray(recv_frame);
-            clearArray(send_frame);
+            ClearArray(recv_frame);
+            ClearArray(send_frame);
             }
     }
 }

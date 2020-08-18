@@ -15,6 +15,7 @@ extern "C" {
 #include "mcc_generated_files/mcc.h"
 #include "apps/api/serial.h"
 #include "apps/api/bootloader.h"
+#include "apps/api/memory.h"
 
 #ifdef	__cplusplus
 }

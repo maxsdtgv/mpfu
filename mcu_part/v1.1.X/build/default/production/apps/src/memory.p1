@@ -1,23 +1,45 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"253 ./mcc_generated_files/eusart.h
-[; ;./mcc_generated_files/eusart.h: 253: _Bool EUSART_is_tx_done(void);
-[v _EUSART_is_tx_done `(a ~T0 @X0 0 ef ]
-[v F5957 `(v ~T0 @X0 1 tf1`ul ]
-"92 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/pic.h
-[v __delay `JF5957 ~T0 @X0 0 e ]
-[p i __delay ]
-"158 ./mcc_generated_files/eusart.h
-[; ;./mcc_generated_files/eusart.h: 158: _Bool EUSART_is_tx_ready(void);
-[v _EUSART_is_tx_ready `(a ~T0 @X0 0 ef ]
-"341
-[; ;./mcc_generated_files/eusart.h: 341: void EUSART_Write(uint8_t txData);
-[v _EUSART_Write `(v ~T0 @X0 0 ef1`uc ]
-"321
-[; ;./mcc_generated_files/eusart.h: 321: uint8_t EUSART_Read(void);
-[v _EUSART_Read `(uc ~T0 @X0 0 ef ]
-"206
-[; ;./mcc_generated_files/eusart.h: 206: _Bool EUSART_is_rx_ready(void);
-[v _EUSART_is_rx_ready `(a ~T0 @X0 0 ef ]
+"357 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 357:     struct {
+[s S31 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S31 . IOCIF INTF TMR0IF IOCIE INTE TMR0IE PEIE GIE ]
+"367
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 367:     struct {
+[s S32 :2 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 ]
+[n S32 . . T0IF . T0IE ]
+"356
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 356: typedef union {
+[u S30 `S31 1 `S32 1 ]
+[n S30 . . . ]
+"374
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 374: extern volatile INTCONbits_t INTCONbits __attribute__((address(0x00B)));
+[v _INTCONbits `VS30 ~T0 @X0 0 e@11 ]
+"4258
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4258: extern volatile unsigned char EEADRH __attribute__((address(0x192)));
+[v _EEADRH `Vuc ~T0 @X0 0 e@402 ]
+"4349
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4349:     struct {
+[s S214 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S214 . RD WR WREN WRERR FREE LWLO CFGS EEPGD ]
+"4348
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4348: typedef union {
+[u S213 `S214 1 ]
+[n S213 . . ]
+"4360
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4360: extern volatile EECON1bits_t EECON1bits __attribute__((address(0x195)));
+[v _EECON1bits `VS213 ~T0 @X0 0 e@405 ]
+"4238
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4238: extern volatile unsigned char EEADRL __attribute__((address(0x191)));
+[v _EEADRL `Vuc ~T0 @X0 0 e@401 ]
+"31 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/pic.h
+[v ___nop `(v ~T0 @X0 0 ef ]
+[p i ___nop ]
+"4323 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4323: extern volatile unsigned char EEDATH __attribute__((address(0x194)));
+[v _EEDATH `Vuc ~T0 @X0 0 e@404 ]
+"4285
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4285: extern volatile unsigned char EEDATL __attribute__((address(0x193)));
+[v _EEDATL `Vuc ~T0 @X0 0 e@403 ]
 "54 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 54: __asm("INDF0 equ 00h");
 [; <" INDF0 equ 00h ;# ">
@@ -1029,118 +1051,71 @@ Version 4.0 HI-TECH Software Intermediate Code
 "16563
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 16563: __asm("TOSH equ 0FEFh");
 [; <" TOSH equ 0FEFh ;# ">
-"3 apps/src/serial.c
-[; ;apps/src/serial.c: 3: uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size){
-[v _UART_dataWrite `(uc ~T0 @X0 1 ef2`*uc`uc ]
+"11 apps/src/memory.c
+[; ;apps/src/memory.c: 11: uint16_t FLASH_Read(uint16_t addr){
+[v _FLASH_Read `(us ~T0 @X0 1 ef1`us ]
 {
-[e :U _UART_dataWrite ]
-[v _data_ptr `*uc ~T0 @X0 1 r1 ]
-[v _size `uc ~T0 @X0 1 r2 ]
+[e :U _FLASH_Read ]
+[v _addr `us ~T0 @X0 1 r1 ]
 [f ]
-"4
-[; ;apps/src/serial.c: 4:     uint8_t i = 0;
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-"5
-[; ;apps/src/serial.c: 5:     if (!EUSART_is_tx_done()){
-[e $ ! ! != -> ( _EUSART_is_tx_done ..  `i -> 0 `i 762  ]
-{
-"6
-[; ;apps/src/serial.c: 6:      _delay((unsigned long)((300)*(16000000/4000000.0)));
-[e ( __delay (1 -> * -> -> 300 `i `d / -> -> 16000000 `l `d .4000000.0 `ul ]
-"7
-[; ;apps/src/serial.c: 7:     }
-}
-[e :U 762 ]
-"9
-[; ;apps/src/serial.c: 9:     if (EUSART_is_tx_ready()){
-[e $ ! != -> ( _EUSART_is_tx_ready ..  `i -> 0 `i 763  ]
-{
-"10
-[; ;apps/src/serial.c: 10:         EUSART_Write(0xAA);
-[e ( _EUSART_Write (1 -> -> 170 `i `uc ]
-"11
-[; ;apps/src/serial.c: 11:         for (i = 0; i < size; i++){
-{
-[e = _i -> -> 0 `i `uc ]
-[e $U 767  ]
-[e :U 764 ]
-{
 "12
-[; ;apps/src/serial.c: 12:             EUSART_Write(data_ptr[i]);
-[e ( _EUSART_Write (1 *U + _data_ptr * -> _i `ux -> -> # *U _data_ptr `ui `ux ]
+[; ;apps/src/memory.c: 12:     uint8_t INR_state;
+[v _INR_state `uc ~T0 @X0 1 a ]
 "13
-[; ;apps/src/serial.c: 13:         }
-}
-[e ++ _i -> -> 1 `i `uc ]
-[e :U 767 ]
-[e $ < -> _i `i -> _size `i 764  ]
-[e :U 765 ]
-}
+[; ;apps/src/memory.c: 13:     INR_state = INTCONbits.GIE;
+[e = _INR_state . . _INTCONbits 0 7 ]
 "15
-[; ;apps/src/serial.c: 15:     }
+[; ;apps/src/memory.c: 15:     if ((uint8_t)((addr & 0xFF00) >> 8) == 0x80){
+[e $ ! == -> -> >> & -> _addr `ui -> 65280 `ui -> 8 `i `uc `i -> 128 `i 762  ]
+{
+"16
+[; ;apps/src/memory.c: 16:         EEADRH = 0x80;
+[e = _EEADRH -> -> 128 `i `uc ]
+"17
+[; ;apps/src/memory.c: 17:         EECON1bits.CFGS = 1;
+[e = . . _EECON1bits 0 6 -> -> 1 `i `uc ]
+"19
+[; ;apps/src/memory.c: 19:     } else {
+}
+[e $U 763  ]
+[e :U 762 ]
+{
+"20
+[; ;apps/src/memory.c: 20:      EEADRH = (uint8_t)((addr & 0xFF00) >> 8);
+[e = _EEADRH -> >> & -> _addr `ui -> 65280 `ui -> 8 `i `uc ]
+"21
+[; ;apps/src/memory.c: 21:         EECON1bits.CFGS = 0;
+[e = . . _EECON1bits 0 6 -> -> 0 `i `uc ]
+"22
+[; ;apps/src/memory.c: 22:     }
 }
 [e :U 763 ]
-"16
-[; ;apps/src/serial.c: 16:     return i;
-[e ) _i ]
-[e $UE 761  ]
-"17
-[; ;apps/src/serial.c: 17: }
-[e :UE 761 ]
-}
-"19
-[; ;apps/src/serial.c: 19: uint8_t UART_byteRead(void){
-[v _UART_byteRead `(uc ~T0 @X0 1 ef ]
-{
-[e :U _UART_byteRead ]
-[f ]
-"20
-[; ;apps/src/serial.c: 20:         return EUSART_Read();
-[e ) ( _EUSART_Read ..  ]
-[e $UE 768  ]
-"21
-[; ;apps/src/serial.c: 21: }
-[e :UE 768 ]
-}
-"23
-[; ;apps/src/serial.c: 23: _Bool UART_preamFound(void){
-[v _UART_preamFound `(a ~T0 @X0 1 ef ]
-{
-[e :U _UART_preamFound ]
-[f ]
 "24
-[; ;apps/src/serial.c: 24:     uint8_t byte = 0;
-[v _byte `uc ~T0 @X0 1 a ]
-[e = _byte -> -> 0 `i `uc ]
-"25
-[; ;apps/src/serial.c: 25:     if (EUSART_is_rx_ready()){
-[e $ ! != -> ( _EUSART_is_rx_ready ..  `i -> 0 `i 770  ]
-{
-"26
-[; ;apps/src/serial.c: 26:         byte = EUSART_Read();
-[e = _byte ( _EUSART_Read ..  ]
+[; ;apps/src/memory.c: 24:     EEADRL = (uint8_t)(addr & 0x00FF);
+[e = _EEADRL -> & -> _addr `ui -> -> 255 `i `ui `uc ]
 "27
-[; ;apps/src/serial.c: 27:         if (byte == 0x55){
-[e $ ! == -> _byte `i -> 85 `i 771  ]
-{
+[; ;apps/src/memory.c: 27:     EECON1bits.EEPGD = 1;
+[e = . . _EECON1bits 0 7 -> -> 1 `i `uc ]
 "28
-[; ;apps/src/serial.c: 28:             return 1;
-[e ) -> -> 1 `i `a ]
-[e $UE 769  ]
-"29
-[; ;apps/src/serial.c: 29:         }
-}
-[e :U 771 ]
+[; ;apps/src/memory.c: 28:     INTCONbits.GIE = 0;
+[e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
 "30
-[; ;apps/src/serial.c: 30:     }
-}
-[e :U 770 ]
+[; ;apps/src/memory.c: 30:     EECON1bits.RD = 1;
+[e = . . _EECON1bits 0 0 -> -> 1 `i `uc ]
 "31
-[; ;apps/src/serial.c: 31:     return 0;
-[e ) -> -> 0 `i `a ]
-[e $UE 769  ]
+[; ;apps/src/memory.c: 31:     __nop();
+[e ( ___nop ..  ]
 "32
-[; ;apps/src/serial.c: 32: }
-[e :UE 769 ]
+[; ;apps/src/memory.c: 32:     __nop();
+[e ( ___nop ..  ]
+"34
+[; ;apps/src/memory.c: 34:     INTCONbits.GIE = INR_state;
+[e = . . _INTCONbits 0 7 _INR_state ]
+"37
+[; ;apps/src/memory.c: 37:     return ((uint16_t)((EEDATH << 8) | EEDATL));
+[e ) -> | << -> _EEDATH `i -> 8 `i -> _EEDATL `i `us ]
+[e $UE 761  ]
+"38
+[; ;apps/src/memory.c: 38: }
+[e :UE 761 ]
 }

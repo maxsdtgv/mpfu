@@ -5,16 +5,13 @@ uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size){
     if (!EUSART_is_tx_done()){
     	__delay_us(DELAY_IF_UART_BUSY_us);
     }
-    if (EUSART_is_tx_ready()){
-        
-        EUSART_Write(PREAM_SEND_TO_HOST);
 
+    if (EUSART_is_tx_ready()){
+        EUSART_Write(PREAM_SEND_TO_HOST);
         for (i = 0; i < size; i++){
             EUSART_Write(data_ptr[i]);
         }   
-        
-        EUSART_Write(LINE_FEED);
-
+//        EUSART_Write(LINE_FEED);
     }
     return i;
 }

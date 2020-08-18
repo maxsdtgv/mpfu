@@ -1,0 +1,123 @@
+Bootloader version:
+-------------------
+MAJOR = 01
+MINOR = 01
+
+======================================================
+= Frame format to send data over UART to HOST        =
+======================================================
+                                from MCU side
+send_frame       [0]    [1]                         [66]
+bytes     1       2      3     ...                   67    68
+       +-------+------+------+------+------+------+------+----+
+       | PREAM | LENG | CMD  | Data                      | \n |
+       +-------+------+------+------+------+------+------+----+
+       |  val  |             |    <---- Data ------>     |    |
+       | "AA"  |      <------- Payload ------->          |    |
+       |          <--------- Frame-------->              |    |
+
+
+       Frame max = 67
+       Data max = 64
+       Payload max (LENG) = 65
+
+       CMD  - Acceptable list of command are following:
+                Response codes
+                ------------------
+                 0xFF - Indicate error.
+                 0xEE - No error.
+                 0xYY - Return command code from request frame + Data (depend on command).
+
+======================================================
+= Frame format to send data over UART to MCU         =
+======================================================
+                                from Host side
+recv_frame       [0]    [1]                         [66]
+bytes     1       2      3     ...                    n
+       +-------+------+------+------+------+------+------+
+       | PREAM | LENG | CMD  | Payload                   |
+       +-------+------+------+------+------+------+------+
+       |  val  |             |    <---- Data ------>     |
+       | "55"  |      <------- Payload ------->          |
+       |          <--------- Frame-------->              |
+               
+       Frame max = 67
+       Payload max = 64
+       Data max (LENG) = 65
+
+       PREAM - Preambula to initiate READ cycle on MCUor Host side, 
+                from Host to MCU always equal 55h;
+                from MCU to Host always equal AAh.      
+       LENG - Common length of the current frame, count from byte #3, max value 255.
+       CMD  - Acceptable list of command are following:
+                Error processing
+                ----------------
+                        For any unexpected command MCU will respond with 0xFF in Payload.
+                Connectivity check
+                ------------------
+       		       0x01 - Ping request. MCU will returned the same Payload back to Host with CMD 0x01
+       		              Returned content:
+       			            bytes #2-#66 - the same Payload.
+       	        Version check
+       	        -------------
+       		       0x02 - Request Bootloader version, response will send with code 0x02
+       		              Response with BL version in:
+       		              bytes #4 - Major version; 
+       		                    #5 - Minor version.
+                Address pointer, size
+                ---------------------
+       		       0x03 - Set Flash initial address pointer of memory and size of buffer to write 
+       		               bytes #4 - Addr MSB; 
+       		                     #5 - Addr LSB; 
+       		                     #6 - Buffer size to write.
+       		              Response with 0xEE in Payload - processed succeed.
+                 0x04 - Request current Flash initial address and size from MCU buffer
+       		              Respose with current values:
+       			            bytes #4 - Addr MSB; 
+       		                    #5 - Addr LSB; 
+       		                    #6 - Buffer size to write.
+                Buffer filling
+                --------------
+                 0x05 - Send array of data to MCU to store in intermediate buffer.
+                        Response with 0xEE in Payload - processed succeed.
+                 0x06 - Request to Read intermediate buffer from MCU:
+                        Respond entire buffer content, all 32 words = 64 bytes
+
+                Read routine
+                --------------
+                 0x07 - Request for Flash data from defined addr in 0x03 command (Buffer size to write - ignored)
+                        Configuration part could be read from addr 0x80xx.
+                        Response with 1 word of data in Payload:
+                         bytes #4 - Data LSB; 
+                               #5 - Data MSB; 
+
+                Write initiating
+                ----------------
+                 0x08 - Initiate write routine to update the Flash memory from intermediate buffer on MCU.
+                        Response with 0xEE in Payload - processed succeed.
+
+                BL management
+                -------------
+                 0x0F - Start application. GOTO to RV2 (see memory structure)
+
+
+Processing steps:
+-----------------
+
+  1. After the Bootloader boot succeed, the MCU returned to Host string - "F\n".
+    Action required: No.
+
+  2. Send "S" symbol to uart during 3000 ms to run bootloader.
+
+  3. Required to check MCU-HOST connectivity with Ping feature. 
+    Action required: From Host side send data "55 xx 01 yy yy yy yy .. .. yy"
+                        - xx - full amount of Data
+                        - yy - any symbols from 0x00 to 0xFF
+    Expected response: The MCU respond with the same Data in format:
+                        - "AA xx 01 yy yy yy yy .. .. yy"
+  4. Check BL version.
+    Action required: From Host side send data "55 02 02"
+    Expected response: The MCU respond with Data in format: "AA 04 02 xx yy" xx - major, yy - minor version numbers
+
+  5.
+
