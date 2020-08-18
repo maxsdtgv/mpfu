@@ -5,20 +5,21 @@
 
 using namespace std;
 
-#define MAX_BYTES_TO_SEND   68
-#define MAX_BYTES_TO_RECV   68 
-#define PREAM_FROM_DEVICE   0xAA
+#define MAX_BYTES_TO_SEND   66
+#define MAX_BYTES_TO_RECV   66
+
 
 int main(int argc, char** argv) {
-printf("Firmware uploader v1.1\n");
+printf("Microchip firmware uploader v1.1\n");
 
 char serial_name[32] = {};
 char serial_speed[6] = {};
 char fw_path[64] = {};
 int param_count = 0;
 short verbose = 0;
-int num_bytes = 0; 
-uint8_t read_buf[MAX_BYTES_TO_RECV] = {};
+int received_bytes = 0; 
+char read_buf[MAX_BYTES_TO_RECV] = {};
+char send_buf[MAX_BYTES_TO_SEND] = {};
 
 
 	for (int i = 1; i < argc; ++i) {
@@ -74,34 +75,38 @@ if (param_count < 3) {
 }
 
 printf("Connect to %s, %s\n", serial_name, serial_speed);
-int serial_port = UART_Init(serial_name, serial_speed);
-
-
 printf("Firmware %s\n\n", fw_path);
 
+int serial_port = UART_Init(serial_name, serial_speed);
+UART_Recv(serial_port, read_buf, sizeof(read_buf)/sizeof(*read_buf));   // Clear UART before send
 
 printf("Trying to found device ... \n");
-UART_Recv(serial_port, read_buf, sizeof(read_buf), num_bytes);
 
-char msg[] = { '\x55', '\x02', '\x01'};
-write(serial_port, msg, sizeof(msg));
-usleep(300);
+//======= Ping to device =====================================================================================
 
-UART_Recv(serial_port, read_buf, sizeof(read_buf), num_bytes);
+    send_buf[0] = 0x04;    // Length of data in frame include this byte also
+    send_buf[1] = READ_FROM_MEM;
+    send_buf[2] = 0x00;
+    send_buf[3] = 0x00;
 
-   if (num_bytes > 0) 
-   {
-            printf("pream def= %X", PREAM_FROM_DEVICE);
-            if (read_buf[0] == PREAM_FROM_DEVICE) {
-                printf("Device found!\n");
+    UART_Send(serial_port, send_buf, send_buf[0]);
+
+    received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);
+    if (received_bytes == -1) {
+        printf("     ERROR Device not found!");
+        exit(6);
+    } else {
+
+            if (read_buf[1] == 0x04 && read_buf[2] == READ_FROM_MEM){
+                printf("     Device found!\n");
+                printf("BL version: %hhX.%hhX\n",(unsigned)read_buf[3],(unsigned)read_buf[4]);
             }
-            else {
-                printf("ERROR Wrong responce code!\n");        
-            } 
-    } else 
-    {
-        printf("ERROR Device not found!\n");
-    }
+            }
+
+
+
+//============================================================================================
+
 
 //while(1)
 //    {

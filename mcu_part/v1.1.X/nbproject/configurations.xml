@@ -16,6 +16,7 @@
       <itemPath>apps/api/bootloader.h</itemPath>
       <itemPath>apps/api/serial.h</itemPath>
       <itemPath>main.h</itemPath>
+      <itemPath>apps/api/memory.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -36,6 +37,7 @@
       <itemPath>main.c</itemPath>
       <itemPath>apps/src/bootloader.c</itemPath>
       <itemPath>apps/src/serial.c</itemPath>
+      <itemPath>apps/src/memory.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

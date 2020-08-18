@@ -1,4 +1,4 @@
-# 1 "main.c"
+# 1 "apps/src/memory.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,10 +6,19 @@
 # 1 "<built-in>" 2
 # 1 "/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "main.c" 2
-# 44 "main.c"
-# 1 "./main.h" 1
-# 15 "./main.h"
+# 1 "apps/src/memory.c" 2
+
+
+
+
+
+
+
+
+# 1 "apps/src/../api/memory.h" 1
+# 15 "apps/src/../api/memory.h"
+# 1 "apps/src/../api/../../main.h" 1
+# 15 "apps/src/../api/../../main.h"
 # 1 "./mcc_generated_files/mcc.h" 1
 # 49 "./mcc_generated_files/mcc.h"
 # 1 "/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/xc.h" 1 3
@@ -11215,10 +11224,10 @@ void SYSTEM_Initialize(void);
 void OSCILLATOR_Initialize(void);
 # 96 "./mcc_generated_files/mcc.h"
 void WDT_Initialize(void);
-# 16 "./main.h" 2
+# 16 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/serial.h" 1
 # 15 "./apps/api/serial.h"
-# 1 "./apps/api/../../main.h" 1
+# 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/serial.h" 2
 # 26 "./apps/api/serial.h"
 uint8_t UART_dataWrite(uint8_t*, uint8_t);
@@ -11226,10 +11235,10 @@ uint8_t UART_dataWrite(uint8_t*, uint8_t);
 uint8_t UART_byteRead(void);
 
 _Bool UART_preamFound(void);
-# 17 "./apps/api/../../main.h" 2
+# 17 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/bootloader.h" 1
 # 15 "./apps/api/bootloader.h"
-# 1 "./apps/api/../../main.h" 1
+# 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
 # 36 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
@@ -11239,10 +11248,9 @@ _Bool DefineError(uint8_t*);
 
 
 _Bool ReadFromMem(uint8_t*, uint8_t*);
-# 18 "./apps/api/../../main.h" 2
+# 18 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/memory.h" 1
-# 15 "./apps/api/memory.h"
-# 1 "./apps/api/../../main.h" 1
+# 19 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/memory.h" 2
 
 
@@ -11253,77 +11261,33 @@ _Bool ReadFromMem(uint8_t*, uint8_t*);
 
 
 uint16_t FLASH_Read(uint16_t);
-# 19 "./apps/api/../../main.h" 2
-# 44 "main.c" 2
+# 10 "apps/src/memory.c" 2
 
+uint16_t FLASH_Read(uint16_t addr){
+    uint8_t INR_state;
+    INR_state = INTCONbits.GIE;
 
+    if ((uint8_t)((addr & 0xFF00) >> 8) == 0x80){
+        EEADRH = 0x80;
+        EECON1bits.CFGS = 1;
 
-
-
-void main(void)
-{
-
-
-    SYSTEM_Initialize();
-
-    uint8_t recv_frame[66];
-    uint8_t send_frame[66];
-    uint8_t i = 0;
-    uint8_t byte = 0;
-    _Bool processing_status = 0;
-
-    ClearArray(recv_frame);
-    ClearArray(send_frame);
-
-    UART_dataWrite(send_frame, 0x00);
-
-
-    while (1)
-    {
-
-
-__asm("clrwdt");
-
-        if (UART_preamFound())
-            {
-            __asm("clrwdt");
-            recv_frame[0] = UART_byteRead();
-            if ((recv_frame[0] > 66) || (recv_frame[0] == 0x00 ))
-                {
-                recv_frame[1] = 0x00;
-                }
-            else{
-                for (i = 1; i < recv_frame[0]; i++)
-                    {
-                    recv_frame[i] = UART_byteRead();
-                    }
-
-                }
-
-
-            switch (recv_frame[1])
-                {
-
-
-
-
-                case 0x02:
-                    processing_status = ReadFromMem(recv_frame, send_frame);
-                    break;
-
-                default:
-                    processing_status = DefineError(send_frame);
-                }
-
-
-            if ((processing_status == 1) && (send_frame[0] != 0x00))
-                {
-                UART_dataWrite(send_frame, send_frame[0]);
-                processing_status = 0;
-                }
-
-            ClearArray(recv_frame);
-            ClearArray(send_frame);
-            }
+    } else {
+     EEADRH = (uint8_t)((addr & 0xFF00) >> 8);
+        EECON1bits.CFGS = 0;
     }
+
+    EEADRL = (uint8_t)(addr & 0x00FF);
+
+
+    EECON1bits.EEPGD = 1;
+    INTCONbits.GIE = 0;
+
+    EECON1bits.RD = 1;
+    __nop();
+    __nop();
+
+    INTCONbits.GIE = INR_state;
+
+
+    return ((uint16_t)((EEDATH << 8) | EEDATL));
 }

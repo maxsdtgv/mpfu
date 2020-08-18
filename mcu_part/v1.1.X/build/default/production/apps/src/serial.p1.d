@@ -8,4 +8,5 @@ mcc_generated_files/pin_manager.h  \
 mcc_generated_files/spi.h  \
 mcc_generated_files/eusart.h  \
 apps/api/serial.h  \
-apps/api/bootloader.h 
+apps/api/bootloader.h  \
+apps/api/memory.h 

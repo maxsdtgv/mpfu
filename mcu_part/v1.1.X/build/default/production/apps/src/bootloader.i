@@ -11230,33 +11230,70 @@ _Bool UART_preamFound(void);
 # 17 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/bootloader.h" 1
 # 18 "apps/src/../api/../../main.h" 2
+# 1 "./apps/api/memory.h" 1
+# 15 "./apps/api/memory.h"
+# 1 "apps/src/../api/../../main.h" 1
+# 16 "./apps/api/memory.h" 2
+
+
+
+
+
+
+
+
+uint16_t FLASH_Read(uint16_t);
+# 19 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/bootloader.h" 2
-# 41 "./apps/api/bootloader.h"
-void clearArray(uint8_t*);
+# 36 "./apps/api/bootloader.h"
+void ClearArray(uint8_t*);
 
-_Bool defineError(uint8_t*);
+_Bool DefineError(uint8_t*);
 
-_Bool pingRequest(uint8_t*, uint8_t*);
+
+
+_Bool ReadFromMem(uint8_t*, uint8_t*);
 # 2 "apps/src/bootloader.c" 2
 
 
 
-void clearArray(uint8_t *array){
+void ClearArray(uint8_t *array){
  uint8_t i = 0;
     for (i = 0; i < 66; i++){array[i]=0x00;}
 }
 
-_Bool defineError(uint8_t *send_frame){
+_Bool DefineError(uint8_t *send_frame){
  send_frame[0] = 0x02;
  send_frame[1] = 0xFF;
  return 1;
 }
-
-_Bool pingRequest(uint8_t *recv_frame, uint8_t *send_frame){
+# 26 "apps/src/bootloader.c"
+_Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
  uint8_t i = 0;
- for (i = 0; i < recv_frame[0]; i++){
-  send_frame[i] = recv_frame[i];
+ uint16_t dbyte = 0;
+ uint16_t def_addr = 0;
+
+ def_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
+
+ if (recv_frame[2] == 0x80){
+  dbyte = FLASH_Read(def_addr);
+  send_frame[2] = (uint8_t)((dbyte & 0xFF00) >> 8);
+  send_frame[3] = (uint8_t)(dbyte & 0x00FF);
+  i++; i++;
+
+ } else {
+
+  for (i = 0; i < 32 +32; i=i+2){
+   dbyte = FLASH_Read(def_addr);
+   send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
+   send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
+   def_addr++;
+  }
+
  }
- send_frame[1] = 0x01;
+
+ send_frame[0] = i + 2;
+ send_frame[1] = 0x02;
+
  return 1;
 }

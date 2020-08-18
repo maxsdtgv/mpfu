@@ -64,6 +64,7 @@ int UART_Init(char serial_name[32], char serial_speed[6]){
     tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
 
     tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
+    //tty.c_iflag |= IXON ; // Turn on s/w flow ctrl
 
     tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
     tty.c_cc[VMIN] = 0;
@@ -84,9 +85,35 @@ int UART_Init(char serial_name[32], char serial_speed[6]){
 
 }
 
-void UART_Recv(int serial_port, uint8_t *read_buf, size_t size_buf, int &bytes_count){
+int UART_Recv(int serial_port, char *read_buf, int size_buf){
     memset(read_buf, '\0', size_buf);
-    bytes_count = read(serial_port, read_buf, size_buf);
-    //printf("read_buf= %X",&read_buf[0]);
+    char ch;
+    int ret = 0;
+    int bytes_count = 0;
+    while ((ret = read(serial_port, &ch, 1)) > 0)
+        {
+            if (bytes_count < size_buf){
+                read_buf[bytes_count] = ch;
+    //            printf("Index %i  Char = %x \n", bytes_count, ch);
+                bytes_count++;
+            } else {
+                break;
+            }
+        }
+    if (read_buf[0] != PREAM_FROM_DEVICE){
+        bytes_count = -1;
+    } 
 
+    return bytes_count;
 }
+
+
+void UART_Send(int serial_port, char *data, int arr_size){
+
+    char sym_code[]={PREAM_TO_DEVICE};
+    write(serial_port, sym_code, sizeof(sym_code));
+
+    write(serial_port, data, arr_size);
+    usleep(300);
+
+    }

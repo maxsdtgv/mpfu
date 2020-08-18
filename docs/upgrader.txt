@@ -1,0 +1,16 @@
+
+
+
+Command format:
+---------------
+To upload firmware to MCU
+
+	python upgrader.py -b 115200 -D COM3 -f C:\path_to_load\fw.hex -v
+
+To save current flash content (fw + BL)
+
+	python upgrader.py -b 115200 -D COM3 -s C:\path_to_save\save.hex -v
+
+To save current flash content (only fw)
+
+	python upgrader.py -b 115200 -D COM3 -w C:\path_to_save\fw.hex -v
