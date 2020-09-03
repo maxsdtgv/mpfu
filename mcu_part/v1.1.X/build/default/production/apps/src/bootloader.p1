@@ -1,8 +1,5 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"23 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 23: _Bool FLASH_Erase(uint8_t*);
-[v _FLASH_Erase `(a ~T0 @X0 0 ef1`*uc ]
-"25
+"25 ./apps/api/memory.h
 [; ;./apps/api/memory.h: 25: uint16_t FLASH_Read(uint16_t);
 [v _FLASH_Read `(us ~T0 @X0 0 ef1`us ]
 "27
@@ -1069,31 +1066,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/bootloader.c: 12: }
 [e :UE 765 ]
 }
-"24
-[; ;apps/src/bootloader.c: 24: _Bool EraseRowMem(uint8_t *recv_frame, uint8_t *send_frame){
-[v _EraseRowMem `(a ~T0 @X0 1 ef2`*uc`*uc ]
-{
-[e :U _EraseRowMem ]
-[v _recv_frame `*uc ~T0 @X0 1 r1 ]
-[v _send_frame `*uc ~T0 @X0 1 r2 ]
-[f ]
-"29
-[; ;apps/src/bootloader.c: 29:  FLASH_Erase(recv_frame);
-[e ( _FLASH_Erase (1 _recv_frame ]
-"31
-[; ;apps/src/bootloader.c: 31:  send_frame[0] = 0x02;
-[e = *U + _send_frame * -> -> 0 `i `x -> -> # *U _send_frame `i `x -> -> 2 `i `uc ]
-"32
-[; ;apps/src/bootloader.c: 32:  send_frame[1] = 0x03;
-[e = *U + _send_frame * -> -> 1 `i `x -> -> # *U _send_frame `i `x -> -> 3 `i `uc ]
-"33
-[; ;apps/src/bootloader.c: 33:  return 1;
-[e ) -> -> 1 `i `a ]
-[e $UE 766  ]
-"34
-[; ;apps/src/bootloader.c: 34: }
-[e :UE 766 ]
-}
 "37
 [; ;apps/src/bootloader.c: 37: _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 [v _ReadFromMem `(a ~T0 @X0 1 ef2`*uc`*uc ]
@@ -1119,7 +1091,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _def_addr -> | & -> << -> *U + _recv_frame * -> -> 2 `i `x -> -> # *U _recv_frame `i `x `i -> 8 `i `ui -> 65280 `ui -> & -> *U + _recv_frame * -> -> 3 `i `x -> -> # *U _recv_frame `i `x `i -> 255 `i `ui `us ]
 "44
 [; ;apps/src/bootloader.c: 44:  if (recv_frame[2] == 0x80){
-[e $ ! == -> *U + _recv_frame * -> -> 2 `i `x -> -> # *U _recv_frame `i `x `i -> 128 `i 768  ]
+[e $ ! == -> *U + _recv_frame * -> -> 2 `i `x -> -> # *U _recv_frame `i `x `i -> 128 `i 767  ]
 {
 "45
 [; ;apps/src/bootloader.c: 45:   dbyte = FLASH_Read(def_addr);
@@ -1137,16 +1109,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 "50
 [; ;apps/src/bootloader.c: 50:  } else {
 }
-[e $U 769  ]
-[e :U 768 ]
+[e $U 768  ]
+[e :U 767 ]
 {
 "52
 [; ;apps/src/bootloader.c: 52:   for (i = 0; i < 0x0020 +0x0020; i += 2){
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i + -> 32 `i -> 32 `i 770  ]
-[e $U 771  ]
-[e :U 770 ]
+[e $ < -> _i `i + -> 32 `i -> 32 `i 769  ]
+[e $U 770  ]
+[e :U 769 ]
 {
 "53
 [; ;apps/src/bootloader.c: 53:    dbyte = FLASH_Read(def_addr);
@@ -1164,13 +1136,13 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/bootloader.c: 57:   }
 }
 [e =+ _i -> -> 2 `i `uc ]
-[e $ < -> _i `i + -> 32 `i -> 32 `i 770  ]
-[e :U 771 ]
+[e $ < -> _i `i + -> 32 `i -> 32 `i 769  ]
+[e :U 770 ]
 }
 "59
 [; ;apps/src/bootloader.c: 59:  }
 }
-[e :U 769 ]
+[e :U 768 ]
 "61
 [; ;apps/src/bootloader.c: 61:  send_frame[0] = i + 2;
 [e = *U + _send_frame * -> -> 0 `i `x -> -> # *U _send_frame `i `x -> + -> _i `i -> 2 `i `uc ]
@@ -1180,10 +1152,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "64
 [; ;apps/src/bootloader.c: 64:  return 1;
 [e ) -> -> 1 `i `a ]
-[e $UE 767  ]
+[e $UE 766  ]
 "65
 [; ;apps/src/bootloader.c: 65: }
-[e :UE 767 ]
+[e :UE 766 ]
 }
 "67
 [; ;apps/src/bootloader.c: 67: _Bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
@@ -1201,7 +1173,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _result ( _FLASH_Write (1 _recv_frame ]
 "71
 [; ;apps/src/bootloader.c: 71:  if (result) {
-[e $ ! != -> _result `i -> 0 `i 774  ]
+[e $ ! != -> _result `i -> 0 `i 773  ]
 {
 "72
 [; ;apps/src/bootloader.c: 72:  send_frame[0] = 0x02;
@@ -1212,12 +1184,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "74
 [; ;apps/src/bootloader.c: 74:  }
 }
-[e :U 774 ]
+[e :U 773 ]
 "75
 [; ;apps/src/bootloader.c: 75:  return result;
 [e ) _result ]
-[e $UE 773  ]
+[e $UE 772  ]
 "76
 [; ;apps/src/bootloader.c: 76: }
-[e :UE 773 ]
+[e :UE 772 ]
 }

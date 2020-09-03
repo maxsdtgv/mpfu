@@ -11234,15 +11234,7 @@ _Bool UART_preamFound(void);
 # 15 "./apps/api/memory.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/memory.h" 2
-
-
-
-
-
-
-
-_Bool FLASH_Erase(uint8_t*);
-
+# 25 "./apps/api/memory.h"
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
@@ -11255,7 +11247,7 @@ _Bool DefineError(uint8_t*);
 
 
 
-_Bool EraseRowMem(uint8_t*, uint8_t*);
+
 
 _Bool ReadFromMem(uint8_t*, uint8_t*);
 
@@ -11272,20 +11264,7 @@ _Bool DefineError(uint8_t *send_frame){
  send_frame[1] = 0xFF;
  return 1;
 }
-# 24 "apps/src/bootloader.c"
-_Bool EraseRowMem(uint8_t *recv_frame, uint8_t *send_frame){
-
-
-
-
- FLASH_Erase(recv_frame);
-
- send_frame[0] = 0x02;
- send_frame[1] = 0x03;
- return 1;
-}
-
-
+# 37 "apps/src/bootloader.c"
 _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
  uint8_t i = 0;
  uint16_t dbyte = 0;

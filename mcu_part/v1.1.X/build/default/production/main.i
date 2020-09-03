@@ -11238,7 +11238,7 @@ _Bool DefineError(uint8_t*);
 
 
 
-_Bool EraseRowMem(uint8_t*, uint8_t*);
+
 
 _Bool ReadFromMem(uint8_t*, uint8_t*);
 
@@ -11248,15 +11248,7 @@ _Bool WriteToMem(uint8_t*, uint8_t*);
 # 15 "./apps/api/memory.h"
 # 1 "./apps/api/../../main.h" 1
 # 16 "./apps/api/memory.h" 2
-
-
-
-
-
-
-
-_Bool FLASH_Erase(uint8_t*);
-
+# 25 "./apps/api/memory.h"
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
@@ -11327,9 +11319,9 @@ __asm("clrwdt");
                     processing_status = ReadFromMem(recv_frame, send_frame);
                     break;
 
-                case 0x03:
-                    processing_status = EraseRowMem(recv_frame, send_frame);
-                    break;
+
+
+
 
                 case 0x04:
                     processing_status = WriteToMem(recv_frame, send_frame);
