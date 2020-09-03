@@ -61,8 +61,27 @@ void main(void)
     ClearArray(recv_frame);
     ClearArray(send_frame);
 
-    UART_dataWrite(send_frame, 0x00); // Will send empty line, just PREAM + LF  
 
+
+    
+    //TRISx registers
+
+    TRISE = 0x00;
+    LATE = 0x00;
+
+/**
+    send_frame[0] = 0x02;           // Number of bytes to send in response
+    send_frame[1] = ERROR_CODE;     // Error code
+    while (1)
+    {
+            LATE = 0x00;
+    UART_dataWrite(send_frame, 0x02); // Will send empty line, just PREAM + LF  
+    __delay_ms(500);
+            LATE = 0xFF;
+                __delay_ms(500);
+    }
+**/
+    IO_RE0_SetHigh();
 
     while (1)
     {
@@ -72,7 +91,9 @@ CLRWDT();                                   // Clear WDT;
 
         if (UART_preamFound())                          // Try to found PREAM_RECV_FROM_HOST in the byte [0] of frame header
             {
+            IO_RE1_SetHigh();
             CLRWDT();                                   // Clear WDT;
+
             recv_frame[0] = UART_byteRead();            // Read second byte with amount of next expected bytes
             if ((recv_frame[0] > BL_MAX_RECV_DATA) || (recv_frame[0] == 0x00 ))
                 {
@@ -97,19 +118,31 @@ CLRWDT();                                   // Clear WDT;
                     processing_status = ReadFromMem(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
+                case ERASE_ROW_MEM:              // 0x03 - Erase row mem.
+                    processing_status = EraseRowMem(recv_frame, send_frame); // Send_frame will be filled after execution
+                    break;
+
+                case WRITE_TO_MEM:              // 0x04 - Write to mem.
+                    processing_status = WriteToMem(recv_frame, send_frame); // Send_frame will be filled after execution
+                    break;
+
                 default:
                     processing_status = DefineError(send_frame);
                 }
 
         // Send response if processing status is TRUE
-            if ((processing_status == true) && (send_frame[0] != 0x00))
+            if (!((processing_status == true) && (send_frame[0] != 0x00)))
                 {
+                DefineError(send_frame);
+                } 
+
                 UART_dataWrite(send_frame, send_frame[0]);          // Send frame to uart
                 processing_status = false;            // Finish processing
-                }
-
             ClearArray(recv_frame);
             ClearArray(send_frame);
+                            
+            IO_RE1_SetLow();
+
             }
     }
 }

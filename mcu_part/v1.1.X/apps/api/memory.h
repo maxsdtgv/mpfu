@@ -16,12 +16,15 @@ extern "C" {
 
 #define START_MEM_ADDR 	0x0
 #define END_MEM_ADDR 	0x3FFF	
-#define MAX_BLOCK_SIZE 	32
+#define MAX_BLOCK_SIZE 	0x0020
 #define MAX_MEM_COUNT 	0x4000
+#define DELAY_WRITE_FLASH 0x000A   // means 10 ms
 
-
+bool FLASH_Erase(uint8_t*);
 
 uint16_t FLASH_Read(uint16_t);
+
+bool FLASH_Write(uint8_t*);
 /*
 This functio returns word of data located in Flash by defined address.
 Example:

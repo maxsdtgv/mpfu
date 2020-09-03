@@ -17,6 +17,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4258
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4258: extern volatile unsigned char EEADRH __attribute__((address(0x192)));
 [v _EEADRH `Vuc ~T0 @X0 0 e@402 ]
+"4238
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4238: extern volatile unsigned char EEADRL __attribute__((address(0x191)));
+[v _EEADRL `Vuc ~T0 @X0 0 e@401 ]
+"4343
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4343: extern volatile unsigned char EECON1 __attribute__((address(0x195)));
+[v _EECON1 `Vuc ~T0 @X0 0 e@405 ]
+"4405
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4405: extern volatile unsigned char EECON2 __attribute__((address(0x196)));
+[v _EECON2 `Vuc ~T0 @X0 0 e@406 ]
 "4349
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4349:     struct {
 [s S214 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -28,9 +37,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4360
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4360: extern volatile EECON1bits_t EECON1bits __attribute__((address(0x195)));
 [v _EECON1bits `VS213 ~T0 @X0 0 e@405 ]
-"4238
-[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4238: extern volatile unsigned char EEADRL __attribute__((address(0x191)));
-[v _EEADRL `Vuc ~T0 @X0 0 e@401 ]
 "31 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/pic.h
 [v ___nop `(v ~T0 @X0 0 ef ]
 [p i ___nop ]
@@ -40,6 +46,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "4285
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 4285: extern volatile unsigned char EEDATL __attribute__((address(0x193)));
 [v _EEDATL `Vuc ~T0 @X0 0 e@403 ]
+[v F5957 `(v ~T0 @X0 1 tf1`ul ]
+"92 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/pic.h
+[v __delay `JF5957 ~T0 @X0 0 e ]
+[p i __delay ]
 "54 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 54: __asm("INDF0 equ 00h");
 [; <" INDF0 equ 00h ;# ">
@@ -1052,11 +1062,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 16563: __asm("TOSH equ 0FEFh");
 [; <" TOSH equ 0FEFh ;# ">
 "11 apps/src/memory.c
-[; ;apps/src/memory.c: 11: uint16_t FLASH_Read(uint16_t addr){
-[v _FLASH_Read `(us ~T0 @X0 1 ef1`us ]
+[; ;apps/src/memory.c: 11: _Bool FLASH_Erase(uint8_t *buffer){
+[v _FLASH_Erase `(a ~T0 @X0 1 ef1`*uc ]
 {
-[e :U _FLASH_Read ]
-[v _addr `us ~T0 @X0 1 r1 ]
+[e :U _FLASH_Erase ]
+[v _buffer `*uc ~T0 @X0 1 r1 ]
 [f ]
 "12
 [; ;apps/src/memory.c: 12:     uint8_t INR_state;
@@ -1065,57 +1075,315 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/memory.c: 13:     INR_state = INTCONbits.GIE;
 [e = _INR_state . . _INTCONbits 0 7 ]
 "15
-[; ;apps/src/memory.c: 15:     if ((uint8_t)((addr & 0xFF00) >> 8) == 0x80){
-[e $ ! == -> -> >> & -> _addr `ui -> 65280 `ui -> 8 `i `uc `i -> 128 `i 762  ]
-{
-"16
-[; ;apps/src/memory.c: 16:         EEADRH = 0x80;
-[e = _EEADRH -> -> 128 `i `uc ]
-"17
-[; ;apps/src/memory.c: 17:         EECON1bits.CFGS = 1;
-[e = . . _EECON1bits 0 6 -> -> 1 `i `uc ]
-"19
-[; ;apps/src/memory.c: 19:     } else {
-}
-[e $U 763  ]
-[e :U 762 ]
-{
-"20
-[; ;apps/src/memory.c: 20:      EEADRH = (uint8_t)((addr & 0xFF00) >> 8);
-[e = _EEADRH -> >> & -> _addr `ui -> 65280 `ui -> 8 `i `uc ]
-"21
-[; ;apps/src/memory.c: 21:         EECON1bits.CFGS = 0;
-[e = . . _EECON1bits 0 6 -> -> 0 `i `uc ]
-"22
-[; ;apps/src/memory.c: 22:     }
-}
-[e :U 763 ]
-"24
-[; ;apps/src/memory.c: 24:     EEADRL = (uint8_t)(addr & 0x00FF);
-[e = _EEADRL -> & -> _addr `ui -> -> 255 `i `ui `uc ]
-"27
-[; ;apps/src/memory.c: 27:     EECON1bits.EEPGD = 1;
-[e = . . _EECON1bits 0 7 -> -> 1 `i `uc ]
-"28
-[; ;apps/src/memory.c: 28:     INTCONbits.GIE = 0;
+[; ;apps/src/memory.c: 15:     INTCONbits.GIE = 0;
 [e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
+"20
+[; ;apps/src/memory.c: 20:     EEADRH = buffer[2];
+[e = _EEADRH *U + _buffer * -> -> 2 `i `x -> -> # *U _buffer `i `x ]
+"21
+[; ;apps/src/memory.c: 21:     EEADRL = buffer[3];
+[e = _EEADRL *U + _buffer * -> -> 3 `i `x -> -> # *U _buffer `i `x ]
+"23
+[; ;apps/src/memory.c: 23:     EECON1 = 0x94;
+[e = _EECON1 -> -> 148 `i `uc ]
+"29
+[; ;apps/src/memory.c: 29:     EECON2 = 0x55;
+[e = _EECON2 -> -> 85 `i `uc ]
 "30
-[; ;apps/src/memory.c: 30:     EECON1bits.RD = 1;
-[e = . . _EECON1bits 0 0 -> -> 1 `i `uc ]
+[; ;apps/src/memory.c: 30:     EECON2 = 0xAA;
+[e = _EECON2 -> -> 170 `i `uc ]
 "31
-[; ;apps/src/memory.c: 31:     __nop();
-[e ( ___nop ..  ]
+[; ;apps/src/memory.c: 31:     EECON1bits.WR = 1;
+[e = . . _EECON1bits 0 1 -> -> 1 `i `uc ]
 "32
 [; ;apps/src/memory.c: 32:     __nop();
 [e ( ___nop ..  ]
-"34
-[; ;apps/src/memory.c: 34:     INTCONbits.GIE = INR_state;
+"33
+[; ;apps/src/memory.c: 33:     __nop();
+[e ( ___nop ..  ]
+"35
+[; ;apps/src/memory.c: 35:     EECON1bits.WREN = 0;
+[e = . . _EECON1bits 0 2 -> -> 0 `i `uc ]
+"36
+[; ;apps/src/memory.c: 36:     INTCONbits.GIE = INR_state;
 [e = . . _INTCONbits 0 7 _INR_state ]
-"37
-[; ;apps/src/memory.c: 37:     return ((uint16_t)((EEDATH << 8) | EEDATL));
-[e ) -> | << -> _EEDATH `i -> 8 `i -> _EEDATL `i `us ]
+"39
+[; ;apps/src/memory.c: 39:     return 1;
+[e ) -> -> 1 `i `a ]
 [e $UE 761  ]
-"38
-[; ;apps/src/memory.c: 38: }
+"40
+[; ;apps/src/memory.c: 40: }
 [e :UE 761 ]
+}
+"42
+[; ;apps/src/memory.c: 42: uint16_t FLASH_Read(uint16_t addr){
+[v _FLASH_Read `(us ~T0 @X0 1 ef1`us ]
+{
+[e :U _FLASH_Read ]
+[v _addr `us ~T0 @X0 1 r1 ]
+[f ]
+"43
+[; ;apps/src/memory.c: 43:     uint8_t INR_state;
+[v _INR_state `uc ~T0 @X0 1 a ]
+"44
+[; ;apps/src/memory.c: 44:     INR_state = INTCONbits.GIE;
+[e = _INR_state . . _INTCONbits 0 7 ]
+"47
+[; ;apps/src/memory.c: 47:     if ((uint8_t)((addr & 0xFF00) >> 8) == 0x80){
+[e $ ! == -> -> >> & -> _addr `ui -> 65280 `ui -> 8 `i `uc `i -> 128 `i 763  ]
+{
+"48
+[; ;apps/src/memory.c: 48:         EEADRH = 0x00;
+[e = _EEADRH -> -> 0 `i `uc ]
+"49
+[; ;apps/src/memory.c: 49:         EECON1bits.CFGS = 1;
+[e = . . _EECON1bits 0 6 -> -> 1 `i `uc ]
+"50
+[; ;apps/src/memory.c: 50:     } else {
+}
+[e $U 764  ]
+[e :U 763 ]
+{
+"51
+[; ;apps/src/memory.c: 51:      EEADRH = (uint8_t)((addr & 0xFF00) >> 8);
+[e = _EEADRH -> >> & -> _addr `ui -> 65280 `ui -> 8 `i `uc ]
+"52
+[; ;apps/src/memory.c: 52:         EECON1bits.CFGS = 0;
+[e = . . _EECON1bits 0 6 -> -> 0 `i `uc ]
+"53
+[; ;apps/src/memory.c: 53:     }
+}
+[e :U 764 ]
+"55
+[; ;apps/src/memory.c: 55:     EEADRL = (uint8_t)(addr & 0x00FF);
+[e = _EEADRL -> & -> _addr `ui -> -> 255 `i `ui `uc ]
+"57
+[; ;apps/src/memory.c: 57:     EECON1bits.EEPGD = 1;
+[e = . . _EECON1bits 0 7 -> -> 1 `i `uc ]
+"58
+[; ;apps/src/memory.c: 58:     INTCONbits.GIE = 0;
+[e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
+"60
+[; ;apps/src/memory.c: 60:     EECON1bits.RD = 1;
+[e = . . _EECON1bits 0 0 -> -> 1 `i `uc ]
+"61
+[; ;apps/src/memory.c: 61:     __nop();
+[e ( ___nop ..  ]
+"62
+[; ;apps/src/memory.c: 62:     __nop();
+[e ( ___nop ..  ]
+"64
+[; ;apps/src/memory.c: 64:     INTCONbits.GIE = INR_state;
+[e = . . _INTCONbits 0 7 _INR_state ]
+"67
+[; ;apps/src/memory.c: 67:     return ((uint16_t)((EEDATH << 8) | EEDATL));
+[e ) -> | << -> _EEDATH `i -> 8 `i -> _EEDATL `i `us ]
+[e $UE 762  ]
+"68
+[; ;apps/src/memory.c: 68: }
+[e :UE 762 ]
+}
+"70
+[; ;apps/src/memory.c: 70: _Bool FLASH_Write(uint8_t *buffer){
+[v _FLASH_Write `(a ~T0 @X0 1 ef1`*uc ]
+{
+[e :U _FLASH_Write ]
+[v _buffer `*uc ~T0 @X0 1 r1 ]
+[f ]
+"71
+[; ;apps/src/memory.c: 71:     uint8_t i, INR_state;
+[v _i `uc ~T0 @X0 1 a ]
+[v _INR_state `uc ~T0 @X0 1 a ]
+"73
+[; ;apps/src/memory.c: 73:     uint16_t writeAddr;
+[v _writeAddr `us ~T0 @X0 1 a ]
+"74
+[; ;apps/src/memory.c: 74:     uint8_t uuu[1];
+[v _uuu `uc ~T0 @X0 -> -> 1 `i `ux a ]
+"75
+[; ;apps/src/memory.c: 75:     INR_state = INTCONbits.GIE;
+[e = _INR_state . . _INTCONbits 0 7 ]
+"77
+[; ;apps/src/memory.c: 77:     INTCONbits.GIE = 0;
+[e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
+"82
+[; ;apps/src/memory.c: 82:     writeAddr = (uint16_t)(((buffer[2] << 8) & 0xFF00) | (buffer[3] & 0x00FF));
+[e = _writeAddr -> | & -> << -> *U + _buffer * -> -> 2 `i `x -> -> # *U _buffer `i `x `i -> 8 `i `ui -> 65280 `ui -> & -> *U + _buffer * -> -> 3 `i `x -> -> # *U _buffer `i `x `i -> 255 `i `ui `us ]
+"84
+[; ;apps/src/memory.c: 84:         EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8);
+[e = _EEADRH -> >> & -> _writeAddr `ui -> 65280 `ui -> 8 `i `uc ]
+"85
+[; ;apps/src/memory.c: 85:         EEADRL = (uint8_t)(writeAddr & 0x00FF);
+[e = _EEADRL -> & -> _writeAddr `ui -> -> 255 `i `ui `uc ]
+"87
+[; ;apps/src/memory.c: 87:     EECON1bits.EEPGD = 1;
+[e = . . _EECON1bits 0 7 -> -> 1 `i `uc ]
+"88
+[; ;apps/src/memory.c: 88:     EECON1bits.WRERR = 0;
+[e = . . _EECON1bits 0 3 -> -> 0 `i `uc ]
+"89
+[; ;apps/src/memory.c: 89:     EECON1bits.WREN = 1;
+[e = . . _EECON1bits 0 2 -> -> 1 `i `uc ]
+"91
+[; ;apps/src/memory.c: 91:     if (buffer[2] == 0x80){
+[e $ ! == -> *U + _buffer * -> -> 2 `i `x -> -> # *U _buffer `i `x `i -> 128 `i 766  ]
+{
+"92
+[; ;apps/src/memory.c: 92:             EECON1bits.CFGS = 1;
+[e = . . _EECON1bits 0 6 -> -> 1 `i `uc ]
+"93
+[; ;apps/src/memory.c: 93:             EEDATH = buffer[4];
+[e = _EEDATH *U + _buffer * -> -> 4 `i `x -> -> # *U _buffer `i `x ]
+"94
+[; ;apps/src/memory.c: 94:             EEDATL = buffer[5];
+[e = _EEDATL *U + _buffer * -> -> 5 `i `x -> -> # *U _buffer `i `x ]
+"95
+[; ;apps/src/memory.c: 95:     } else {
+}
+[e $U 767  ]
+[e :U 766 ]
+{
+"98
+[; ;apps/src/memory.c: 98:     EECON1bits.CFGS = 0;
+[e = . . _EECON1bits 0 6 -> -> 0 `i `uc ]
+"99
+[; ;apps/src/memory.c: 99:     EECON1bits.FREE = 1;
+[e = . . _EECON1bits 0 4 -> -> 1 `i `uc ]
+"101
+[; ;apps/src/memory.c: 101:     EECON2 = 0x55;
+[e = _EECON2 -> -> 85 `i `uc ]
+"102
+[; ;apps/src/memory.c: 102:     EECON2 = 0xAA;
+[e = _EECON2 -> -> 170 `i `uc ]
+"103
+[; ;apps/src/memory.c: 103:     EECON1bits.WR = 1;
+[e = . . _EECON1bits 0 1 -> -> 1 `i `uc ]
+"104
+[; ;apps/src/memory.c: 104:     __nop();
+[e ( ___nop ..  ]
+"105
+[; ;apps/src/memory.c: 105:     __nop();
+[e ( ___nop ..  ]
+"106
+[; ;apps/src/memory.c: 106:     _delay((unsigned long)((0x000A)*(16000000/4000.0)));
+[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+"108
+[; ;apps/src/memory.c: 108:     if (EECON1bits.FREE){
+[e $ ! != -> . . _EECON1bits 0 4 `i -> 0 `i 768  ]
+{
+"109
+[; ;apps/src/memory.c: 109:             return 0;
+[e ) -> -> 0 `i `a ]
+[e $UE 765  ]
+"110
+[; ;apps/src/memory.c: 110:     }
+}
+[e :U 768 ]
+"113
+[; ;apps/src/memory.c: 113:     EECON1bits.LWLO = 1;
+[e = . . _EECON1bits 0 5 -> -> 1 `i `uc ]
+"114
+[; ;apps/src/memory.c: 114:         for (i = 0; i < 0x0020 + 0x0020; i += 2){
+{
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i + -> 32 `i -> 32 `i 769  ]
+[e $U 770  ]
+[e :U 769 ]
+{
+"115
+[; ;apps/src/memory.c: 115:         EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8);
+[e = _EEADRH -> >> & -> _writeAddr `ui -> 65280 `ui -> 8 `i `uc ]
+"116
+[; ;apps/src/memory.c: 116:         EEADRL = (uint8_t)(writeAddr & 0x00FF);
+[e = _EEADRL -> & -> _writeAddr `ui -> -> 255 `i `ui `uc ]
+"118
+[; ;apps/src/memory.c: 118:             EEDATH = buffer[i+4];
+[e = _EEDATH *U + _buffer * -> + -> _i `i -> 4 `i `x -> -> # *U _buffer `i `x ]
+"119
+[; ;apps/src/memory.c: 119:             EEDATL = buffer[i+5];
+[e = _EEDATL *U + _buffer * -> + -> _i `i -> 5 `i `x -> -> # *U _buffer `i `x ]
+"121
+[; ;apps/src/memory.c: 121:                 EECON2 = 0x55;
+[e = _EECON2 -> -> 85 `i `uc ]
+"122
+[; ;apps/src/memory.c: 122:                 EECON2 = 0xAA;
+[e = _EECON2 -> -> 170 `i `uc ]
+"123
+[; ;apps/src/memory.c: 123:                 EECON1bits.WR = 1;
+[e = . . _EECON1bits 0 1 -> -> 1 `i `uc ]
+"124
+[; ;apps/src/memory.c: 124:                 __nop();
+[e ( ___nop ..  ]
+"125
+[; ;apps/src/memory.c: 125:                 __nop();
+[e ( ___nop ..  ]
+"127
+[; ;apps/src/memory.c: 127:             writeAddr++;
+[e ++ _writeAddr -> -> 1 `i `us ]
+"129
+[; ;apps/src/memory.c: 129:         }
+}
+[e =+ _i -> -> 2 `i `uc ]
+[e $ < -> _i `i + -> 32 `i -> 32 `i 769  ]
+[e :U 770 ]
+}
+"130
+[; ;apps/src/memory.c: 130:     EECON1bits.LWLO = 0;
+[e = . . _EECON1bits 0 5 -> -> 0 `i `uc ]
+"132
+[; ;apps/src/memory.c: 132:     }
+}
+[e :U 767 ]
+"134
+[; ;apps/src/memory.c: 134:         EECON2 = 0x55;
+[e = _EECON2 -> -> 85 `i `uc ]
+"135
+[; ;apps/src/memory.c: 135:         EECON2 = 0xAA;
+[e = _EECON2 -> -> 170 `i `uc ]
+"136
+[; ;apps/src/memory.c: 136:         EECON1bits.WR = 1;
+[e = . . _EECON1bits 0 1 -> -> 1 `i `uc ]
+"137
+[; ;apps/src/memory.c: 137:         __nop();
+[e ( ___nop ..  ]
+"138
+[; ;apps/src/memory.c: 138:         __nop();
+[e ( ___nop ..  ]
+"139
+[; ;apps/src/memory.c: 139:     _delay((unsigned long)((0x000A)*(16000000/4000.0)));
+[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
+"141
+[; ;apps/src/memory.c: 141:     EECON1bits.CFGS = 0;
+[e = . . _EECON1bits 0 6 -> -> 0 `i `uc ]
+"142
+[; ;apps/src/memory.c: 142:     EECON1bits.WREN = 0;
+[e = . . _EECON1bits 0 2 -> -> 0 `i `uc ]
+"143
+[; ;apps/src/memory.c: 143:     INTCONbits.GIE = INR_state;
+[e = . . _INTCONbits 0 7 _INR_state ]
+"144
+[; ;apps/src/memory.c: 144:     if (EECON1bits.WRERR){
+[e $ ! != -> . . _EECON1bits 0 3 `i -> 0 `i 772  ]
+{
+"145
+[; ;apps/src/memory.c: 145:         return 0;
+[e ) -> -> 0 `i `a ]
+[e $UE 765  ]
+"146
+[; ;apps/src/memory.c: 146:     } else {
+}
+[e $U 773  ]
+[e :U 772 ]
+{
+"147
+[; ;apps/src/memory.c: 147:         return 1;
+[e ) -> -> 1 `i `a ]
+[e $UE 765  ]
+"148
+[; ;apps/src/memory.c: 148:     }
+}
+[e :U 773 ]
+"150
+[; ;apps/src/memory.c: 150: }
+[e :UE 765 ]
 }

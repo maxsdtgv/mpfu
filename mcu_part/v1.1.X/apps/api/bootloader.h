@@ -16,7 +16,7 @@ extern "C" {
 
 // Parameters definitions
 
-#define BL_MAX_RECV_DATA	66
+#define BL_MAX_RECV_DATA	68
 #define BL_MAX_SEND_DATA	66
 
 //=============    SUPPORTED COMMANDS ================
@@ -26,7 +26,11 @@ extern "C" {
 #define ERROR_CODE			0xFF
 #define SUCCESS_CODE		0xEE
 //#define PING_REQUEST		0x01
-#define READ_FROM_MEM		0x02	
+
+#define READ_FROM_MEM		0x02
+#define ERASE_ROW_MEM		0x03
+#define WRITE_TO_MEM		0x04
+
 
 #define START_APPLICATION	0x0F
 //====================================================
@@ -39,7 +43,11 @@ bool DefineError(uint8_t*);
 
 //bool PingRequest(uint8_t*, uint8_t*);
 
+bool EraseRowMem(uint8_t*, uint8_t*);
+
 bool ReadFromMem(uint8_t*, uint8_t*);
+
+bool WriteToMem(uint8_t*, uint8_t*);
 
 #ifdef	__cplusplus
 }

@@ -11070,7 +11070,6 @@ uint8_t EUSART_Read(void)
 {
     while(!PIR1bits.RCIF)
     {
-        __asm("clrwdt");
     }
 
     eusartRxLastError.status = 0;
@@ -11090,7 +11089,6 @@ void EUSART_Write(uint8_t txData)
 {
     while(0 == PIR1bits.TXIF)
     {
-        __asm("clrwdt");
     }
 
     TX1REG = txData;

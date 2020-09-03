@@ -10901,9 +10901,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 138 "./mcc_generated_files/pin_manager.h"
+# 189 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 150 "./mcc_generated_files/pin_manager.h"
+# 201 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11240,14 +11240,18 @@ _Bool UART_preamFound(void);
 # 15 "./apps/api/bootloader.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
-# 36 "./apps/api/bootloader.h"
+# 40 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
 
 
 
+_Bool EraseRowMem(uint8_t*, uint8_t*);
+
 _Bool ReadFromMem(uint8_t*, uint8_t*);
+
+_Bool WriteToMem(uint8_t*, uint8_t*);
 # 18 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/memory.h" 1
 # 19 "apps/src/../api/../../main.h" 2
@@ -11259,25 +11263,58 @@ _Bool ReadFromMem(uint8_t*, uint8_t*);
 
 
 
+_Bool FLASH_Erase(uint8_t*);
 
 uint16_t FLASH_Read(uint16_t);
+
+_Bool FLASH_Write(uint8_t*);
 # 10 "apps/src/memory.c" 2
+
+_Bool FLASH_Erase(uint8_t *buffer){
+    uint8_t INR_state;
+    INR_state = INTCONbits.GIE;
+
+    INTCONbits.GIE = 0;
+
+
+
+
+    EEADRH = buffer[2];
+    EEADRL = buffer[3];
+
+    EECON1 = 0x94;
+
+
+
+
+
+    EECON2 = 0x55;
+    EECON2 = 0xAA;
+    EECON1bits.WR = 1;
+    __nop();
+    __nop();
+
+    EECON1bits.WREN = 0;
+    INTCONbits.GIE = INR_state;
+
+
+    return 1;
+}
 
 uint16_t FLASH_Read(uint16_t addr){
     uint8_t INR_state;
     INR_state = INTCONbits.GIE;
 
-    if ((uint8_t)((addr & 0xFF00) >> 8) == 0x80){
-        EEADRH = 0x80;
-        EECON1bits.CFGS = 1;
 
+    if ((uint8_t)((addr & 0xFF00) >> 8) == 0x80){
+        EEADRH = 0x00;
+        EECON1bits.CFGS = 1;
     } else {
      EEADRH = (uint8_t)((addr & 0xFF00) >> 8);
         EECON1bits.CFGS = 0;
     }
 
     EEADRL = (uint8_t)(addr & 0x00FF);
-
 
     EECON1bits.EEPGD = 1;
     INTCONbits.GIE = 0;
@@ -11290,4 +11327,86 @@ uint16_t FLASH_Read(uint16_t addr){
 
 
     return ((uint16_t)((EEDATH << 8) | EEDATL));
+}
+
+_Bool FLASH_Write(uint8_t *buffer){
+    uint8_t i, INR_state;
+
+    uint16_t writeAddr;
+    uint8_t uuu[1];
+    INR_state = INTCONbits.GIE;
+
+    INTCONbits.GIE = 0;
+
+
+
+
+    writeAddr = (uint16_t)(((buffer[2] << 8) & 0xFF00) | (buffer[3] & 0x00FF));
+
+        EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8);
+        EEADRL = (uint8_t)(writeAddr & 0x00FF);
+
+    EECON1bits.EEPGD = 1;
+    EECON1bits.WRERR = 0;
+    EECON1bits.WREN = 1;
+
+    if (buffer[2] == 0x80){
+            EECON1bits.CFGS = 1;
+            EEDATH = buffer[4];
+            EEDATL = buffer[5];
+    } else {
+
+
+    EECON1bits.CFGS = 0;
+    EECON1bits.FREE = 1;
+
+    EECON2 = 0x55;
+    EECON2 = 0xAA;
+    EECON1bits.WR = 1;
+    __nop();
+    __nop();
+    _delay((unsigned long)((0x000A)*(16000000/4000.0)));
+
+    if (EECON1bits.FREE){
+            return 0;
+    }
+
+
+    EECON1bits.LWLO = 1;
+        for (i = 0; i < 0x0020 + 0x0020; i += 2){
+        EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8);
+        EEADRL = (uint8_t)(writeAddr & 0x00FF);
+
+            EEDATH = buffer[i+4];
+            EEDATL = buffer[i+5];
+
+                EECON2 = 0x55;
+                EECON2 = 0xAA;
+                EECON1bits.WR = 1;
+                __nop();
+                __nop();
+
+            writeAddr++;
+
+        }
+    EECON1bits.LWLO = 0;
+
+    }
+
+        EECON2 = 0x55;
+        EECON2 = 0xAA;
+        EECON1bits.WR = 1;
+        __nop();
+        __nop();
+    _delay((unsigned long)((0x000A)*(16000000/4000.0)));
+
+    EECON1bits.CFGS = 0;
+    EECON1bits.WREN = 0;
+    INTCONbits.GIE = INR_state;
+    if (EECON1bits.WRERR){
+        return 0;
+    } else {
+        return 1;
+    }
+
 }
