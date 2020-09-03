@@ -3,24 +3,51 @@ Version 4.0 HI-TECH Software Intermediate Code
 "71 ./mcc_generated_files/mcc.h
 [; ;./mcc_generated_files/mcc.h: 71: void SYSTEM_Initialize(void);
 [v _SYSTEM_Initialize `(v ~T0 @X0 0 ef ]
-"36 ./apps/api/bootloader.h
-[; ;./apps/api/bootloader.h: 36: void ClearArray(uint8_t*);
+"40 ./apps/api/bootloader.h
+[; ;./apps/api/bootloader.h: 40: void ClearArray(uint8_t*);
 [v _ClearArray `(v ~T0 @X0 0 ef1`*uc ]
-"26 ./apps/api/serial.h
-[; ;./apps/api/serial.h: 26: uint8_t UART_dataWrite(uint8_t*, uint8_t);
-[v _UART_dataWrite `(uc ~T0 @X0 0 ef2`*uc`uc ]
-"30
+"1562 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 1562: extern volatile unsigned char TRISE __attribute__((address(0x090)));
+[v _TRISE `Vuc ~T0 @X0 0 e@144 ]
+"2785
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2785: extern volatile unsigned char LATE __attribute__((address(0x110)));
+[v _LATE `Vuc ~T0 @X0 0 e@272 ]
+"2791
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2791:     struct {
+[s S143 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S143 . LATE0 LATE1 LATE2 ]
+"2796
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2796:     struct {
+[s S144 :3 `uc 1 ]
+[n S144 . LATE ]
+"2790
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2790: typedef union {
+[u S142 `S143 1 `S144 1 ]
+[n S142 . . . ]
+"2800
+[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2800: extern volatile LATEbits_t LATEbits __attribute__((address(0x110)));
+[v _LATEbits `VS142 ~T0 @X0 0 e@272 ]
+"30 ./apps/api/serial.h
 [; ;./apps/api/serial.h: 30: _Bool UART_preamFound(void);
 [v _UART_preamFound `(a ~T0 @X0 0 ef ]
 "28
 [; ;./apps/api/serial.h: 28: uint8_t UART_byteRead(void);
 [v _UART_byteRead `(uc ~T0 @X0 0 ef ]
-"42 ./apps/api/bootloader.h
-[; ;./apps/api/bootloader.h: 42: _Bool ReadFromMem(uint8_t*, uint8_t*);
+"48 ./apps/api/bootloader.h
+[; ;./apps/api/bootloader.h: 48: _Bool ReadFromMem(uint8_t*, uint8_t*);
 [v _ReadFromMem `(a ~T0 @X0 0 ef2`*uc`*uc ]
-"38
-[; ;./apps/api/bootloader.h: 38: _Bool DefineError(uint8_t*);
+"46
+[; ;./apps/api/bootloader.h: 46: _Bool EraseRowMem(uint8_t*, uint8_t*);
+[v _EraseRowMem `(a ~T0 @X0 0 ef2`*uc`*uc ]
+"50
+[; ;./apps/api/bootloader.h: 50: _Bool WriteToMem(uint8_t*, uint8_t*);
+[v _WriteToMem `(a ~T0 @X0 0 ef2`*uc`*uc ]
+"42
+[; ;./apps/api/bootloader.h: 42: _Bool DefineError(uint8_t*);
 [v _DefineError `(a ~T0 @X0 0 ef1`*uc ]
+"26 ./apps/api/serial.h
+[; ;./apps/api/serial.h: 26: uint8_t UART_dataWrite(uint8_t*, uint8_t);
+[v _UART_dataWrite `(uc ~T0 @X0 0 ef2`*uc`uc ]
 "54 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 54: __asm("INDF0 equ 00h");
 [; <" INDF0 equ 00h ;# ">
@@ -1045,8 +1072,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;main.c: 53:     SYSTEM_Initialize();
 [e ( _SYSTEM_Initialize ..  ]
 "55
-[; ;main.c: 55:     uint8_t recv_frame[66];
-[v _recv_frame `uc ~T0 @X0 -> 66 `i a ]
+[; ;main.c: 55:     uint8_t recv_frame[68];
+[v _recv_frame `uc ~T0 @X0 -> 68 `i a ]
 "56
 [; ;main.c: 56:     uint8_t send_frame[66];
 [v _send_frame `uc ~T0 @X0 -> 66 `i a ]
@@ -1068,133 +1095,180 @@ Version 4.0 HI-TECH Software Intermediate Code
 "62
 [; ;main.c: 62:     ClearArray(send_frame);
 [e ( _ClearArray (1 &U _send_frame ]
-"64
-[; ;main.c: 64:     UART_dataWrite(send_frame, 0x00);
-[e ( _UART_dataWrite (2 , &U _send_frame -> -> 0 `i `uc ]
-"67
-[; ;main.c: 67:     while (1)
-[e :U 763 ]
-"68
-[; ;main.c: 68:     {
+"69
+[; ;main.c: 69:     TRISE = 0x00;
+[e = _TRISE -> -> 0 `i `uc ]
+"70
+[; ;main.c: 70:     LATE = 0x00;
+[e = _LATE -> -> 0 `i `uc ]
+"84
+[; ;main.c: 84:     do { LATEbits.LATE0 = 1; } while(0);
+[e :U 764 ]
 {
-"71
-[; ;main.c: 71: __asm("clrwdt");
-[; <" clrwdt ;# ">
-"73
-[; ;main.c: 73:         if (UART_preamFound())
-[e $ ! != -> ( _UART_preamFound ..  `i -> 0 `i 765  ]
-"74
-[; ;main.c: 74:             {
-{
-"75
-[; ;main.c: 75:             __asm("clrwdt");
-[; <" clrwdt ;# ">
-"76
-[; ;main.c: 76:             recv_frame[0] = UART_byteRead();
-[e = *U + &U _recv_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux ( _UART_byteRead ..  ]
-"77
-[; ;main.c: 77:             if ((recv_frame[0] > 66) || (recv_frame[0] == 0x00 ))
-[e $ ! || > -> *U + &U _recv_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i -> 66 `i == -> *U + &U _recv_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i -> 0 `i 766  ]
-"78
-[; ;main.c: 78:                 {
-{
-"79
-[; ;main.c: 79:                 recv_frame[1] = 0x00;
-[e = *U + &U _recv_frame * -> -> -> 1 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux -> -> 0 `i `uc ]
-"80
-[; ;main.c: 80:                 }
+[e = . . _LATEbits 0 0 -> -> 1 `i `uc ]
 }
-[e $U 767  ]
-"81
-[; ;main.c: 81:             else{
+[e :U 763 ]
+"86
+[; ;main.c: 86:     while (1)
 [e :U 766 ]
+"87
+[; ;main.c: 87:     {
 {
-"82
-[; ;main.c: 82:                 for (i = 1; i < recv_frame[0]; i++)
+"90
+[; ;main.c: 90: __asm("clrwdt");
+[; <" clrwdt ;# ">
+"92
+[; ;main.c: 92:         if (UART_preamFound())
+[e $ ! != -> ( _UART_preamFound ..  `i -> 0 `i 768  ]
+"93
+[; ;main.c: 93:             {
+{
+"94
+[; ;main.c: 94:             do { LATEbits.LATE1 = 1; } while(0);
+[e :U 771 ]
+{
+[e = . . _LATEbits 0 1 -> -> 1 `i `uc ]
+}
+[e :U 770 ]
+"95
+[; ;main.c: 95:             __asm("clrwdt");
+[; <" clrwdt ;# ">
+"97
+[; ;main.c: 97:             recv_frame[0] = UART_byteRead();
+[e = *U + &U _recv_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux ( _UART_byteRead ..  ]
+"98
+[; ;main.c: 98:             if ((recv_frame[0] > 68) || (recv_frame[0] == 0x00 ))
+[e $ ! || > -> *U + &U _recv_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i -> 68 `i == -> *U + &U _recv_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i -> 0 `i 772  ]
+"99
+[; ;main.c: 99:                 {
+{
+"100
+[; ;main.c: 100:                 recv_frame[1] = 0x00;
+[e = *U + &U _recv_frame * -> -> -> 1 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux -> -> 0 `i `uc ]
+"101
+[; ;main.c: 101:                 }
+}
+[e $U 773  ]
+"102
+[; ;main.c: 102:             else{
+[e :U 772 ]
+{
+"103
+[; ;main.c: 103:                 for (i = 1; i < recv_frame[0]; i++)
 {
 [e = _i -> -> 1 `i `uc ]
-[e $U 771  ]
-[e :U 768 ]
-"83
-[; ;main.c: 83:                     {
+[e $U 777  ]
+[e :U 774 ]
+"104
+[; ;main.c: 104:                     {
 {
-"84
-[; ;main.c: 84:                     recv_frame[i] = UART_byteRead();
+"105
+[; ;main.c: 105:                     recv_frame[i] = UART_byteRead();
 [e = *U + &U _recv_frame * -> _i `ux -> -> # *U &U _recv_frame `ui `ux ( _UART_byteRead ..  ]
-"85
-[; ;main.c: 85:                     }
+"106
+[; ;main.c: 106:                     }
 }
 [e ++ _i -> -> 1 `i `uc ]
-[e :U 771 ]
-[e $ < -> _i `i -> *U + &U _recv_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i 768  ]
-[e :U 769 ]
-}
-"87
-[; ;main.c: 87:                 }
-}
-[e :U 767 ]
-"90
-[; ;main.c: 90:             switch (recv_frame[1])
-[e $U 773  ]
-"91
-[; ;main.c: 91:                 {
-{
-"96
-[; ;main.c: 96:                 case 0x02:
-[e :U 774 ]
-"97
-[; ;main.c: 97:                     processing_status = ReadFromMem(recv_frame, send_frame);
-[e = _processing_status ( _ReadFromMem (2 , &U _recv_frame &U _send_frame ]
-"98
-[; ;main.c: 98:                     break;
-[e $U 772  ]
-"100
-[; ;main.c: 100:                 default:
+[e :U 777 ]
+[e $ < -> _i `i -> *U + &U _recv_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i 774  ]
 [e :U 775 ]
-"101
-[; ;main.c: 101:                     processing_status = DefineError(send_frame);
-[e = _processing_status ( _DefineError (1 &U _send_frame ]
-"102
-[; ;main.c: 102:                 }
 }
-[e $U 772  ]
-[e :U 773 ]
-[e [\ -> *U + &U _recv_frame * -> -> -> 1 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i , $ -> 2 `i 774
- 775 ]
-[e :U 772 ]
-"105
-[; ;main.c: 105:             if ((processing_status == 1) && (send_frame[0] != 0x00))
-[e $ ! && == -> _processing_status `i -> 1 `i != -> *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux `i -> 0 `i 776  ]
-"106
-[; ;main.c: 106:                 {
-{
-"107
-[; ;main.c: 107:                 UART_dataWrite(send_frame, send_frame[0]);
-[e ( _UART_dataWrite (2 , &U _send_frame *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux ]
 "108
-[; ;main.c: 108:                 processing_status = 0;
-[e = _processing_status -> -> 0 `i `a ]
-"109
-[; ;main.c: 109:                 }
+[; ;main.c: 108:                 }
 }
-[e :U 776 ]
+[e :U 773 ]
 "111
-[; ;main.c: 111:             ClearArray(recv_frame);
-[e ( _ClearArray (1 &U _recv_frame ]
+[; ;main.c: 111:             switch (recv_frame[1])
+[e $U 779  ]
 "112
-[; ;main.c: 112:             ClearArray(send_frame);
+[; ;main.c: 112:                 {
+{
+"117
+[; ;main.c: 117:                 case 0x02:
+[e :U 780 ]
+"118
+[; ;main.c: 118:                     processing_status = ReadFromMem(recv_frame, send_frame);
+[e = _processing_status ( _ReadFromMem (2 , &U _recv_frame &U _send_frame ]
+"119
+[; ;main.c: 119:                     break;
+[e $U 778  ]
+"121
+[; ;main.c: 121:                 case 0x03:
+[e :U 781 ]
+"122
+[; ;main.c: 122:                     processing_status = EraseRowMem(recv_frame, send_frame);
+[e = _processing_status ( _EraseRowMem (2 , &U _recv_frame &U _send_frame ]
+"123
+[; ;main.c: 123:                     break;
+[e $U 778  ]
+"125
+[; ;main.c: 125:                 case 0x04:
+[e :U 782 ]
+"126
+[; ;main.c: 126:                     processing_status = WriteToMem(recv_frame, send_frame);
+[e = _processing_status ( _WriteToMem (2 , &U _recv_frame &U _send_frame ]
+"127
+[; ;main.c: 127:                     break;
+[e $U 778  ]
+"129
+[; ;main.c: 129:                 default:
+[e :U 783 ]
+"130
+[; ;main.c: 130:                     processing_status = DefineError(send_frame);
+[e = _processing_status ( _DefineError (1 &U _send_frame ]
+"131
+[; ;main.c: 131:                 }
+}
+[e $U 778  ]
+[e :U 779 ]
+[e [\ -> *U + &U _recv_frame * -> -> -> 1 `i `ui `ux -> -> # *U &U _recv_frame `ui `ux `i , $ -> 2 `i 780
+ , $ -> 3 `i 781
+ , $ -> 4 `i 782
+ 783 ]
+[e :U 778 ]
+"134
+[; ;main.c: 134:             if (!((processing_status == 1) && (send_frame[0] != 0x00)))
+[e $ ! ! && == -> _processing_status `i -> 1 `i != -> *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux `i -> 0 `i 784  ]
+"135
+[; ;main.c: 135:                 {
+{
+"136
+[; ;main.c: 136:                 DefineError(send_frame);
+[e ( _DefineError (1 &U _send_frame ]
+"137
+[; ;main.c: 137:                 }
+}
+[e :U 784 ]
+"139
+[; ;main.c: 139:                 UART_dataWrite(send_frame, send_frame[0]);
+[e ( _UART_dataWrite (2 , &U _send_frame *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux ]
+"140
+[; ;main.c: 140:                 processing_status = 0;
+[e = _processing_status -> -> 0 `i `a ]
+"141
+[; ;main.c: 141:             ClearArray(recv_frame);
+[e ( _ClearArray (1 &U _recv_frame ]
+"142
+[; ;main.c: 142:             ClearArray(send_frame);
 [e ( _ClearArray (1 &U _send_frame ]
-"113
-[; ;main.c: 113:             }
+"144
+[; ;main.c: 144:             do { LATEbits.LATE1 = 0; } while(0);
+[e :U 787 ]
+{
+[e = . . _LATEbits 0 1 -> -> 0 `i `uc ]
+}
+[e :U 786 ]
+"146
+[; ;main.c: 146:             }
+}
+[e :U 768 ]
+"147
+[; ;main.c: 147:     }
 }
 [e :U 765 ]
-"114
-[; ;main.c: 114:     }
-}
-[e :U 762 ]
-[e $U 763  ]
-[e :U 764 ]
-"115
-[; ;main.c: 115: }
+[e $U 766  ]
+[e :U 767 ]
+"148
+[; ;main.c: 148: }
 [e :UE 761 ]
 }

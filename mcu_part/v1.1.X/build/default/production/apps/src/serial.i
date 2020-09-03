@@ -10893,9 +10893,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 138 "./mcc_generated_files/pin_manager.h"
+# 189 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 150 "./mcc_generated_files/pin_manager.h"
+# 201 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11223,14 +11223,18 @@ void WDT_Initialize(void);
 # 15 "./apps/api/bootloader.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
-# 36 "./apps/api/bootloader.h"
+# 40 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
 
 
 
+_Bool EraseRowMem(uint8_t*, uint8_t*);
+
 _Bool ReadFromMem(uint8_t*, uint8_t*);
+
+_Bool WriteToMem(uint8_t*, uint8_t*);
 # 18 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/memory.h" 1
 # 15 "./apps/api/memory.h"
@@ -11243,8 +11247,11 @@ _Bool ReadFromMem(uint8_t*, uint8_t*);
 
 
 
+_Bool FLASH_Erase(uint8_t*);
 
 uint16_t FLASH_Read(uint16_t);
+
+_Bool FLASH_Write(uint8_t*);
 # 19 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/serial.h" 2
 # 26 "./apps/api/serial.h"

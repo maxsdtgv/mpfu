@@ -125,6 +125,57 @@
 #define RC7_SetAnalogMode()         do { ANSELCbits.ANSC7 = 1; } while(0)
 #define RC7_SetDigitalMode()        do { ANSELCbits.ANSC7 = 0; } while(0)
 
+// get/set IO_RE0 aliases
+#define IO_RE0_TRIS                 TRISEbits.TRISE0
+#define IO_RE0_LAT                  LATEbits.LATE0
+#define IO_RE0_PORT                 PORTEbits.RE0
+#define IO_RE0_WPU                  WPUEbits.WPUE0
+#define IO_RE0_ANS                  ANSELEbits.ANSE0
+#define IO_RE0_SetHigh()            do { LATEbits.LATE0 = 1; } while(0)
+#define IO_RE0_SetLow()             do { LATEbits.LATE0 = 0; } while(0)
+#define IO_RE0_Toggle()             do { LATEbits.LATE0 = ~LATEbits.LATE0; } while(0)
+#define IO_RE0_GetValue()           PORTEbits.RE0
+#define IO_RE0_SetDigitalInput()    do { TRISEbits.TRISE0 = 1; } while(0)
+#define IO_RE0_SetDigitalOutput()   do { TRISEbits.TRISE0 = 0; } while(0)
+#define IO_RE0_SetPullup()          do { WPUEbits.WPUE0 = 1; } while(0)
+#define IO_RE0_ResetPullup()        do { WPUEbits.WPUE0 = 0; } while(0)
+#define IO_RE0_SetAnalogMode()      do { ANSELEbits.ANSE0 = 1; } while(0)
+#define IO_RE0_SetDigitalMode()     do { ANSELEbits.ANSE0 = 0; } while(0)
+
+// get/set IO_RE1 aliases
+#define IO_RE1_TRIS                 TRISEbits.TRISE1
+#define IO_RE1_LAT                  LATEbits.LATE1
+#define IO_RE1_PORT                 PORTEbits.RE1
+#define IO_RE1_WPU                  WPUEbits.WPUE1
+#define IO_RE1_ANS                  ANSELEbits.ANSE1
+#define IO_RE1_SetHigh()            do { LATEbits.LATE1 = 1; } while(0)
+#define IO_RE1_SetLow()             do { LATEbits.LATE1 = 0; } while(0)
+#define IO_RE1_Toggle()             do { LATEbits.LATE1 = ~LATEbits.LATE1; } while(0)
+#define IO_RE1_GetValue()           PORTEbits.RE1
+#define IO_RE1_SetDigitalInput()    do { TRISEbits.TRISE1 = 1; } while(0)
+#define IO_RE1_SetDigitalOutput()   do { TRISEbits.TRISE1 = 0; } while(0)
+#define IO_RE1_SetPullup()          do { WPUEbits.WPUE1 = 1; } while(0)
+#define IO_RE1_ResetPullup()        do { WPUEbits.WPUE1 = 0; } while(0)
+#define IO_RE1_SetAnalogMode()      do { ANSELEbits.ANSE1 = 1; } while(0)
+#define IO_RE1_SetDigitalMode()     do { ANSELEbits.ANSE1 = 0; } while(0)
+
+// get/set IO_RE2 aliases
+#define IO_RE2_TRIS                 TRISEbits.TRISE2
+#define IO_RE2_LAT                  LATEbits.LATE2
+#define IO_RE2_PORT                 PORTEbits.RE2
+#define IO_RE2_WPU                  WPUEbits.WPUE2
+#define IO_RE2_ANS                  ANSELEbits.ANSE2
+#define IO_RE2_SetHigh()            do { LATEbits.LATE2 = 1; } while(0)
+#define IO_RE2_SetLow()             do { LATEbits.LATE2 = 0; } while(0)
+#define IO_RE2_Toggle()             do { LATEbits.LATE2 = ~LATEbits.LATE2; } while(0)
+#define IO_RE2_GetValue()           PORTEbits.RE2
+#define IO_RE2_SetDigitalInput()    do { TRISEbits.TRISE2 = 1; } while(0)
+#define IO_RE2_SetDigitalOutput()   do { TRISEbits.TRISE2 = 0; } while(0)
+#define IO_RE2_SetPullup()          do { WPUEbits.WPUE2 = 1; } while(0)
+#define IO_RE2_ResetPullup()        do { WPUEbits.WPUE2 = 0; } while(0)
+#define IO_RE2_SetAnalogMode()      do { ANSELEbits.ANSE2 = 1; } while(0)
+#define IO_RE2_SetDigitalMode()     do { ANSELEbits.ANSE2 = 0; } while(0)
+
 /**
    @Param
     none

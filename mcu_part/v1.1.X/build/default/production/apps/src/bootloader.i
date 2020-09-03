@@ -10893,9 +10893,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 138 "./mcc_generated_files/pin_manager.h"
+# 189 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 150 "./mcc_generated_files/pin_manager.h"
+# 201 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11241,21 +11241,26 @@ _Bool UART_preamFound(void);
 
 
 
+_Bool FLASH_Erase(uint8_t*);
 
 uint16_t FLASH_Read(uint16_t);
+
+_Bool FLASH_Write(uint8_t*);
 # 19 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/bootloader.h" 2
-# 36 "./apps/api/bootloader.h"
+# 40 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
 
 
 
+_Bool EraseRowMem(uint8_t*, uint8_t*);
+
 _Bool ReadFromMem(uint8_t*, uint8_t*);
+
+_Bool WriteToMem(uint8_t*, uint8_t*);
 # 2 "apps/src/bootloader.c" 2
-
-
 
 void ClearArray(uint8_t *array){
  uint8_t i = 0;
@@ -11267,7 +11272,20 @@ _Bool DefineError(uint8_t *send_frame){
  send_frame[1] = 0xFF;
  return 1;
 }
-# 26 "apps/src/bootloader.c"
+# 24 "apps/src/bootloader.c"
+_Bool EraseRowMem(uint8_t *recv_frame, uint8_t *send_frame){
+
+
+
+
+ FLASH_Erase(recv_frame);
+
+ send_frame[0] = 0x02;
+ send_frame[1] = 0x03;
+ return 1;
+}
+
+
 _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
  uint8_t i = 0;
  uint16_t dbyte = 0;
@@ -11283,7 +11301,7 @@ _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 
  } else {
 
-  for (i = 0; i < 32 +32; i=i+2){
+  for (i = 0; i < 0x0020 +0x0020; i += 2){
    dbyte = FLASH_Read(def_addr);
    send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
    send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
@@ -11296,4 +11314,15 @@ _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
  send_frame[1] = 0x02;
 
  return 1;
+}
+
+_Bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
+ _Bool result;
+
+ result = FLASH_Write(recv_frame);
+ if (result) {
+ send_frame[0] = 0x02;
+ send_frame[1] = 0x04;
+ }
+ return result;
 }

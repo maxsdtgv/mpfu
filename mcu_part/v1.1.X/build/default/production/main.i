@@ -10892,9 +10892,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 138 "./mcc_generated_files/pin_manager.h"
+# 189 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 150 "./mcc_generated_files/pin_manager.h"
+# 201 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11231,14 +11231,18 @@ _Bool UART_preamFound(void);
 # 15 "./apps/api/bootloader.h"
 # 1 "./apps/api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
-# 36 "./apps/api/bootloader.h"
+# 40 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
 
 
 
+_Bool EraseRowMem(uint8_t*, uint8_t*);
+
 _Bool ReadFromMem(uint8_t*, uint8_t*);
+
+_Bool WriteToMem(uint8_t*, uint8_t*);
 # 18 "./apps/api/../../main.h" 2
 # 1 "./apps/api/memory.h" 1
 # 15 "./apps/api/memory.h"
@@ -11251,8 +11255,11 @@ _Bool ReadFromMem(uint8_t*, uint8_t*);
 
 
 
+_Bool FLASH_Erase(uint8_t*);
 
 uint16_t FLASH_Read(uint16_t);
+
+_Bool FLASH_Write(uint8_t*);
 # 19 "./apps/api/../../main.h" 2
 # 44 "main.c" 2
 
@@ -11266,7 +11273,7 @@ void main(void)
 
     SYSTEM_Initialize();
 
-    uint8_t recv_frame[66];
+    uint8_t recv_frame[68];
     uint8_t send_frame[66];
     uint8_t i = 0;
     uint8_t byte = 0;
@@ -11275,8 +11282,15 @@ void main(void)
     ClearArray(recv_frame);
     ClearArray(send_frame);
 
-    UART_dataWrite(send_frame, 0x00);
 
+
+
+
+
+    TRISE = 0x00;
+    LATE = 0x00;
+# 84 "main.c"
+    do { LATEbits.LATE0 = 1; } while(0);
 
     while (1)
     {
@@ -11286,9 +11300,11 @@ __asm("clrwdt");
 
         if (UART_preamFound())
             {
+            do { LATEbits.LATE1 = 1; } while(0);
             __asm("clrwdt");
+
             recv_frame[0] = UART_byteRead();
-            if ((recv_frame[0] > 66) || (recv_frame[0] == 0x00 ))
+            if ((recv_frame[0] > 68) || (recv_frame[0] == 0x00 ))
                 {
                 recv_frame[1] = 0x00;
                 }
@@ -11311,19 +11327,31 @@ __asm("clrwdt");
                     processing_status = ReadFromMem(recv_frame, send_frame);
                     break;
 
+                case 0x03:
+                    processing_status = EraseRowMem(recv_frame, send_frame);
+                    break;
+
+                case 0x04:
+                    processing_status = WriteToMem(recv_frame, send_frame);
+                    break;
+
                 default:
                     processing_status = DefineError(send_frame);
                 }
 
 
-            if ((processing_status == 1) && (send_frame[0] != 0x00))
+            if (!((processing_status == 1) && (send_frame[0] != 0x00)))
                 {
-                UART_dataWrite(send_frame, send_frame[0]);
-                processing_status = 0;
+                DefineError(send_frame);
                 }
 
+                UART_dataWrite(send_frame, send_frame[0]);
+                processing_status = 0;
             ClearArray(recv_frame);
             ClearArray(send_frame);
+
+            do { LATEbits.LATE1 = 0; } while(0);
+
             }
     }
 }
