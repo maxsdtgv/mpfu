@@ -11247,7 +11247,7 @@ _Bool DefineError(uint8_t*);
 
 
 
-_Bool EraseRowMem(uint8_t*, uint8_t*);
+
 
 _Bool ReadFromMem(uint8_t*, uint8_t*);
 
@@ -11256,51 +11256,12 @@ _Bool WriteToMem(uint8_t*, uint8_t*);
 # 1 "./apps/api/memory.h" 1
 # 19 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/memory.h" 2
-
-
-
-
-
-
-
-_Bool FLASH_Erase(uint8_t*);
-
+# 25 "./apps/api/memory.h"
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
 # 10 "apps/src/memory.c" 2
-
-_Bool FLASH_Erase(uint8_t *buffer){
-    uint8_t INR_state;
-    INR_state = INTCONbits.GIE;
-
-    INTCONbits.GIE = 0;
-
-
-
-
-    EEADRH = buffer[2];
-    EEADRL = buffer[3];
-
-    EECON1 = 0x94;
-
-
-
-
-
-    EECON2 = 0x55;
-    EECON2 = 0xAA;
-    EECON1bits.WR = 1;
-    __nop();
-    __nop();
-
-    EECON1bits.WREN = 0;
-    INTCONbits.GIE = INR_state;
-
-
-    return 1;
-}
-
+# 42 "apps/src/memory.c"
 uint16_t FLASH_Read(uint16_t addr){
     uint8_t INR_state;
     INR_state = INTCONbits.GIE;

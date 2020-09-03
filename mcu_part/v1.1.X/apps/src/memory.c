@@ -8,36 +8,36 @@
 
 #include "../api/memory.h"
 
-bool FLASH_Erase(uint8_t *buffer){    // According to flow described in p.122 Microchip datasheet
-    uint8_t INR_state;
-    INR_state = INTCONbits.GIE;
-
-    INTCONbits.GIE = 0; // Disable interrupts
-
-    //EEADRH = (uint8_t)((addr & 0xFF00) >> 8);
-    //EEADRL = (uint8_t)(addr & 0x00FF);
-
-    EEADRH = buffer[2];
-    EEADRL = buffer[3];
-
-    EECON1 = 0x94;
-    //EECON1bits.EEPGD = 1; // Select Program Memory
-    //EECON1bits.CFGS = 0; // Do not select Configuration Space
-    //EECON1bits.FREE = 1; // Specify an erase operation
-    //EECON1bits.WREN = 1; // Enable writes
- 
-    EECON2 = 0x55;      // Start of required sequence to initiate erase
-    EECON2 = 0xAA;
-    EECON1bits.WR = 1;  // Set WR bit to begin erase
-    NOP();
-    NOP();
-    
-    EECON1bits.WREN = 0;    // Disable writes
-    INTCONbits.GIE = INR_state; // Restore interrupts
-    
-
-    return true;
-}
+//bool FLASH_Erase(uint8_t *buffer){    // According to flow described in p.122 Microchip datasheet
+//    uint8_t INR_state;
+//    INR_state = INTCONbits.GIE;
+//
+//    INTCONbits.GIE = 0; // Disable interrupts
+//
+//    //EEADRH = (uint8_t)((addr & 0xFF00) >> 8);
+//    //EEADRL = (uint8_t)(addr & 0x00FF);
+//
+//    EEADRH = buffer[2];
+//    EEADRL = buffer[3];
+//
+//    EECON1 = 0x94;
+//    //EECON1bits.EEPGD = 1; // Select Program Memory
+//    //EECON1bits.CFGS = 0; // Do not select Configuration Space
+//    //EECON1bits.FREE = 1; // Specify an erase operation
+//    //EECON1bits.WREN = 1; // Enable writes
+// 
+//    EECON2 = 0x55;      // Start of required sequence to initiate erase
+//    EECON2 = 0xAA;
+//    EECON1bits.WR = 1;  // Set WR bit to begin erase
+//    NOP();
+//    NOP();
+//    
+//    EECON1bits.WREN = 0;    // Disable writes
+//    INTCONbits.GIE = INR_state; // Restore interrupts
+//    
+//
+//    return true;
+//}
 
 uint16_t FLASH_Read(uint16_t addr){
     uint8_t INR_state;

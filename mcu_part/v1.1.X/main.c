@@ -118,9 +118,9 @@ CLRWDT();                                   // Clear WDT;
                     processing_status = ReadFromMem(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
-                case ERASE_ROW_MEM:              // 0x03 - Erase row mem.
-                    processing_status = EraseRowMem(recv_frame, send_frame); // Send_frame will be filled after execution
-                    break;
+                //case ERASE_ROW_MEM:              // 0x03 - Erase row mem.
+                //    processing_status = EraseRowMem(recv_frame, send_frame); // Send_frame will be filled after execution
+                //    break;
 
                 case WRITE_TO_MEM:              // 0x04 - Write to mem.
                     processing_status = WriteToMem(recv_frame, send_frame); // Send_frame will be filled after execution

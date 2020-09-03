@@ -20,7 +20,7 @@ extern "C" {
 #define MAX_MEM_COUNT 	0x4000
 #define DELAY_WRITE_FLASH 0x000A   // means 10 ms
 
-bool FLASH_Erase(uint8_t*);
+//bool FLASH_Erase(uint8_t*);
 
 uint16_t FLASH_Read(uint16_t);
 

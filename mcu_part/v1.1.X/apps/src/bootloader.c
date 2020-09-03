@@ -21,17 +21,17 @@ bool DefineError(uint8_t *send_frame){
 //	return true;
 //}
 
-bool EraseRowMem(uint8_t *recv_frame, uint8_t *send_frame){
-	//uint16_t def_addr = 0;
-	//def_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
-	//FLASH_Erase(def_addr);
-
-	FLASH_Erase(recv_frame);
-
-	send_frame[0] = 0x02;	// Length of array
-	send_frame[1] = ERASE_ROW_MEM;	
-	return true;
-}
+//bool EraseRowMem(uint8_t *recv_frame, uint8_t *send_frame){
+//	//uint16_t def_addr = 0;
+//	//def_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
+//	//FLASH_Erase(def_addr);
+//
+//	FLASH_Erase(recv_frame);
+//
+//	send_frame[0] = 0x02;	// Length of array
+//	send_frame[1] = ERASE_ROW_MEM;	
+//	return true;
+//}
 
 
 bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){

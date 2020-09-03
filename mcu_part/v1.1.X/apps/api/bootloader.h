@@ -28,7 +28,7 @@ extern "C" {
 //#define PING_REQUEST		0x01
 
 #define READ_FROM_MEM		0x02
-#define ERASE_ROW_MEM		0x03
+//#define ERASE_ROW_MEM		0x03
 #define WRITE_TO_MEM		0x04
 
 
@@ -43,7 +43,7 @@ bool DefineError(uint8_t*);
 
 //bool PingRequest(uint8_t*, uint8_t*);
 
-bool EraseRowMem(uint8_t*, uint8_t*);
+//bool EraseRowMem(uint8_t*, uint8_t*);
 
 bool ReadFromMem(uint8_t*, uint8_t*);
 
