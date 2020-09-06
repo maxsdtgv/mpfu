@@ -8,7 +8,7 @@ uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size){
 
     if (EUSART_is_tx_ready()){
         EUSART_Write(PREAM_SEND_TO_HOST);
-        for (i = 0; i < size; i++){
+        for (i = 0; i != size; i++){
             EUSART_Write(data_ptr[i]);
         }   
 //        EUSART_Write(LINE_FEED);

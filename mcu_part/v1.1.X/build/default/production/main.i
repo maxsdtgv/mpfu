@@ -10892,9 +10892,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 189 "./mcc_generated_files/pin_manager.h"
+# 206 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 201 "./mcc_generated_files/pin_manager.h"
+# 218 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11231,7 +11231,7 @@ _Bool UART_preamFound(void);
 # 15 "./apps/api/bootloader.h"
 # 1 "./apps/api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
-# 40 "./apps/api/bootloader.h"
+# 43 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
@@ -11253,6 +11253,14 @@ uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
 # 19 "./apps/api/../../main.h" 2
+# 1 "./apps/api/eeprom_25lc512.h" 1
+# 15 "./apps/api/eeprom_25lc512.h"
+# 1 "./apps/api/../../main.h" 1
+# 16 "./apps/api/eeprom_25lc512.h" 2
+# 31 "./apps/api/eeprom_25lc512.h"
+_Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
+_Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
+# 20 "./apps/api/../../main.h" 2
 # 44 "main.c" 2
 
 
@@ -11275,13 +11283,12 @@ void main(void)
     ClearArray(send_frame);
 
 
-
-
-
-
     TRISE = 0x00;
+    TRISA = 0x00;
+
     LATE = 0x00;
-# 84 "main.c"
+    LATA = 0xFF;
+# 83 "main.c"
     do { LATEbits.LATE0 = 1; } while(0);
 
     while (1)
@@ -11301,7 +11308,7 @@ __asm("clrwdt");
                 recv_frame[1] = 0x00;
                 }
             else{
-                for (i = 1; i < recv_frame[0]; i++)
+                for (i = 1; i != recv_frame[0]; i++)
                     {
                     recv_frame[i] = UART_byteRead();
                     }
@@ -11325,6 +11332,15 @@ __asm("clrwdt");
 
                 case 0x04:
                     processing_status = WriteToMem(recv_frame, send_frame);
+                    break;
+
+
+                case 0x12:
+                    processing_status = ReadFromSerialEEPROM(recv_frame, send_frame);
+                    break;
+
+                case 0x14:
+                    processing_status = WriteToSerialEEPROM(recv_frame, send_frame);
                     break;
 
                 default:

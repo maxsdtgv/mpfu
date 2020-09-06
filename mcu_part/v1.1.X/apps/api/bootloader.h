@@ -20,16 +20,19 @@ extern "C" {
 #define BL_MAX_SEND_DATA	66
 
 //=============    SUPPORTED COMMANDS ================
-#define MAJOR_VERSION		0x01
-#define MINOR_VERSION		0x01
+//#define MAJOR_VERSION		0x01
+//#define MINOR_VERSION		0x01
 //=============    SUPPORTED COMMANDS ================
 #define ERROR_CODE			0xFF
-#define SUCCESS_CODE		0xEE
+//#define SUCCESS_CODE		0xEE
 //#define PING_REQUEST		0x01
 
 #define READ_FROM_MEM		0x02
 //#define ERASE_ROW_MEM		0x03
 #define WRITE_TO_MEM		0x04
+
+#define READ_FROM_SERIAL_EEPROM		0x12
+#define WRITE_TO_SERIAL_EEPROM		0x14
 
 
 #define START_APPLICATION	0x0F

@@ -61,13 +61,12 @@ void main(void)
     ClearArray(recv_frame);
     ClearArray(send_frame);
 
-
-
-    
     //TRISx registers
-
     TRISE = 0x00;
+    TRISA = 0x00;
+
     LATE = 0x00;
+    LATA = 0xFF;
 
 /**
     send_frame[0] = 0x02;           // Number of bytes to send in response
@@ -100,7 +99,7 @@ CLRWDT();                                   // Clear WDT;
                 recv_frame[1] = 0x00;               // Define 0x00 to choose default in switch case
                 }
             else{
-                for (i = 1; i < recv_frame[0]; i++)
+                for (i = 1; i != recv_frame[0]; i++)
                     {    // Receive array with data
                     recv_frame[i] = UART_byteRead();
                     }
@@ -108,22 +107,31 @@ CLRWDT();                                   // Clear WDT;
                 }
         // Exec switch to handle requestf from host
             
-            switch (recv_frame[1])             // Analize first byte of the received array
+            switch (recv_frame[1])              // Analize first byte of the received array
                 {
-//                case PING_REQUEST:              // 0x01 - Ping request.
+//                case PING_REQUEST:            // 0x01 - Ping request.
 //                    processing_status = pingRequest(recv_frame, send_frame); // Send_frame will be filled after execution
 //                    break;
                 
-                case READ_FROM_MEM:              // 0x02 - Read from mem with any address requested.
+                case READ_FROM_MEM:             // 0x02 - Read from mem with any address requested.
                     processing_status = ReadFromMem(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
-                //case ERASE_ROW_MEM:              // 0x03 - Erase row mem.
+                //case ERASE_ROW_MEM:           // 0x03 - Erase row mem.
                 //    processing_status = EraseRowMem(recv_frame, send_frame); // Send_frame will be filled after execution
                 //    break;
 
                 case WRITE_TO_MEM:              // 0x04 - Write to mem.
                     processing_status = WriteToMem(recv_frame, send_frame); // Send_frame will be filled after execution
+                    break;
+
+
+                case READ_FROM_SERIAL_EEPROM:   // 0x12 - Read from external serial eeprom
+                    processing_status = ReadFromSerialEEPROM(recv_frame, send_frame); // Send_frame will be filled after execution
+                    break;
+
+                case WRITE_TO_SERIAL_EEPROM:   // 0x14 - Read from external serial eeprom
+                    processing_status = WriteToSerialEEPROM(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
                 default:

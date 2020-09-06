@@ -9,4 +9,5 @@ mcc_generated_files/spi.h  \
 mcc_generated_files/eusart.h  \
 apps/api/serial.h  \
 apps/api/bootloader.h  \
-apps/api/memory.h 
+apps/api/memory.h  \
+apps/api/eeprom_25lc512.h 

@@ -2,7 +2,7 @@
 
 void ClearArray(uint8_t *array){
 	uint8_t i = 0;
-    for (i = 0; i < BL_MAX_SEND_DATA; i++){array[i]=0x00;} // Clear array to send
+    for (i = 0; i != BL_MAX_SEND_DATA; i++){array[i]=0x00;} // Clear array to send
 }
 
 bool DefineError(uint8_t *send_frame){
@@ -49,18 +49,16 @@ bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 	
 	} else {
 
-		for (i = 0; i < MAX_BLOCK_SIZE+MAX_BLOCK_SIZE; i += 2){
+		for (i = 0; i != MAX_BLOCK_SIZE + MAX_BLOCK_SIZE; i += 2){
 			dbyte = FLASH_Read(def_addr);	
 			send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
 			send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
 			def_addr++;
 		}
-
 	}
 
 	send_frame[0] = i + 2;	// Length of array
 	send_frame[1] = READ_FROM_MEM;	
-	
 	return true;
 }
 
