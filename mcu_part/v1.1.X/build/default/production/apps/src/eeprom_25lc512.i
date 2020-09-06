@@ -1,4 +1,4 @@
-# 1 "apps/src/memory.c"
+# 1 "apps/src/eeprom_25lc512.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,17 +6,9 @@
 # 1 "<built-in>" 2
 # 1 "/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "apps/src/memory.c" 2
-
-
-
-
-
-
-
-
-# 1 "apps/src/../api/memory.h" 1
-# 15 "apps/src/../api/memory.h"
+# 1 "apps/src/eeprom_25lc512.c" 2
+# 1 "apps/src/../api/eeprom_25lc512.h" 1
+# 15 "apps/src/../api/eeprom_25lc512.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 15 "apps/src/../api/../../main.h"
 # 1 "./mcc_generated_files/mcc.h" 1
@@ -11254,111 +11246,95 @@ _Bool ReadFromMem(uint8_t*, uint8_t*);
 _Bool WriteToMem(uint8_t*, uint8_t*);
 # 18 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/memory.h" 1
-# 19 "apps/src/../api/../../main.h" 2
-# 1 "./apps/api/eeprom_25lc512.h" 1
-# 15 "./apps/api/eeprom_25lc512.h"
+# 15 "./apps/api/memory.h"
 # 1 "apps/src/../api/../../main.h" 1
-# 16 "./apps/api/eeprom_25lc512.h" 2
-# 31 "./apps/api/eeprom_25lc512.h"
-_Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
-_Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
-# 20 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/memory.h" 2
 # 25 "./apps/api/memory.h"
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
-# 10 "apps/src/memory.c" 2
-# 41 "apps/src/memory.c"
-void UnlockFlashWrite(){
-    EECON2 = 0x55;
-    EECON2 = 0xAA;
-    EECON1bits.WR = 1;
-    __nop();
-    __nop();
+# 19 "apps/src/../api/../../main.h" 2
+# 1 "./apps/api/eeprom_25lc512.h" 1
+# 20 "apps/src/../api/../../main.h" 2
+# 16 "./apps/api/eeprom_25lc512.h" 2
+# 31 "./apps/api/eeprom_25lc512.h"
+_Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
+_Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
+# 2 "apps/src/eeprom_25lc512.c" 2
+
+
+_Bool ReadFromSerialEEPROM(uint8_t *recv_frame, uint8_t *send_frame){
+ uint8_t i = 0;
+    uint8_t buffer[0x40];
+    spi_modes_t SPI1;
+
+    SPI_Open(SPI1);
+
+    buffer[0] = 0x03;
+    buffer[1] = recv_frame[2];
+    buffer[2] = recv_frame[3];
+
+    do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
+    SPI_WriteBlock(buffer, 0x03);
+    SPI_ReadBlock(buffer, 0x40);
+ do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
+ SPI_Close();
+
+ send_frame[0] = 0x40 + 2;
+ send_frame[1] = 0x12;
+ for (i = 0; i != 0x40; i++){
+  send_frame[i+2] = buffer[i];
+  }
+
+ return 1;
 }
 
-uint16_t FLASH_Read(uint16_t addr){
-    uint8_t INR_state = INTCONbits.GIE;
-    INTCONbits.GIE = 0;
+_Bool WriteToSerialEEPROM(uint8_t *recv_frame, uint8_t *send_frame){
+ uint8_t i = 0;
+ uint8_t buffer[0x43];
+    spi_modes_t SPI1;
 
-        EEADRH = (uint8_t)((addr & 0xFF00)>>8);
-        EEADRL = (uint8_t)(addr & 0x00FF);
+    SPI_Open(SPI1);
 
-    if ((uint8_t)((addr & 0xFF00) >> 8) == 0x80){
-        EECON1bits.CFGS = 1;
-    } else {
-        EECON1bits.CFGS = 0;
-    }
+    buffer[0] = 0x06;
+    do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
+    SPI_WriteBlock(buffer, 0x01);
+      do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
+    _delay((unsigned long)((0x0A)*(16000000/4000.0)));
 
-    EECON1bits.EEPGD = 1;
+    buffer[0] = 0x42;
+    buffer[1] = recv_frame[2];
+    buffer[2] = recv_frame[3];
+    do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
+    SPI_WriteBlock(buffer, 0x03);
+      do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
+    _delay((unsigned long)((0x0A)*(16000000/4000.0)));
 
-    EECON1bits.RD = 1;
-    __nop();
-    __nop();
+    buffer[0] = 0x06;
+    do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
+    SPI_WriteBlock(buffer, 0x01);
+      do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
+    _delay((unsigned long)((0x0A)*(16000000/4000.0)));
 
-    INTCONbits.GIE = INR_state;
-    return ((uint16_t)((EEDATH << 8) | EEDATL));
-}
-
-_Bool FLASH_Write(uint8_t *buffer){
-    uint8_t i, INR_state = INTCONbits.GIE;
-    uint16_t writeAddr;
-
-    INTCONbits.GIE = 0;
-
-    writeAddr = (uint16_t)(((buffer[2] << 8) & 0xFF00) | (buffer[3] & 0x00FF));
-        EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8);
-        EEADRL = (uint8_t)(writeAddr & 0x00FF);
-
-    EECON1bits.EEPGD = 1;
-    EECON1bits.WRERR = 0;
-    EECON1bits.WREN = 1;
-
-    if (buffer[2] == 0x80){
-            EECON1bits.CFGS = 1;
-            EEDATH = buffer[4];
-            EEDATL = buffer[5];
-    } else {
+    buffer[0] = 0x02;
+    buffer[1] = recv_frame[2];
+    buffer[2] = recv_frame[3];
+ for (i = 3; i != 0x43; i++){
+  buffer[i] = recv_frame[i+1];
+  }
+    do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
+    SPI_WriteBlock(buffer, 0x43);
+ do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
+    _delay((unsigned long)((0x0A)*(16000000/4000.0)));
 
 
-    EECON1bits.CFGS = 0;
-    EECON1bits.FREE = 1;
-
-    UnlockFlashWrite();
-    _delay((unsigned long)((0x000A)*(16000000/4000.0)));
-
-    if (EECON1bits.FREE){
-            return 0;
-    }
-
-    EECON1bits.LWLO = 1;
-        for (i = 0; i != 0x0020 + 0x0020; i += 2){
-        EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8);
-        EEADRL = (uint8_t)(writeAddr & 0x00FF);
-
-            EEDATH = buffer[i+4];
-            EEDATL = buffer[i+5];
-
-            UnlockFlashWrite();
-
-            writeAddr++;
-
-        }
-    EECON1bits.LWLO = 0;
-
-    }
-
-    UnlockFlashWrite();
-    _delay((unsigned long)((0x000A)*(16000000/4000.0)));
 
 
-    EECON1bits.WREN = 0;
-    INTCONbits.GIE = INR_state;
-    if (EECON1bits.WRERR){
-        return 0;
-    } else {
-        return 1;
-    }
 
+
+
+ SPI_Close();
+ send_frame[0] = 0x02;
+ send_frame[1] = 0x14;
+ return 1;
 }

@@ -16,6 +16,7 @@ extern "C" {
 #include "apps/api/serial.h"
 #include "apps/api/bootloader.h"
 #include "apps/api/memory.h"
+#include "apps/api/eeprom_25lc512.h"
 
 #ifdef	__cplusplus
 }

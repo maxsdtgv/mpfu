@@ -10893,9 +10893,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 189 "./mcc_generated_files/pin_manager.h"
+# 206 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 201 "./mcc_generated_files/pin_manager.h"
+# 218 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11223,7 +11223,7 @@ void WDT_Initialize(void);
 # 15 "./apps/api/bootloader.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
-# 40 "./apps/api/bootloader.h"
+# 43 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
@@ -11245,6 +11245,14 @@ uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
 # 19 "apps/src/../api/../../main.h" 2
+# 1 "./apps/api/eeprom_25lc512.h" 1
+# 15 "./apps/api/eeprom_25lc512.h"
+# 1 "apps/src/../api/../../main.h" 1
+# 16 "./apps/api/eeprom_25lc512.h" 2
+# 31 "./apps/api/eeprom_25lc512.h"
+_Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
+_Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
+# 20 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/serial.h" 2
 # 26 "./apps/api/serial.h"
 uint8_t UART_dataWrite(uint8_t*, uint8_t);
@@ -11262,7 +11270,7 @@ uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size){
 
     if (EUSART_is_tx_ready()){
         EUSART_Write(0xAA);
-        for (i = 0; i < size; i++){
+        for (i = 0; i != size; i++){
             EUSART_Write(data_ptr[i]);
         }
 

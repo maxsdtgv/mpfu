@@ -5,9 +5,9 @@ Linker command line:
 -W-3 --edf=/opt/microchip/xc8/v2.20/pic/dat/en_msgs.txt -cn \
   -h+dist/default/production/v1.1.X.production.sym \
   --cmf=dist/default/production/v1.1.X.production.cmf -z -Q16F1789 \
-  -o/tmp/xcXNmpLDm --defsym=__MPLAB_BUILD=1 \
+  -o/tmp/xcXIdBdkM --defsym=__MPLAB_BUILD=1 \
   -Mdist/default/production/v1.1.X.production.map -E1 -ver=XC8 Compiler \
-  --acfsm=1493 -ASTACK=02098h-027EFh -pstack=STACK -ACODE=00h-07FFhx8 \
+  --acfsm=1493 -ASTACK=020E4h-027EFh -pstack=STACK -ACODE=00h-07FFhx8 \
   -ASTRCODE=00h-03FFFh -ASTRING=00h-0FFhx64 -ACONST=00h-0FFhx64 \
   -AENTRY=00h-0FFhx64 -ACOMMON=070h-07Fh -ABANK0=020h-06Fh \
   -ABANK1=0A0h-0EFh -ABANK2=0120h-016Fh -ABANK3=01A0h-01EFh \
@@ -35,7 +35,7 @@ Linker command line:
   -AIDLOC=08000h-08003h -DIDLOC=2 -preset_vec=00h,intentry,init,end_init \
   -ppowerup=CODE -pcinit=CODE -pfunctab=ENTRY -AEEDATA=00h-0FFh/0F000h \
   -peeprom_data=EEDATA -DEEDATA=2 -DCODE=2 -DSTRCODE=2 -DSTRING=2 -DCONST=2 \
-  -DENTRY=2 -k /tmp/xcXBmpJdP.o dist/default/production/v1.1.X.production.o 
+  -DENTRY=2 -k /tmp/xcXEpIadn.o dist/default/production/v1.1.X.production.o 
 
 Object code version is 3.11
 
@@ -44,43 +44,52 @@ Machine type is 16F1789
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-/tmp/xcXBmpJdP.o
+/tmp/xcXEpIadn.o
                 end_init                              2        2        2        0       0
                 reset_vec                             0        0        2        0       0
                 config                             8007     8007        2        0       4
 dist/default/production/v1.1.X.production.o
                 cinit                               7FB      7FB        5      FF6       0
                 config                             8007     8007        2        0       4
-                text23                              518      518       15      A30       0
-                text22                              507      507       11      A0E       0
-                text21                              587      587       2B      B0E       0
-                text20                              61F      61F       93      C3E       0
-                text19                              4A9      4A9        6      952       0
-                text18                              4AF      4AF        6      95E       0
-                text17                              4B5      4B5        6      96A       0
-                text16                              564      564       23      AC8       0
-                text15                              4BB      4BB        8      976       0
-                text14                              5E2      5E2       3D      BC4       0
-                text13                              4CD      4CD        C      99A       0
-                text12                              498      498        4      930       0
-                text11                              4F7      4F7       10      9EE       0
-                text10                              4D9      4D9        F      9B2       0
-                text9                               49C      49C        4      938       0
-                text8                               4C3      4C3        A      986       0
-                text7                               4A0      4A0        4      940       0
-                text6                               4E8      4E8        F      9D0       0
-                text5                               5B2      5B2       30      B64       0
-                text4                               4A4      4A4        5      948       0
-                text3                               52D      52D       18      A5A       0
-                text2                               6B2      6B2       A3      D64       0
-                text1                               545      545       1F      A8A       0
-                maintext                            755      755       A6      EAA       0
-                cstackBANK0                          20       20       4D       20       1
+                text31                              34B      34B       17      696       0
+                text30                              33A      33A       11      674       0
+                text29                              3FB      3FB       29      7F6       0
+                text28                              53A      53A       96      A74       0
+                text27                              2B2      2B2        3      564       0
+                text26                              490      490       4F      920       0
+                text25                              2FF      2FF        D      5FE       0
+                text24                              3B7      3B7       21      76E       0
+                text23                              37A      37A       1E      6F4       0
+                text22                              4DF      4DF       5B      9BE       0
+                text21                              2C6      2C6        6      58C       0
+                text20                              2CC      2CC        6      598       0
+                text19                              2D2      2D2        6      5A4       0
+                text18                              3D8      3D8       23      7B0       0
+                text17                              2D8      2D8        8      5B0       0
+                text16                              454      454       3C      8A8       0
+                text15                              2F3      2F3        C      5E6       0
+                text14                              2B5      2B5        4      56A       0
+                text13                              32A      32A       10      654       0
+                text12                              30C      30C        F      618       0
+                text11                              2B9      2B9        4      572       0
+                text10                              2E9      2E9        A      5D2       0
+                text9                               2BD      2BD        4      57A       0
+                text8                               31B      31B        F      636       0
+                text7                               424      424       30      848       0
+                text6                               2C1      2C1        5      582       0
+                text5                               362      362       18      6C4       0
+                text4                               2E0      2E0        9      5C0       0
+                text3                               5D0      5D0       A1      BA0       0
+                text2                               398      398       1F      730       0
+                text1                               671      671       B2      CE2       0
+                maintext                            723      723       D8      E46       0
+                cstackBANK0                          20       20       4B       20       1
                 cstackCOMMON                         70       70        E       70       1
-                cstackBANK1                          A0       A0       44       A0       1
+                cstackBANK1                          A0       A0       42       A0       1
+                cstackBANK2                         120      120       44      120       1
                 bssBANK0                             6F       6F        1       20       1
-                nvBANK1                              E4       E4        4       A0       1
-                nvBANK0                              6D       6D        2       20       1
+                nvBANK1                              E2       E2        2       A0       1
+                nvBANK0                              6B       6B        4       20       1
                 stringtext1                         800      800        4     1000       0
 
 TOTAL           Name                               Link     Load   Length     Space
@@ -90,30 +99,38 @@ TOTAL           Name                               Link     Load   Length     Sp
                 end_init                              2        2        2         0
                 cinit                               7FB      7FB        5         0
                 reset_vec                             0        0        2         0
-                text23                              518      518       15         0
-                text22                              507      507       11         0
-                text21                              587      587       2B         0
-                text20                              61F      61F       93         0
-                text19                              4A9      4A9        6         0
-                text18                              4AF      4AF        6         0
-                text17                              4B5      4B5        6         0
-                text16                              564      564       23         0
-                text15                              4BB      4BB        8         0
-                text14                              5E2      5E2       3D         0
-                text13                              4CD      4CD        C         0
-                text12                              498      498        4         0
-                text11                              4F7      4F7       10         0
-                text10                              4D9      4D9        F         0
-                text9                               49C      49C        4         0
-                text8                               4C3      4C3        A         0
-                text7                               4A0      4A0        4         0
-                text6                               4E8      4E8        F         0
-                text5                               5B2      5B2       30         0
-                text4                               4A4      4A4        5         0
-                text3                               52D      52D       18         0
-                text2                               6B2      6B2       A3         0
-                text1                               545      545       1F         0
-                maintext                            755      755       A6         0
+                text31                              34B      34B       17         0
+                text30                              33A      33A       11         0
+                text29                              3FB      3FB       29         0
+                text28                              53A      53A       96         0
+                text27                              2B2      2B2        3         0
+                text26                              490      490       4F         0
+                text25                              2FF      2FF        D         0
+                text24                              3B7      3B7       21         0
+                text23                              37A      37A       1E         0
+                text22                              4DF      4DF       5B         0
+                text21                              2C6      2C6        6         0
+                text20                              2CC      2CC        6         0
+                text19                              2D2      2D2        6         0
+                text18                              3D8      3D8       23         0
+                text17                              2D8      2D8        8         0
+                text16                              454      454       3C         0
+                text15                              2F3      2F3        C         0
+                text14                              2B5      2B5        4         0
+                text13                              32A      32A       10         0
+                text12                              30C      30C        F         0
+                text11                              2B9      2B9        4         0
+                text10                              2E9      2E9        A         0
+                text9                               2BD      2BD        4         0
+                text8                               31B      31B        F         0
+                text7                               424      424       30         0
+                text6                               2C1      2C1        5         0
+                text5                               362      362       18         0
+                text4                               2E0      2E0        9         0
+                text3                               5D0      5D0       A1         0
+                text2                               398      398       1F         0
+                text1                               671      671       B2         0
+                maintext                            723      723       D8         0
 
         CLASS   STRCODE        
                 stringtext1                         800      800        4         0
@@ -128,15 +145,16 @@ TOTAL           Name                               Link     Load   Length     Sp
                 cstackCOMMON                         70       70        E         1
 
         CLASS   BANK0          
-                cstackBANK0                          20       20       4D         1
+                cstackBANK0                          20       20       4B         1
                 bssBANK0                             6F       6F        1         1
-                nvBANK0                              6D       6D        2         1
+                nvBANK0                              6B       6B        4         1
 
         CLASS   BANK1          
-                cstackBANK1                          A0       A0       44         1
-                nvBANK1                              E4       E4        4         1
+                cstackBANK1                          A0       A0       42         1
+                nvBANK1                              E2       E2        2         1
 
         CLASS   BANK2          
+                cstackBANK2                         120      120       44         1
 
         CLASS   BANK3          
 
@@ -278,42 +296,51 @@ TOTAL           Name                               Link     Load   Length     Sp
 
 SEGMENTS        Name                           Load    Length   Top    Selector   Space  Class     Delta
 
-                text11                         0004F7  000010  000507       9EE       0  CODE        2
-                text22                         000507  000011  000518       A0E       0  CODE        2
-                text6                          0004E8  00000F  0004F7       9D0       0  CODE        2
+                text20                         0002CC  000006  0002D2       598       0  CODE        2
+                text21                         0002C6  000006  0002CC       58C       0  CODE        2
+                text19                         0002D2  000006  0002D8       5A4       0  CODE        2
+                text6                          0002C1  000005  0002C6       582       0  CODE        2
+                text17                         0002D8  000008  0002E0       5B0       0  CODE        2
+                text24                         0003B7  000021  0003D8       76E       0  CODE        2
+                text18                         0003D8  000023  0003FB       7B0       0  CODE        2
+                text23                         00037A  00001E  000398       6F4       0  CODE        2
+                text2                          000398  00001F  0003B7       730       0  CODE        2
+                text29                         0003FB  000029  000424       7F6       0  CODE        2
+                text26                         000490  00004F  0004DF       920       0  CODE        2
+                text22                         0004DF  00005B  00053A       9BE       0  CODE        2
+                text7                          000424  000030  000454       848       0  CODE        2
+                text16                         000454  00003C  000490       8A8       0  CODE        2
+                text5                          000362  000018  00037A       6C4       0  CODE        2
+                text15                         0002F3  00000C  0002FF       5E6       0  CODE        2
+                text25                         0002FF  00000D  00030C       5FE       0  CODE        2
+                text4                          0002E0  000009  0002E9       5C0       0  CODE        2
+                text10                         0002E9  00000A  0002F3       5D2       0  CODE        2
+                text12                         00030C  00000F  00031B       618       0  CODE        2
+                text30                         00033A  000011  00034B       674       0  CODE        2
+                text31                         00034B  000017  000362       696       0  CODE        2
+                text8                          00031B  00000F  00032A       636       0  CODE        2
+                text13                         00032A  000010  00033A       654       0  CODE        2
                 reset_vec                      000000  000004  000004         0       0  CODE        2
-                text3                          00052D  000018  000545       A5A       0  CODE        2
-                text23                         000518  000015  00052D       A30       0  CODE        2
-                text10                         0004D9  00000F  0004E8       9B2       0  CODE        2
-                text13                         0004CD  00000C  0004D9       99A       0  CODE        2
-                text1                          000545  00001F  000564       A8A       0  CODE        2
-                text16                         000564  000023  000587       AC8       0  CODE        2
-                text21                         000587  00002B  0005B2       B0E       0  CODE        2
-                text15                         0004BB  000008  0004C3       976       0  CODE        2
-                text17                         0004B5  000006  0004BB       96A       0  CODE        2
-                text8                          0004C3  00000A  0004CD       986       0  CODE        2
-                text5                          0005B2  000030  0005E2       B64       0  CODE        2
-                text2                          0006B2  0000A3  000755       D64       0  CODE        2
-                maintext                       000755  0000A6  0007FB       EAA       0  CODE        2
-                text20                         00061F  000093  0006B2       C3E       0  CODE        2
-                text14                         0005E2  00003D  00061F       BC4       0  CODE        2
-                text18                         0004AF  000006  0004B5       95E       0  CODE        2
+                text27                         0002B2  000003  0002B5       564       0  CODE        2
+                text14                         0002B5  000004  0002B9       56A       0  CODE        2
+                text9                          0002BD  000004  0002C1       57A       0  CODE        2
                 stringtext1                    000800  000004  000804      1000       0  STRCODE     2
-                text7                          0004A0  000004  0004A4       940       0  CODE        2
-                text9                          00049C  000004  0004A0       938       0  CODE        2
-                text12                         000498  000004  00049C       930       0  CODE        2
-                text19                         0004A9  000006  0004AF       952       0  CODE        2
-                text4                          0004A4  000005  0004A9       948       0  CODE        2
-                cstackBANK1                    0000A0  000048  0000E8        A0       1  BANK1       1
+                text11                         0002B9  000004  0002BD       572       0  CODE        2
+                cstackBANK1                    0000A0  000044  0000E4        A0       1  BANK1       1
+                cstackBANK2                    000120  000044  000164       120       1  BANK2       1
                 cinit                          0007FB  000005  000800       FF6       0  CODE        2
                 cstackCOMMON                   000070  00000E  00007E        70       1  COMMON      1
                 cstackBANK0                    000020  000050  000070        20       1  BANK0       1
+                text1                          000671  0000B2  000723       CE2       0  CODE        2
+                text3                          0005D0  0000A1  000671       BA0       0  CODE        2
+                maintext                       000723  0000D8  0007FB       E46       0  CODE        2
+                text28                         00053A  000096  0005D0       A74       0  CODE        2
 
 
 UNUSED ADDRESS RANGES
 
         Name                Unused          Largest block    Delta
-        BANK1            000E8-000EF               8           1
+        BANK1            000E4-000EF               C           1
         BANK10           00520-0056F              50           1
         BANK11           005A0-005EF              50           1
         BANK12           00620-0066F              50           1
@@ -324,7 +351,7 @@ UNUSED ADDRESS RANGES
         BANK17           008A0-008EF              50           1
         BANK18           00920-0096F              50           1
         BANK19           009A0-009EF              50           1
-        BANK2            00120-0016F              50           1
+        BANK2            00164-0016F               C           1
         BANK20           00A20-00A6F              50           1
         BANK21           00AA0-00AEF              50           1
         BANK22           00B20-00B6F              50           1
@@ -339,16 +366,16 @@ UNUSED ADDRESS RANGES
         BANK8            00420-0046F              50           1
         BANK9            004A0-004EF              50           1
         BIGRAM           02000-027EF             7F0           1
-        CODE             00004-00497             494           2
+        CODE             00004-002B1             2AE           2
                          00804-03FFF             800
-        CONST            00004-00497             100           2
+        CONST            00004-002B1             100           2
                          00804-03FFF             100
         EEDATA           0F000-0F0FF             100           2
-        ENTRY            00004-00497             100           2
+        ENTRY            00004-002B1             100           2
                          00804-03FFF             100
         IDLOC            08000-08003               4           2
-        RAM              000E8-000EF               8           1
-                         00120-0016F              50
+        RAM              000E4-000EF               C           1
+                         00164-0016F               C
                          001A0-001EF              50
                          00220-0026F              50
                          002A0-002EF              50
@@ -404,17 +431,17 @@ UNUSED ADDRESS RANGES
         SFR7             00380-0039F              20           1
         SFR8             00400-0041F              20           1
         SFR9             00480-0049F              20           1
-        STACK            02098-027EF             758           1
-        STRCODE          00004-00497             494           2
+        STACK            020E4-027EF             70C           1
+        STRCODE          00004-002B1             2AE           2
                          00804-03FFF            37FC
-        STRING           00004-00497             100           2
+        STRING           00004-002B1             100           2
                          00804-03FFF             100
 
                                   Symbol Table
 
 ?_FLASH_Read                                   cstackCOMMON 00070
-ClearArray@array                               cstackCOMMON 00071
-ClearArray@i                                   cstackCOMMON 00072
+ClearArray@array                               cstackCOMMON 00070
+ClearArray@i                                   cstackCOMMON 00074
 DefineError@send_frame                         cstackCOMMON 00071
 EUSART_SetErrorHandler@interruptHandler        cstackCOMMON 00070
 EUSART_SetFramingErrorHandler@interruptHandler cstackCOMMON 00070
@@ -431,6 +458,19 @@ ReadFromMem@def_addr                           cstackBANK0  00020
 ReadFromMem@i                                  cstackBANK0  00025
 ReadFromMem@recv_frame                         cstackBANK0  00022
 ReadFromMem@send_frame                         cstackCOMMON 00075
+ReadFromSerialEEPROM@SPI1                      cstackBANK0  00060
+ReadFromSerialEEPROM@buffer                    cstackBANK0  00020
+ReadFromSerialEEPROM@i                         cstackBANK0  00062
+ReadFromSerialEEPROM@recv_frame                cstackBANK0  00061
+ReadFromSerialEEPROM@send_frame                cstackCOMMON 00076
+SPI_ExchangeByte@data                          cstackCOMMON 00070
+SPI_Open@spiUniqueConfiguration                cstackCOMMON 00073
+SPI_ReadBlock@block                            cstackCOMMON 00074
+SPI_ReadBlock@blockSize                        cstackCOMMON 00071
+SPI_ReadBlock@data                             cstackCOMMON 00075
+SPI_WriteBlock@block                           cstackCOMMON 00075
+SPI_WriteBlock@blockSize                       cstackCOMMON 00071
+SPI_WriteBlock@data                            cstackCOMMON 00074
 UART_dataWrite@data_ptr                        cstackCOMMON 00073
 UART_dataWrite@i                               cstackCOMMON 00074
 UART_dataWrite@size                            cstackCOMMON 00071
@@ -438,6 +478,11 @@ UART_preamFound@byte                           cstackCOMMON 00071
 WriteToMem@recv_frame                          cstackBANK0  00020
 WriteToMem@result                              cstackBANK0  00021
 WriteToMem@send_frame                          cstackCOMMON 0007C
+WriteToSerialEEPROM@SPI1                       cstackBANK0  00063
+WriteToSerialEEPROM@buffer                     cstackBANK0  00020
+WriteToSerialEEPROM@i                          cstackBANK0  00064
+WriteToSerialEEPROM@recv_frame                 cstackBANK0  00065
+WriteToSerialEEPROM@send_frame                 cstackCOMMON 00076
 _ANSELA                                        (abs)        0018C
 _ANSELB                                        (abs)        0018D
 _ANSELC                                        (abs)        0018E
@@ -447,8 +492,8 @@ _APFCON1                                       (abs)        0011D
 _APFCON2                                       (abs)        0011C
 _BAUD1CON                                      (abs)        0019F
 _BORCON                                        (abs)        00116
-_ClearArray                                    text23       00518
-_DefineError                                   text22       00507
+_ClearArray                                    text31       0034B
+_DefineError                                   text30       0033A
 _EEADRH                                        (abs)        00192
 _EEADRL                                        (abs)        00191
 _EECON1bits                                    (abs)        00195
@@ -458,21 +503,21 @@ _EEDATL                                        (abs)        00193
 _EUSART_DefaultErrorHandler                    (abs)        00000
 _EUSART_DefaultFramingErrorHandler             (abs)        00000
 _EUSART_DefaultOverrunErrorHandler             (abs)        00000
-_EUSART_ErrorHandler                           nvBANK1      000E4
+_EUSART_ErrorHandler                           nvBANK1      000E2
 _EUSART_FramingErrorHandler                    nvBANK0      0006D
-_EUSART_Initialize                             text16       00564
-_EUSART_OverrunErrorHandler                    nvBANK1      000E6
-_EUSART_Read                                   text10       004D9
-_EUSART_SetErrorHandler                        text19       004A9
-_EUSART_SetFramingErrorHandler                 text18       004AF
-_EUSART_SetOverrunErrorHandler                 text17       004B5
-_EUSART_Write                                  text8        004C3
-_EUSART_is_rx_ready                            text4        004A4
-_EUSART_is_tx_done                             text7        004A0
-_EUSART_is_tx_ready                            text6        004E8
+_EUSART_Initialize                             text18       003D8
+_EUSART_OverrunErrorHandler                    nvBANK0      0006B
+_EUSART_Read                                   text12       0030C
+_EUSART_SetErrorHandler                        text21       002C6
+_EUSART_SetFramingErrorHandler                 text20       002CC
+_EUSART_SetOverrunErrorHandler                 text19       002D2
+_EUSART_Write                                  text10       002E9
+_EUSART_is_rx_ready                            text6        002C1
+_EUSART_is_tx_done                             text9        002BD
+_EUSART_is_tx_ready                            text8        0031B
 _EUSART_is_tx_ready$283                        cstackCOMMON 00070
-_FLASH_Read                                    text21       00587
-_FLASH_Write                                   text2        006B2
+_FLASH_Read                                    text29       003FB
+_FLASH_Write                                   text3        005D0
 _INLVLA                                        (abs)        0038C
 _INLVLB                                        (abs)        0038D
 _INLVLC                                        (abs)        0038E
@@ -480,6 +525,7 @@ _INLVLD                                        (abs)        0038F
 _INLVLE                                        (abs)        00390
 _INTCONbits                                    (abs)        0000B
 _LATA                                          (abs)        0010C
+_LATAbits                                      (abs)        0010C
 _LATB                                          (abs)        0010D
 _LATC                                          (abs)        0010E
 _LATD                                          (abs)        0010F
@@ -492,15 +538,16 @@ _ODCOND                                        (abs)        0028F
 _ODCONE                                        (abs)        00290
 _OPTION_REGbits                                (abs)        00095
 _OSCCON                                        (abs)        00099
-_OSCILLATOR_Initialize                         text15       004BB
+_OSCILLATOR_Initialize                         text17       002D8
 _OSCSTAT                                       (abs)        0009A
 _OSCTUNE                                       (abs)        00098
-_PIN_MANAGER_Initialize                        text14       005E2
+_PIN_MANAGER_Initialize                        text16       00454
 _PIR1bits                                      (abs)        00011
 _RC1REG                                        (abs)        00199
 _RC1STA                                        (abs)        0019D
 _RC1STAbits                                    (abs)        0019D
-_ReadFromMem                                   text20       0061F
+_ReadFromMem                                   text28       0053A
+_ReadFromSerialEEPROM                          text22       004DF
 _SLRCONA                                       (abs)        0030C
 _SLRCONB                                       (abs)        0030D
 _SLRCONC                                       (abs)        0030E
@@ -508,14 +555,19 @@ _SLRCOND                                       (abs)        0030F
 _SLRCONE                                       (abs)        00310
 _SP1BRGH                                       (abs)        0019C
 _SP1BRGL                                       (abs)        0019B
-_SPI_Initialize                                text13       004CD
+_SPI_Close                                     text27       002B2
+_SPI_ExchangeByte                              text25       002FF
+_SPI_Initialize                                text15       002F3
+_SPI_Open                                      text26       00490
+_SPI_ReadBlock                                 text24       003B7
+_SPI_WriteBlock                                text23       0037A
 _SSP1ADD                                       (abs)        00212
 _SSP1BUF                                       (abs)        00211
 _SSP1CON1                                      (abs)        00215
 _SSP1CON1bits                                  (abs)        00215
 _SSP1CON2                                      (abs)        00216
 _SSP1STAT                                      (abs)        00214
-_SYSTEM_Initialize                             text11       004F7
+_SYSTEM_Initialize                             text13       0032A
 _TRISA                                         (abs)        0008C
 _TRISB                                         (abs)        0008D
 _TRISC                                         (abs)        0008E
@@ -525,17 +577,19 @@ _TRISE                                         (abs)        00090
 _TX1REG                                        (abs)        0019A
 _TX1STA                                        (abs)        0019E
 _TX1STAbits                                    (abs)        0019E
-_UART_byteRead                                 text9        0049C
-_UART_dataWrite                                text5        005B2
-_UART_preamFound                               text3        0052D
+_UART_byteRead                                 text11       002B9
+_UART_dataWrite                                text7        00424
+_UART_preamFound                               text5        00362
+_UnlockFlashWrite                              text4        002E0
 _WDTCON                                        (abs)        00097
-_WDT_Initialize                                text12       00498
+_WDT_Initialize                                text14       002B5
 _WPUA                                          (abs)        0020C
 _WPUB                                          (abs)        0020D
 _WPUC                                          (abs)        0020E
 _WPUD                                          (abs)        0020F
 _WPUE                                          (abs)        00210
-_WriteToMem                                    text1        00545
+_WriteToMem                                    text2        00398
+_WriteToSerialEEPROM                           text1        00671
 __Habs1                                        abs1         00000
 __Hbank0                                       bank0        00000
 __Hbank1                                       bank1        00000
@@ -578,6 +632,7 @@ __Hcommon                                      common       00000
 __Hconfig                                      config       08009
 __HcstackBANK0                                 cstackBANK0  00000
 __HcstackBANK1                                 cstackBANK1  00000
+__HcstackBANK2                                 cstackBANK2  00000
 __HcstackCOMMON                                cstackCOMMON 00000
 __Heeprom_data                                 eeprom_data  00000
 __Hend_init                                    end_init     00004
@@ -623,7 +678,7 @@ __Hsfr7                                        sfr7         00000
 __Hsfr8                                        sfr8         00000
 __Hsfr9                                        sfr9         00000
 __Hspace_0                                     (abs)        00804
-__Hspace_1                                     (abs)        000E8
+__Hspace_1                                     (abs)        00164
 __Hspace_2                                     (abs)        00000
 __Hspace_3                                     (abs)        00000
 __Hspace_4                                     (abs)        10010
@@ -673,6 +728,7 @@ __Lcommon                                      common       00000
 __Lconfig                                      config       00000
 __LcstackBANK0                                 cstackBANK0  00000
 __LcstackBANK1                                 cstackBANK1  00000
+__LcstackBANK2                                 cstackBANK2  00000
 __LcstackCOMMON                                cstackCOMMON 00000
 __Leeprom_data                                 eeprom_data  00000
 __Lend_init                                    end_init     00002
@@ -727,37 +783,45 @@ __Lstrings                                     strings      00000
 __Lstringtext1                                 stringtext1  00000
 __Ltext                                        text         00000
 __S0                                           (abs)        00804
-__S1                                           (abs)        000E8
+__S1                                           (abs)        00164
 __S2                                           (abs)        00000
 __S3                                           (abs)        00000
 ___int_sp                                      stack        00000
 ___latbits                                     (abs)        00003
 ___sp                                          stack        00000
 ___stackhi                                     (abs)        027EF
-___stacklo                                     (abs)        02098
-__end_of_ClearArray                            text23       0052D
-__end_of_DefineError                           text22       00518
-__end_of_EUSART_Initialize                     text16       00587
-__end_of_EUSART_Read                           text10       004E8
-__end_of_EUSART_SetErrorHandler                text19       004AF
-__end_of_EUSART_SetFramingErrorHandler         text18       004B5
-__end_of_EUSART_SetOverrunErrorHandler         text17       004BB
-__end_of_EUSART_Write                          text8        004CD
-__end_of_EUSART_is_rx_ready                    text4        004A9
-__end_of_EUSART_is_tx_done                     text7        004A4
-__end_of_EUSART_is_tx_ready                    text6        004F7
-__end_of_FLASH_Read                            text21       005B2
-__end_of_FLASH_Write                           text2        00755
-__end_of_OSCILLATOR_Initialize                 text15       004C3
-__end_of_PIN_MANAGER_Initialize                text14       0061F
-__end_of_ReadFromMem                           text20       006B2
-__end_of_SPI_Initialize                        text13       004D9
-__end_of_SYSTEM_Initialize                     text11       00507
-__end_of_UART_byteRead                         text9        004A0
-__end_of_UART_dataWrite                        text5        005E2
-__end_of_UART_preamFound                       text3        00545
-__end_of_WDT_Initialize                        text12       0049C
-__end_of_WriteToMem                            text1        00564
+___stacklo                                     (abs)        020E4
+__end_of_ClearArray                            text31       00362
+__end_of_DefineError                           text30       0034B
+__end_of_EUSART_Initialize                     text18       003FB
+__end_of_EUSART_Read                           text12       0031B
+__end_of_EUSART_SetErrorHandler                text21       002CC
+__end_of_EUSART_SetFramingErrorHandler         text20       002D2
+__end_of_EUSART_SetOverrunErrorHandler         text19       002D8
+__end_of_EUSART_Write                          text10       002F3
+__end_of_EUSART_is_rx_ready                    text6        002C6
+__end_of_EUSART_is_tx_done                     text9        002C1
+__end_of_EUSART_is_tx_ready                    text8        0032A
+__end_of_FLASH_Read                            text29       00424
+__end_of_FLASH_Write                           text3        00671
+__end_of_OSCILLATOR_Initialize                 text17       002E0
+__end_of_PIN_MANAGER_Initialize                text16       00490
+__end_of_ReadFromMem                           text28       005D0
+__end_of_ReadFromSerialEEPROM                  text22       0053A
+__end_of_SPI_Close                             text27       002B5
+__end_of_SPI_ExchangeByte                      text25       0030C
+__end_of_SPI_Initialize                        text15       002FF
+__end_of_SPI_Open                              text26       004DF
+__end_of_SPI_ReadBlock                         text24       003D8
+__end_of_SPI_WriteBlock                        text23       00398
+__end_of_SYSTEM_Initialize                     text13       0033A
+__end_of_UART_byteRead                         text11       002BD
+__end_of_UART_dataWrite                        text7        00454
+__end_of_UART_preamFound                       text5        0037A
+__end_of_UnlockFlashWrite                      text4        002E9
+__end_of_WDT_Initialize                        text14       002B9
+__end_of_WriteToMem                            text2        003B7
+__end_of_WriteToSerialEEPROM                   text1        00723
 __end_of__initialization                       cinit        007FD
 __end_of_main                                  maintext     007FB
 __end_of_spi_configuration                     stringtext1  00804
@@ -765,34 +829,43 @@ __initialization                               cinit        007FB
 __pbssBANK0                                    bssBANK0     0006F
 __pcstackBANK0                                 cstackBANK0  00020
 __pcstackBANK1                                 cstackBANK1  000A0
+__pcstackBANK2                                 cstackBANK2  00120
 __pcstackCOMMON                                cstackCOMMON 00070
-__pmaintext                                    maintext     00755
-__pnvBANK0                                     nvBANK0      0006D
-__pnvBANK1                                     nvBANK1      000E4
+__pmaintext                                    maintext     00723
+__pnvBANK0                                     nvBANK0      0006B
+__pnvBANK1                                     nvBANK1      000E2
 __pstringtext1                                 stringtext1  00800
-__ptext1                                       text1        00545
-__ptext10                                      text10       004D9
-__ptext11                                      text11       004F7
-__ptext12                                      text12       00498
-__ptext13                                      text13       004CD
-__ptext14                                      text14       005E2
-__ptext15                                      text15       004BB
-__ptext16                                      text16       00564
-__ptext17                                      text17       004B5
-__ptext18                                      text18       004AF
-__ptext19                                      text19       004A9
-__ptext2                                       text2        006B2
-__ptext20                                      text20       0061F
-__ptext21                                      text21       00587
-__ptext22                                      text22       00507
-__ptext23                                      text23       00518
-__ptext3                                       text3        0052D
-__ptext4                                       text4        004A4
-__ptext5                                       text5        005B2
-__ptext6                                       text6        004E8
-__ptext7                                       text7        004A0
-__ptext8                                       text8        004C3
-__ptext9                                       text9        0049C
+__ptext1                                       text1        00671
+__ptext10                                      text10       002E9
+__ptext11                                      text11       002B9
+__ptext12                                      text12       0030C
+__ptext13                                      text13       0032A
+__ptext14                                      text14       002B5
+__ptext15                                      text15       002F3
+__ptext16                                      text16       00454
+__ptext17                                      text17       002D8
+__ptext18                                      text18       003D8
+__ptext19                                      text19       002D2
+__ptext2                                       text2        00398
+__ptext20                                      text20       002CC
+__ptext21                                      text21       002C6
+__ptext22                                      text22       004DF
+__ptext23                                      text23       0037A
+__ptext24                                      text24       003B7
+__ptext25                                      text25       002FF
+__ptext26                                      text26       00490
+__ptext27                                      text27       002B2
+__ptext28                                      text28       0053A
+__ptext29                                      text29       003FB
+__ptext3                                       text3        005D0
+__ptext30                                      text30       0033A
+__ptext31                                      text31       0034B
+__ptext4                                       text4        002E0
+__ptext5                                       text5        00362
+__ptext6                                       text6        002C1
+__ptext7                                       text7        00424
+__ptext8                                       text8        0031B
+__ptext9                                       text9        002BD
 __size_of_ClearArray                           (abs)        00000
 __size_of_DefineError                          (abs)        00000
 __size_of_EUSART_Initialize                    (abs)        00000
@@ -809,16 +882,24 @@ __size_of_FLASH_Write                          (abs)        00000
 __size_of_OSCILLATOR_Initialize                (abs)        00000
 __size_of_PIN_MANAGER_Initialize               (abs)        00000
 __size_of_ReadFromMem                          (abs)        00000
+__size_of_ReadFromSerialEEPROM                 (abs)        00000
+__size_of_SPI_Close                            (abs)        00000
+__size_of_SPI_ExchangeByte                     (abs)        00000
 __size_of_SPI_Initialize                       (abs)        00000
+__size_of_SPI_Open                             (abs)        00000
+__size_of_SPI_ReadBlock                        (abs)        00000
+__size_of_SPI_WriteBlock                       (abs)        00000
 __size_of_SYSTEM_Initialize                    (abs)        00000
 __size_of_UART_byteRead                        (abs)        00000
 __size_of_UART_dataWrite                       (abs)        00000
 __size_of_UART_preamFound                      (abs)        00000
+__size_of_UnlockFlashWrite                     (abs)        00000
 __size_of_WDT_Initialize                       (abs)        00000
 __size_of_WriteToMem                           (abs)        00000
+__size_of_WriteToSerialEEPROM                  (abs)        00000
 __size_of_main                                 (abs)        00000
 _eusartRxLastError                             bssBANK0     0006F
-_main                                          maintext     00755
+_main                                          maintext     00723
 _spi_configuration                             stringtext1  00800
 btemp                                          (abs)        0007E
 end_of_initialization                          cinit        007FD
@@ -828,10 +909,10 @@ intlevel2                                      functab      00000
 intlevel3                                      functab      00000
 intlevel4                                      functab      00000
 intlevel5                                      functab      00000
-main@i                                         cstackBANK0  0006C
-main@processing_status                         cstackBANK0  0006B
-main@recv_frame                                cstackBANK1  000A0
-main@send_frame                                cstackBANK0  00028
+main@i                                         cstackBANK0  00069
+main@processing_status                         cstackBANK0  0006A
+main@recv_frame                                cstackBANK2  00120
+main@send_frame                                cstackBANK1  000A0
 reset_vec                                      reset_vec    00000
 start                                          init         00002
 start_initialization                           cinit        007FB
@@ -846,10 +927,10 @@ FUNCTION INFORMATION:
  Parameters:    Size  Location     Type
 		None
  Auto vars:     Size  Location     Type
-  recv_frame     68    0[BANK1 ] unsigned char [68]
-  send_frame     66    8[BANK0 ] unsigned char [66]
-  i               1   76[BANK0 ] unsigned char 
-  processing_s    1   75[BANK0 ] _Bool 
+  recv_frame     68    0[BANK2 ] unsigned char [68]
+  send_frame     66    0[BANK1 ] unsigned char [66]
+  processing_s    1   74[BANK0 ] _Bool 
+  i               1   73[BANK0 ] unsigned char 
   byte            1    0        unsigned char 
  Return value:  Size  Location     Type
                   1    wreg      void 
@@ -861,28 +942,69 @@ FUNCTION INFORMATION:
 		Unchanged: 
  Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
       Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
-      Locals:         0      69      68       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         0       3      66      68       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
       Temps:          0       2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
-      Totals:         0      71      68       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         0       5      66      68       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
 Total ram usage:      139 bytes
  Hardware stack levels required when called:    3
  This function calls:
 		_ClearArray
 		_DefineError
 		_ReadFromMem
+		_ReadFromSerialEEPROM
 		_SYSTEM_Initialize
 		_UART_byteRead
 		_UART_dataWrite
 		_UART_preamFound
 		_WriteToMem
+		_WriteToSerialEEPROM
  This function is called by:
 		Startup code after reset
  This function uses a non-reentrant model
 
 
+ *************** function _WriteToSerialEEPROM *****************
+ Defined at:
+		line 30 in file "apps/src/eeprom_25lc512.c"
+ Parameters:    Size  Location     Type
+  recv_frame      1    wreg     PTR unsigned char 
+		 -> main@recv_frame(68), 
+  send_frame      1    6[COMMON] PTR unsigned char 
+		 -> main@send_frame(66), 
+ Auto vars:     Size  Location     Type
+  recv_frame      1   69[BANK0 ] PTR unsigned char 
+		 -> main@recv_frame(68), 
+  buffer         67    0[BANK0 ] unsigned char [67]
+  i               1   68[BANK0 ] unsigned char 
+  SPI1            1   67[BANK0 ] enum E6331
+ Return value:  Size  Location     Type
+                  1    wreg      _Bool 
+ Registers used:
+		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
+      Params:         1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         0      70       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         3      70       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:       73 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    2
+ This function calls:
+		_SPI_Close
+		_SPI_Open
+		_SPI_WriteBlock
+ This function is called by:
+		_main
+ This function uses a non-reentrant model
+
+
  *************** function _WriteToMem *****************
  Defined at:
-		line 67 in file "apps/src/bootloader.c"
+		line 65 in file "apps/src/bootloader.c"
  Parameters:    Size  Location     Type
   recv_frame      1    wreg     PTR unsigned char 
 		 -> main@recv_frame(68), 
@@ -907,7 +1029,7 @@ Total ram usage:      139 bytes
       Totals:         2       2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
 Total ram usage:        4 bytes
  Hardware stack levels used:    1
- Hardware stack levels required when called:    1
+ Hardware stack levels required when called:    2
  This function calls:
 		_FLASH_Write
  This function is called by:
@@ -917,7 +1039,7 @@ Total ram usage:        4 bytes
 
  *************** function _FLASH_Write *****************
  Defined at:
-		line 70 in file "apps/src/memory.c"
+		line 72 in file "apps/src/memory.c"
  Parameters:    Size  Location     Type
   buffer          1    wreg     PTR unsigned char 
 		 -> main@recv_frame(68), 
@@ -927,11 +1049,10 @@ Total ram usage:        4 bytes
   writeAddr       2    8[COMMON] unsigned short 
   i               1   10[COMMON] unsigned char 
   INR_state       1    7[COMMON] unsigned char 
-  uuu             1    0        unsigned char [1]
  Return value:  Size  Location     Type
                   1    wreg      _Bool 
  Registers used:
-		wreg, fsr1l, fsr1h, status,2, status,0
+		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
  Tracked objects:
 		On entry : 
 		On exit  : 
@@ -943,10 +1064,40 @@ Total ram usage:        4 bytes
       Totals:        12       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
 Total ram usage:       12 bytes
  Hardware stack levels used:    1
+ Hardware stack levels required when called:    1
+ This function calls:
+		_UnlockFlashWrite
+ This function is called by:
+		_WriteToMem
+ This function uses a non-reentrant model
+
+
+ *************** function _UnlockFlashWrite *****************
+ Defined at:
+		line 41 in file "apps/src/memory.c"
+ Parameters:    Size  Location     Type
+		None
+ Auto vars:     Size  Location     Type
+		None
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
+      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:        0 bytes
+ Hardware stack levels used:    1
  This function calls:
 		Nothing
  This function is called by:
-		_WriteToMem
+		_FLASH_Write
  This function uses a non-reentrant model
 
 
@@ -1465,6 +1616,207 @@ Total ram usage:        2 bytes
  This function uses a non-reentrant model
 
 
+ *************** function _ReadFromSerialEEPROM *****************
+ Defined at:
+		line 4 in file "apps/src/eeprom_25lc512.c"
+ Parameters:    Size  Location     Type
+  recv_frame      1    wreg     PTR unsigned char 
+		 -> main@recv_frame(68), 
+  send_frame      1    6[COMMON] PTR unsigned char 
+		 -> main@send_frame(66), 
+ Auto vars:     Size  Location     Type
+  recv_frame      1   65[BANK0 ] PTR unsigned char 
+		 -> main@recv_frame(68), 
+  buffer         64    0[BANK0 ] unsigned char [64]
+  i               1   66[BANK0 ] unsigned char 
+  SPI1            1   64[BANK0 ] enum E6331
+ Return value:  Size  Location     Type
+                  1    wreg      _Bool 
+ Registers used:
+		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
+      Params:         1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         0      67       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         3      67       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:       70 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    2
+ This function calls:
+		_SPI_Close
+		_SPI_Open
+		_SPI_ReadBlock
+		_SPI_WriteBlock
+ This function is called by:
+		_main
+ This function uses a non-reentrant model
+
+
+ *************** function _SPI_WriteBlock *****************
+ Defined at:
+		line 113 in file "mcc_generated_files/spi.c"
+ Parameters:    Size  Location     Type
+  block           1    wreg     PTR void 
+		 -> WriteToSerialEEPROM@buffer(67), ReadFromSerialEEPROM@buffer(64), 
+  blockSize       2    1[COMMON] unsigned int 
+ Auto vars:     Size  Location     Type
+  block           1    5[COMMON] PTR void 
+		 -> WriteToSerialEEPROM@buffer(67), ReadFromSerialEEPROM@buffer(64), 
+  data            1    4[COMMON] PTR unsigned char 
+		 -> WriteToSerialEEPROM@buffer(67), ReadFromSerialEEPROM@buffer(64), 
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
+      Params:         2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         5       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:        5 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    1
+ This function calls:
+		_SPI_ExchangeByte
+ This function is called by:
+		_ReadFromSerialEEPROM
+		_WriteToSerialEEPROM
+ This function uses a non-reentrant model
+
+
+ *************** function _SPI_ReadBlock *****************
+ Defined at:
+		line 122 in file "mcc_generated_files/spi.c"
+ Parameters:    Size  Location     Type
+  block           1    wreg     PTR void 
+		 -> ReadFromSerialEEPROM@buffer(64), 
+  blockSize       2    1[COMMON] unsigned int 
+ Auto vars:     Size  Location     Type
+  block           1    4[COMMON] PTR void 
+		 -> ReadFromSerialEEPROM@buffer(64), 
+  data            1    5[COMMON] PTR unsigned char 
+		 -> ReadFromSerialEEPROM@buffer(64), 
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
+      Params:         2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         5       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:        5 bytes
+ Hardware stack levels used:    1
+ Hardware stack levels required when called:    1
+ This function calls:
+		_SPI_ExchangeByte
+ This function is called by:
+		_ReadFromSerialEEPROM
+ This function uses a non-reentrant model
+
+
+ *************** function _SPI_ExchangeByte *****************
+ Defined at:
+		line 92 in file "mcc_generated_files/spi.c"
+ Parameters:    Size  Location     Type
+  data            1    wreg     unsigned char 
+ Auto vars:     Size  Location     Type
+  data            1    0[COMMON] unsigned char 
+ Return value:  Size  Location     Type
+                  1    wreg      unsigned char 
+ Registers used:
+		wreg
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
+      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:        1 bytes
+ Hardware stack levels used:    1
+ This function calls:
+		Nothing
+ This function is called by:
+		_SPI_WriteBlock
+		_SPI_ReadBlock
+ This function uses a non-reentrant model
+
+
+ *************** function _SPI_Open *****************
+ Defined at:
+		line 72 in file "mcc_generated_files/spi.c"
+ Parameters:    Size  Location     Type
+  spiUniqueCon    1    wreg     enum E353
+ Auto vars:     Size  Location     Type
+  spiUniqueCon    1    3[COMMON] enum E353
+ Return value:  Size  Location     Type
+                  1    wreg      _Bool 
+ Registers used:
+		wreg, fsr0l, fsr0h, status,2, status,0, pclath
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
+      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          3       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         4       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:        4 bytes
+ Hardware stack levels used:    1
+ This function calls:
+		Nothing
+ This function is called by:
+		_ReadFromSerialEEPROM
+		_WriteToSerialEEPROM
+ This function uses a non-reentrant model
+
+
+ *************** function _SPI_Close *****************
+ Defined at:
+		line 87 in file "mcc_generated_files/spi.c"
+ Parameters:    Size  Location     Type
+		None
+ Auto vars:     Size  Location     Type
+		None
+ Return value:  Size  Location     Type
+                  1    wreg      void 
+ Registers used:
+		None
+ Tracked objects:
+		On entry : 
+		On exit  : 
+		Unchanged: 
+ Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
+      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:        0 bytes
+ Hardware stack levels used:    1
+ This function calls:
+		Nothing
+ This function is called by:
+		_ReadFromSerialEEPROM
+		_WriteToSerialEEPROM
+ This function uses a non-reentrant model
+
+
  *************** function _ReadFromMem *****************
  Defined at:
 		line 37 in file "apps/src/bootloader.c"
@@ -1504,7 +1856,7 @@ Total ram usage:       14 bytes
 
  *************** function _FLASH_Read *****************
  Defined at:
-		line 42 in file "apps/src/memory.c"
+		line 49 in file "apps/src/memory.c"
  Parameters:    Size  Location     Type
   addr            2    0[COMMON] unsigned short 
  Auto vars:     Size  Location     Type
@@ -1566,12 +1918,10 @@ Total ram usage:        2 bytes
  Defined at:
 		line 3 in file "apps/src/bootloader.c"
  Parameters:    Size  Location     Type
-  array           1    wreg     PTR unsigned char 
+  array           2    0[COMMON] PTR unsigned char 
 		 -> main@send_frame(66), main@recv_frame(68), 
  Auto vars:     Size  Location     Type
-  array           1    1[COMMON] PTR unsigned char 
-		 -> main@send_frame(66), main@recv_frame(68), 
-  i               1    2[COMMON] unsigned char 
+  i               1    4[COMMON] unsigned char 
  Return value:  Size  Location     Type
                   1    wreg      void 
  Registers used:
@@ -1581,11 +1931,11 @@ Total ram usage:        2 bytes
 		On exit  : 
 		Unchanged: 
  Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12  BANK13  BANK14  BANK15  BANK16  BANK17  BANK18  BANK19  BANK20  BANK21  BANK22  BANK23  BANK24  BANK25
-      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
-      Locals:         2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
-      Temps:          1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
-      Totals:         3       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
-Total ram usage:        3 bytes
+      Params:         2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Temps:          2       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+      Totals:         5       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0
+Total ram usage:        5 bytes
  Hardware stack levels used:    1
  This function calls:
 		Nothing
@@ -1599,28 +1949,34 @@ MODULE INFORMATION
 
 Module		Function		Class		Link	Load	Size
 apps/src/bootloader.c
-		_ClearArray    		CODE           	0518	0000	22
-		_ReadFromMem   		CODE           	061F	0000	148
-		_DefineError   		CODE           	0507	0000	18
-		_WriteToMem    		CODE           	0545	0000	32
+		_ClearArray    		CODE           	034B	0000	24
+		_ReadFromMem   		CODE           	053A	0000	151
+		_DefineError   		CODE           	033A	0000	18
+		_WriteToMem    		CODE           	0398	0000	32
 
-apps/src/bootloader.c estimated size: 220
+apps/src/bootloader.c estimated size: 225
 
 mcc_generated_files/pin_manager.c
-		_PIN_MANAGER_Initialize		CODE           	05E2	0000	62
+		_PIN_MANAGER_Initialize		CODE           	0454	0000	61
 
-mcc_generated_files/pin_manager.c estimated size: 62
+mcc_generated_files/pin_manager.c estimated size: 61
 
 apps/src/memory.c
-		_FLASH_Write   		CODE           	06B2	0000	164
-		_FLASH_Read    		CODE           	0587	0000	44
+		_FLASH_Write   		CODE           	05D0	0000	162
+		_UnlockFlashWrite		CODE           	02E0	0000	10
+		_FLASH_Read    		CODE           	03FB	0000	42
 
-apps/src/memory.c estimated size: 208
+apps/src/memory.c estimated size: 214
 
 mcc_generated_files/spi.c
-		_SPI_Initialize		CODE           	04CD	0000	13
+		_SPI_Close     		CODE           	02B2	0000	4
+		_SPI_ExchangeByte		CODE           	02FF	0000	14
+		_SPI_Open      		CODE           	0490	0000	80
+		_SPI_WriteBlock		CODE           	037A	0000	31
+		_SPI_ReadBlock 		CODE           	03B7	0000	34
+		_SPI_Initialize		CODE           	02F3	0000	13
 
-mcc_generated_files/spi.c estimated size: 13
+mcc_generated_files/spi.c estimated size: 176
 
 shared
 		__initialization		CODE           	07FB	0000	3
@@ -1629,34 +1985,40 @@ shared
 shared estimated size: 8
 
 mcc_generated_files/mcc.c
-		_WDT_Initialize		CODE           	0498	0000	5
-		_OSCILLATOR_Initialize		CODE           	04BB	0000	9
-		_SYSTEM_Initialize		CODE           	04F7	0000	17
+		_WDT_Initialize		CODE           	02B5	0000	5
+		_OSCILLATOR_Initialize		CODE           	02D8	0000	9
+		_SYSTEM_Initialize		CODE           	032A	0000	17
 
 mcc_generated_files/mcc.c estimated size: 31
 
+apps/src/eeprom_25lc512.c
+		_WriteToSerialEEPROM		CODE           	0671	0000	179
+		_ReadFromSerialEEPROM		CODE           	04DF	0000	92
+
+apps/src/eeprom_25lc512.c estimated size: 271
+
 apps/src/serial.c
-		_UART_byteRead 		CODE           	049C	0000	5
-		_UART_dataWrite		CODE           	05B2	0000	49
-		_UART_preamFound		CODE           	052D	0000	25
+		_UART_byteRead 		CODE           	02B9	0000	5
+		_UART_dataWrite		CODE           	0424	0000	49
+		_UART_preamFound		CODE           	0362	0000	25
 
 apps/src/serial.c estimated size: 79
 
 mcc_generated_files/eusart.c
-		_EUSART_Read   		CODE           	04D9	0000	16
-		_EUSART_Write  		CODE           	04C3	0000	11
-		_EUSART_is_tx_done		CODE           	04A0	0000	5
-		_EUSART_Initialize		CODE           	0564	0000	36
-		_EUSART_SetFramingErrorHandler		CODE           	04AF	0000	7
-		_EUSART_SetErrorHandler		CODE           	04A9	0000	7
-		_EUSART_SetOverrunErrorHandler		CODE           	04B5	0000	7
-		_EUSART_is_rx_ready		CODE           	04A4	0000	6
-		_EUSART_is_tx_ready		CODE           	04E8	0000	16
+		_EUSART_Read   		CODE           	030C	0000	16
+		_EUSART_Write  		CODE           	02E9	0000	11
+		_EUSART_is_tx_done		CODE           	02BD	0000	5
+		_EUSART_Initialize		CODE           	03D8	0000	36
+		_EUSART_SetFramingErrorHandler		CODE           	02CC	0000	7
+		_EUSART_SetErrorHandler		CODE           	02C6	0000	7
+		_EUSART_SetOverrunErrorHandler		CODE           	02D2	0000	7
+		_EUSART_is_rx_ready		CODE           	02C1	0000	6
+		_EUSART_is_tx_ready		CODE           	031B	0000	16
 
 mcc_generated_files/eusart.c estimated size: 111
 
 main.c
-		_main          		CODE           	0755	0000	167
+		_main          		CODE           	0723	0000	217
 
-main.c estimated size: 167
+main.c estimated size: 217
 

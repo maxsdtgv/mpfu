@@ -10893,9 +10893,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 189 "./mcc_generated_files/pin_manager.h"
+# 206 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 201 "./mcc_generated_files/pin_manager.h"
+# 218 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11239,8 +11239,16 @@ uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
 # 19 "apps/src/../api/../../main.h" 2
+# 1 "./apps/api/eeprom_25lc512.h" 1
+# 15 "./apps/api/eeprom_25lc512.h"
+# 1 "apps/src/../api/../../main.h" 1
+# 16 "./apps/api/eeprom_25lc512.h" 2
+# 31 "./apps/api/eeprom_25lc512.h"
+_Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
+_Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
+# 20 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/bootloader.h" 2
-# 40 "./apps/api/bootloader.h"
+# 43 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
@@ -11256,7 +11264,7 @@ _Bool WriteToMem(uint8_t*, uint8_t*);
 
 void ClearArray(uint8_t *array){
  uint8_t i = 0;
-    for (i = 0; i < 66; i++){array[i]=0x00;}
+    for (i = 0; i != 66; i++){array[i]=0x00;}
 }
 
 _Bool DefineError(uint8_t *send_frame){
@@ -11280,18 +11288,16 @@ _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 
  } else {
 
-  for (i = 0; i < 0x0020 +0x0020; i += 2){
+  for (i = 0; i != 0x0020 + 0x0020; i += 2){
    dbyte = FLASH_Read(def_addr);
    send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
    send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
    def_addr++;
   }
-
  }
 
  send_frame[0] = i + 2;
  send_frame[1] = 0x02;
-
  return 1;
 }
 
