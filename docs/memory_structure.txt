@@ -40,7 +40,7 @@
 	|		|   	|         			      |        |
 	|		|  3FDF	|         			      |        |
 	|		+-------+-------------------------+        |
-	|		|  3FE0 |	BL config 1           |        |         <<< BL_REQ_CODE/BL_NREQ_CODE saved here
+	|		|  3FE0 |	BL config 1           |        |  <<< Flags uses only LOW-BYTE
 	|		|  3FE1 |	BL config 2           |        |
 	|		|  3FE2 |	BL config 3           |        |
 	|		|  3FE3 |	BL config 4           |        |

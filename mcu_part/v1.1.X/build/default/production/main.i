@@ -10892,9 +10892,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 206 "./mcc_generated_files/pin_manager.h"
+# 257 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 218 "./mcc_generated_files/pin_manager.h"
+# 269 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11232,6 +11232,8 @@ _Bool UART_preamFound(void);
 # 1 "./apps/api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
 # 47 "./apps/api/bootloader.h"
+_Bool KeyBLRequired(void);
+
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
@@ -11250,10 +11252,32 @@ void StartApp(void);
 # 15 "./apps/api/memory.h"
 # 1 "./apps/api/../../main.h" 1
 # 16 "./apps/api/memory.h" 2
-# 25 "./apps/api/memory.h"
+
+
+
+
+
+
+
+
+struct {
+    _Bool IsBLStart;
+    _Bool IsExtUpgrade;
+    uint16_t StartAddrExtUpgrade;
+    uint16_t NumBlocksExtUpgrade;
+    uint8_t StatusCodeExtUpgrade;
+} BLFlags = {0, 0, 0, 0, 0};
+
+
+
+
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
+# 54 "./apps/api/memory.h"
+void ReadBootloaderFlags(void);
+
+void WriteBootloaderFlags(void);
 # 19 "./apps/api/../../main.h" 2
 # 1 "./apps/api/eeprom_25lc512.h" 1
 # 15 "./apps/api/eeprom_25lc512.h"
@@ -11285,14 +11309,34 @@ void main(void)
     ClearArray(send_frame);
 
 
-    TRISE = 0x00;
+
     TRISA = 0x00;
+    TRISB = 0x03;
+    TRISE = 0x00;
 
-    LATE = 0x00;
     LATA = 0xFF;
-# 83 "main.c"
-    do { LATEbits.LATE0 = 1; } while(0);
+    LATE = 0x00;
+# 89 "main.c"
+    ReadBootloaderFlags();
 
+    if (BLFlags.IsExtUpgrade){
+
+        BLFlags.IsExtUpgrade = 0;
+        WriteBootloaderFlags();
+        StartApp();
+    }
+
+    if (!KeyBLRequired() && !BLFlags.IsBLStart){
+        StartApp();
+    }
+
+
+
+    BLFlags.IsBLStart = 0;
+    WriteBootloaderFlags();
+
+
+    do { LATEbits.LATE0 = 1; } while(0);
     while (1)
     {
 

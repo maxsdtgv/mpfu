@@ -10893,9 +10893,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 206 "./mcc_generated_files/pin_manager.h"
+# 257 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 218 "./mcc_generated_files/pin_manager.h"
+# 269 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11234,10 +11234,32 @@ _Bool UART_preamFound(void);
 # 15 "./apps/api/memory.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/memory.h" 2
-# 25 "./apps/api/memory.h"
+
+
+
+
+
+
+
+
+struct {
+    _Bool IsBLStart;
+    _Bool IsExtUpgrade;
+    uint16_t StartAddrExtUpgrade;
+    uint16_t NumBlocksExtUpgrade;
+    uint8_t StatusCodeExtUpgrade;
+} BLFlags = {0, 0, 0, 0, 0};
+
+
+
+
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
+# 54 "./apps/api/memory.h"
+void ReadBootloaderFlags(void);
+
+void WriteBootloaderFlags(void);
 # 19 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/eeprom_25lc512.h" 1
 # 15 "./apps/api/eeprom_25lc512.h"
@@ -11249,6 +11271,8 @@ _Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
 # 20 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/bootloader.h" 2
 # 47 "./apps/api/bootloader.h"
+_Bool KeyBLRequired(void);
+
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
@@ -11264,6 +11288,15 @@ _Bool WriteToMem(uint8_t*, uint8_t*);
 void StartApp(void);
 # 2 "apps/src/bootloader.c" 2
 
+_Bool KeyBLRequired(void){
+ if (PORTBbits.RB0 == 1) {
+  return 1;
+ } else {
+  return 0;
+ }
+
+}
+
 void ClearArray(uint8_t *array){
  uint8_t i = 0;
     for (i = 0; i != 66; i++){array[i]=0x00;}
@@ -11274,7 +11307,7 @@ _Bool DefineError(uint8_t *send_frame){
  send_frame[1] = 0xFF;
  return 1;
 }
-# 36 "apps/src/bootloader.c"
+# 45 "apps/src/bootloader.c"
 _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
  uint8_t i = 0;
  uint16_t dbyte = 0;
@@ -11311,6 +11344,8 @@ _Bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
 void StartApp(void){
 
 
+    do { LATEbits.LATE0 = 0; } while(0);
+    while(1){}
     __asm("pagesel " "0x3FFC");
     __asm("goto " "0x3FFC");
 }

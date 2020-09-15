@@ -44,6 +44,8 @@ extern "C" {
 
 // Function registration
 
+bool KeyBLRequired(void);
+
 void ClearArray(uint8_t*);
 
 bool DefineError(uint8_t*);

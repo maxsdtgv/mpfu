@@ -1,4 +1,8 @@
 Version 4.0 HI-TECH Software Intermediate Code
+"24 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 24: struct {
+[s S761 `a 1 `a 1 `us 1 `us 1 `uc 1 ]
+[n S761 . IsBLStart IsExtUpgrade StartAddrExtUpgrade NumBlocksExtUpgrade StatusCodeExtUpgrade ]
 "7 apps/src/eeprom_25lc512.c
 [; ;apps/src/eeprom_25lc512.c: 7:     spi_modes_t SPI1;
 [c E6331 0 .. ]
@@ -1045,6 +1049,20 @@ Version 4.0 HI-TECH Software Intermediate Code
 "16563
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 16563: __asm("TOSH equ 0FEFh");
 [; <" TOSH equ 0FEFh ;# ">
+"30 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 30: } BLFlags = {0, 0, 0, 0, 0};
+[v _BLFlags `S761 ~T0 @X0 1 e ]
+[i _BLFlags
+:U ..
+:U ..
+-> -> 0 `i `a
+-> -> 0 `i `a
+-> -> 0 `i `us
+-> -> 0 `i `us
+-> -> 0 `i `uc
+..
+..
+]
 "4 apps/src/eeprom_25lc512.c
 [; ;apps/src/eeprom_25lc512.c: 4: _Bool ReadFromSerialEEPROM(uint8_t *recv_frame, uint8_t *send_frame){
 [v _ReadFromSerialEEPROM `(a ~T0 @X0 1 ef2`*uc`*uc ]
@@ -1077,15 +1095,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = *U + &U _buffer * -> -> -> 2 `i `ui `ux -> -> # *U &U _buffer `ui `ux *U + _recv_frame * -> -> 3 `i `x -> -> # *U _recv_frame `i `x ]
 "15
 [; ;apps/src/eeprom_25lc512.c: 15:     do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
-[e :U 764 ]
+[e :U 765 ]
 {
-[e :U 767 ]
+[e :U 768 ]
 {
 [e = . . _LATAbits 0 0 -> -> 0 `i `uc ]
 }
-[e :U 766 ]
+[e :U 767 ]
 }
-[e :U 763 ]
+[e :U 764 ]
 "16
 [; ;apps/src/eeprom_25lc512.c: 16:     SPI_WriteBlock(buffer, 0x03);
 [e ( _SPI_WriteBlock (2 , -> &U _buffer `*v -> -> 3 `i `ui ]
@@ -1094,15 +1112,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _SPI_ReadBlock (2 , -> &U _buffer `*v -> -> 64 `i `ui ]
 "18
 [; ;apps/src/eeprom_25lc512.c: 18:  do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
-[e :U 770 ]
+[e :U 771 ]
 {
-[e :U 773 ]
+[e :U 774 ]
 {
 [e = . . _LATAbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 772 ]
+[e :U 773 ]
 }
-[e :U 769 ]
+[e :U 770 ]
 "19
 [; ;apps/src/eeprom_25lc512.c: 19:  SPI_Close();
 [e ( _SPI_Close ..  ]
@@ -1116,9 +1134,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/eeprom_25lc512.c: 23:  for (i = 0; i != 0x40; i++){
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ != -> _i `i -> 64 `i 774  ]
-[e $U 775  ]
-[e :U 774 ]
+[e $ != -> _i `i -> 64 `i 775  ]
+[e $U 776  ]
+[e :U 775 ]
 {
 "24
 [; ;apps/src/eeprom_25lc512.c: 24:   send_frame[i+2] = buffer[i];
@@ -1127,16 +1145,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/eeprom_25lc512.c: 25:   }
 }
 [e ++ _i -> -> 1 `i `uc ]
-[e $ != -> _i `i -> 64 `i 774  ]
-[e :U 775 ]
+[e $ != -> _i `i -> 64 `i 775  ]
+[e :U 776 ]
 }
 "27
 [; ;apps/src/eeprom_25lc512.c: 27:  return 1;
 [e ) -> -> 1 `i `a ]
-[e $UE 761  ]
+[e $UE 762  ]
 "28
 [; ;apps/src/eeprom_25lc512.c: 28: }
-[e :UE 761 ]
+[e :UE 762 ]
 }
 "30
 [; ;apps/src/eeprom_25lc512.c: 30: _Bool WriteToSerialEEPROM(uint8_t *recv_frame, uint8_t *send_frame){
@@ -1164,29 +1182,29 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = *U + &U _buffer * -> -> -> 0 `i `ui `ux -> -> # *U &U _buffer `ui `ux -> -> 6 `i `uc ]
 "38
 [; ;apps/src/eeprom_25lc512.c: 38:     do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
-[e :U 780 ]
+[e :U 781 ]
 {
-[e :U 783 ]
+[e :U 784 ]
 {
 [e = . . _LATAbits 0 0 -> -> 0 `i `uc ]
 }
-[e :U 782 ]
+[e :U 783 ]
 }
-[e :U 779 ]
+[e :U 780 ]
 "39
 [; ;apps/src/eeprom_25lc512.c: 39:     SPI_WriteBlock(buffer, 0x01);
 [e ( _SPI_WriteBlock (2 , -> &U _buffer `*v -> -> 1 `i `ui ]
 "40
 [; ;apps/src/eeprom_25lc512.c: 40:       do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
-[e :U 786 ]
+[e :U 787 ]
 {
-[e :U 789 ]
+[e :U 790 ]
 {
 [e = . . _LATAbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 788 ]
+[e :U 789 ]
 }
-[e :U 785 ]
+[e :U 786 ]
 "41
 [; ;apps/src/eeprom_25lc512.c: 41:     _delay((unsigned long)((0x0A)*(16000000/4000.0)));
 [e ( __delay (1 -> * -> -> 10 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
@@ -1201,29 +1219,29 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = *U + &U _buffer * -> -> -> 2 `i `ui `ux -> -> # *U &U _buffer `ui `ux *U + _recv_frame * -> -> 3 `i `x -> -> # *U _recv_frame `i `x ]
 "46
 [; ;apps/src/eeprom_25lc512.c: 46:     do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
-[e :U 792 ]
+[e :U 793 ]
 {
-[e :U 795 ]
+[e :U 796 ]
 {
 [e = . . _LATAbits 0 0 -> -> 0 `i `uc ]
 }
-[e :U 794 ]
+[e :U 795 ]
 }
-[e :U 791 ]
+[e :U 792 ]
 "47
 [; ;apps/src/eeprom_25lc512.c: 47:     SPI_WriteBlock(buffer, 0x03);
 [e ( _SPI_WriteBlock (2 , -> &U _buffer `*v -> -> 3 `i `ui ]
 "48
 [; ;apps/src/eeprom_25lc512.c: 48:       do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
-[e :U 798 ]
+[e :U 799 ]
 {
-[e :U 801 ]
+[e :U 802 ]
 {
 [e = . . _LATAbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 800 ]
+[e :U 801 ]
 }
-[e :U 797 ]
+[e :U 798 ]
 "49
 [; ;apps/src/eeprom_25lc512.c: 49:     _delay((unsigned long)((0x0A)*(16000000/4000.0)));
 [e ( __delay (1 -> * -> -> 10 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
@@ -1232,29 +1250,29 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = *U + &U _buffer * -> -> -> 0 `i `ui `ux -> -> # *U &U _buffer `ui `ux -> -> 6 `i `uc ]
 "52
 [; ;apps/src/eeprom_25lc512.c: 52:     do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
-[e :U 804 ]
+[e :U 805 ]
 {
-[e :U 807 ]
+[e :U 808 ]
 {
 [e = . . _LATAbits 0 0 -> -> 0 `i `uc ]
 }
-[e :U 806 ]
+[e :U 807 ]
 }
-[e :U 803 ]
+[e :U 804 ]
 "53
 [; ;apps/src/eeprom_25lc512.c: 53:     SPI_WriteBlock(buffer, 0x01);
 [e ( _SPI_WriteBlock (2 , -> &U _buffer `*v -> -> 1 `i `ui ]
 "54
 [; ;apps/src/eeprom_25lc512.c: 54:       do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
-[e :U 810 ]
+[e :U 811 ]
 {
-[e :U 813 ]
+[e :U 814 ]
 {
 [e = . . _LATAbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 812 ]
+[e :U 813 ]
 }
-[e :U 809 ]
+[e :U 810 ]
 "55
 [; ;apps/src/eeprom_25lc512.c: 55:     _delay((unsigned long)((0x0A)*(16000000/4000.0)));
 [e ( __delay (1 -> * -> -> 10 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
@@ -1271,9 +1289,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/eeprom_25lc512.c: 60:  for (i = 3; i != 0x43; i++){
 {
 [e = _i -> -> 3 `i `uc ]
-[e $ != -> _i `i -> 67 `i 814  ]
-[e $U 815  ]
-[e :U 814 ]
+[e $ != -> _i `i -> 67 `i 815  ]
+[e $U 816  ]
+[e :U 815 ]
 {
 "61
 [; ;apps/src/eeprom_25lc512.c: 61:   buffer[i] = recv_frame[i+1];
@@ -1282,34 +1300,34 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/eeprom_25lc512.c: 62:   }
 }
 [e ++ _i -> -> 1 `i `uc ]
-[e $ != -> _i `i -> 67 `i 814  ]
-[e :U 815 ]
+[e $ != -> _i `i -> 67 `i 815  ]
+[e :U 816 ]
 }
 "63
 [; ;apps/src/eeprom_25lc512.c: 63:     do {do { LATAbits.LATA0 = 0; } while(0);} while(0);
-[e :U 819 ]
+[e :U 820 ]
 {
-[e :U 822 ]
+[e :U 823 ]
 {
 [e = . . _LATAbits 0 0 -> -> 0 `i `uc ]
 }
-[e :U 821 ]
+[e :U 822 ]
 }
-[e :U 818 ]
+[e :U 819 ]
 "64
 [; ;apps/src/eeprom_25lc512.c: 64:     SPI_WriteBlock(buffer, 0x43);
 [e ( _SPI_WriteBlock (2 , -> &U _buffer `*v -> -> 67 `i `ui ]
 "65
 [; ;apps/src/eeprom_25lc512.c: 65:  do {do { LATAbits.LATA0 = 1; } while(0);} while(0);
-[e :U 825 ]
+[e :U 826 ]
 {
-[e :U 828 ]
+[e :U 829 ]
 {
 [e = . . _LATAbits 0 0 -> -> 1 `i `uc ]
 }
-[e :U 827 ]
+[e :U 828 ]
 }
-[e :U 824 ]
+[e :U 825 ]
 "66
 [; ;apps/src/eeprom_25lc512.c: 66:     _delay((unsigned long)((0x0A)*(16000000/4000.0)));
 [e ( __delay (1 -> * -> -> 10 `i `d / -> -> 16000000 `l `d .4000.0 `ul ]
@@ -1325,8 +1343,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "77
 [; ;apps/src/eeprom_25lc512.c: 77:  return 1;
 [e ) -> -> 1 `i `a ]
-[e $UE 777  ]
+[e $UE 778  ]
 "78
 [; ;apps/src/eeprom_25lc512.c: 78: }
-[e :UE 777 ]
+[e :UE 778 ]
 }

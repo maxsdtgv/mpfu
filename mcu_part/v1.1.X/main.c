@@ -62,11 +62,14 @@ void main(void)
     ClearArray(send_frame);
 
     //TRISx registers
-    TRISE = 0x00;
-    TRISA = 0x00;
 
+    TRISA = 0x00;
+    TRISB = 0x03;   // PortB - 0,1,2 for input
+    TRISE = 0x00;
+
+    LATA = 0xFF;    
     LATE = 0x00;
-    LATA = 0xFF;
+
 
 /**
     send_frame[0] = 0x02;           // Number of bytes to send in response
@@ -80,8 +83,29 @@ void main(void)
                 __delay_ms(500);
     }
 **/
-    IO_RE0_SetHigh();
 
+
+
+    ReadBootloaderFlags();
+
+    if (BLFlags.IsExtUpgrade){
+        //ExtUpgrade();
+        BLFlags.IsExtUpgrade = false;
+        WriteBootloaderFlags();
+        StartApp();
+    }
+
+    if (!KeyBLRequired() && !BLFlags.IsBLStart){
+        StartApp();
+    }
+
+
+
+    BLFlags.IsBLStart = false;
+    WriteBootloaderFlags();  
+
+
+    IO_RE0_SetHigh();
     while (1)
     {
 
@@ -129,11 +153,11 @@ CLRWDT();                                   // Clear WDT;
                     processing_status = ReadFromSerialEEPROM(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
-                case WRITE_TO_SERIAL_EEPROM:    // 0x14 - Read from external serial eeprom
+                case WRITE_TO_SERIAL_EEPROM:    // 0x14 - Write to external serial eeprom
                     processing_status = WriteToSerialEEPROM(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
-                case START_APPLICATION:         // 0x0F - Exit Bootloader. GOTO to RV2 (see memory structure)
+                case START_APPLICATION:         // 0x0F - Exit Bootloader. GOTO to RVA (see memory structure)
                     StartApp();
                     break;
 

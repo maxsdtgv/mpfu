@@ -10901,9 +10901,9 @@ extern __bank0 __bit __timeout;
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 206 "./mcc_generated_files/pin_manager.h"
+# 257 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 218 "./mcc_generated_files/pin_manager.h"
+# 269 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -11241,6 +11241,8 @@ _Bool UART_preamFound(void);
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/bootloader.h" 2
 # 47 "./apps/api/bootloader.h"
+_Bool KeyBLRequired(void);
+
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
@@ -11266,12 +11268,34 @@ _Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
 _Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
 # 20 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/memory.h" 2
-# 25 "./apps/api/memory.h"
+
+
+
+
+
+
+
+
+struct {
+    _Bool IsBLStart;
+    _Bool IsExtUpgrade;
+    uint16_t StartAddrExtUpgrade;
+    uint16_t NumBlocksExtUpgrade;
+    uint8_t StatusCodeExtUpgrade;
+} BLFlags = {0, 0, 0, 0, 0};
+
+
+
+
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
+# 54 "./apps/api/memory.h"
+void ReadBootloaderFlags(void);
+
+void WriteBootloaderFlags(void);
 # 10 "apps/src/memory.c" 2
-# 41 "apps/src/memory.c"
+# 44 "apps/src/memory.c"
 void UnlockFlashWrite(){
     EECON2 = 0x55;
     EECON2 = 0xAA;
@@ -11362,5 +11386,60 @@ _Bool FLASH_Write(uint8_t *buffer){
     } else {
         return 1;
     }
+
+}
+
+void ReadBootloaderFlags(void){
+    uint8_t i = 0;
+    uint16_t buf[0x0020];
+    uint16_t dbyte = 0;
+    uint16_t def_addr = 0x3FE0;
+
+        for (i = 0; i != 0x0020; i ++){
+            buf[i] = FLASH_Read(def_addr);
+            def_addr++;
+        }
+
+    if ((uint8_t)(buf[0] & 0x00FF) == 0x00){ BLFlags.IsBLStart = 1;}
+    if ((uint8_t)(buf[1] & 0x00FF) == 0x00){ BLFlags.IsExtUpgrade = 1;}
+    BLFlags.StartAddrExtUpgrade = (uint16_t)(((buf[2] << 8) & 0xFF00) | (buf[3] & 0x00FF));
+    BLFlags.NumBlocksExtUpgrade = (uint16_t)(((buf[4] << 8) & 0xFF00) | (buf[5] & 0x00FF));
+    BLFlags.StatusCodeExtUpgrade = (uint8_t)(buf[6] & 0x00FF);
+
+}
+
+void WriteBootloaderFlags(void){
+    uint8_t i = 0;
+    uint8_t buf[0x0020 + 0x0020 + 4];
+    uint16_t dbyte = 0;
+    uint16_t def_addr = 0x3FE0;
+
+        for (i = 0; i != 0x0020 + 0x0020; i += 2){
+            dbyte = FLASH_Read(def_addr);
+            buf[i+4] = (uint8_t)((dbyte & 0xFF00) >> 8);
+            buf[i+5] = (uint8_t)(dbyte & 0x00FF);
+            def_addr++;
+        }
+
+        buf[2] = (uint8_t)((0x3FE0 & 0xFF00) >> 8);
+        buf[3] = (uint8_t)(0x3FE0 & 0x00FF);
+
+    if (BLFlags.IsBLStart == 1){
+        buf[5] = 0x00;
+    } else {
+        buf[5] = 0xFF;
+    }
+
+    if (BLFlags.IsExtUpgrade == 1){
+        buf[7] = 0x00;
+    } else {
+        buf[7] = 0xFF;
+    }
+
+    buf[17] = BLFlags.StatusCodeExtUpgrade;
+
+
+    FLASH_Write(buf);
+
 
 }

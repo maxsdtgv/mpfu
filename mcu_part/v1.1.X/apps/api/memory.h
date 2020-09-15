@@ -20,6 +20,16 @@ extern "C" {
 //#define MAX_MEM_COUNT 	0x4000
 #define DELAY_WRITE_FLASH   0x000A   // means 10 ms
 #define FLAGS_VECTOR        0x3FE0  
+
+struct {
+    bool IsBLStart;
+    bool IsExtUpgrade;
+    uint16_t StartAddrExtUpgrade;
+    uint16_t NumBlocksExtUpgrade;
+    uint8_t StatusCodeExtUpgrade;
+} BLFlags = {false, false, 0, 0, 0};
+
+
 //bool FLASH_Erase(uint8_t*);
 
 uint16_t FLASH_Read(uint16_t);
@@ -40,6 +50,10 @@ Example:
             UART_data_write(data, sizeof(datas));
         }
 */
+
+void ReadBootloaderFlags(void);
+
+void WriteBootloaderFlags(void);
 
 #ifdef	__cplusplus
 }
