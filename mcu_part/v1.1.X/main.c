@@ -125,13 +125,16 @@ CLRWDT();                                   // Clear WDT;
                     processing_status = WriteToMem(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
-
                 case READ_FROM_SERIAL_EEPROM:   // 0x12 - Read from external serial eeprom
                     processing_status = ReadFromSerialEEPROM(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
-                case WRITE_TO_SERIAL_EEPROM:   // 0x14 - Read from external serial eeprom
+                case WRITE_TO_SERIAL_EEPROM:    // 0x14 - Read from external serial eeprom
                     processing_status = WriteToSerialEEPROM(recv_frame, send_frame); // Send_frame will be filled after execution
+                    break;
+
+                case START_APPLICATION:         // 0x0F - Exit Bootloader. GOTO to RV2 (see memory structure)
+                    StartApp();
                     break;
 
                 default:
@@ -145,7 +148,7 @@ CLRWDT();                                   // Clear WDT;
                 } 
 
                 UART_dataWrite(send_frame, send_frame[0]);          // Send frame to uart
-                processing_status = false;            // Finish processing
+                processing_status = false;                          // Finish processing
             ClearArray(recv_frame);
             ClearArray(send_frame);
                             

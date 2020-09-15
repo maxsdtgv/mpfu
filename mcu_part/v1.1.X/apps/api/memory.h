@@ -14,12 +14,12 @@ extern "C" {
 
 #include "../../main.h"
 
-//#define START_MEM_ADDR 	0x0
-//#define END_MEM_ADDR 	0x3FFF	
-#define MAX_BLOCK_SIZE 	0x0020
+//#define START_MEM_ADDR    0x0
+//#define END_MEM_ADDR      0x3FFF	
+#define MAX_BLOCK_SIZE      0x0020
 //#define MAX_MEM_COUNT 	0x4000
-#define DELAY_WRITE_FLASH 0x000A   // means 10 ms
-
+#define DELAY_WRITE_FLASH   0x000A   // means 10 ms
+#define FLAGS_VECTOR        0x3FE0  
 //bool FLASH_Erase(uint8_t*);
 
 uint16_t FLASH_Read(uint16_t);

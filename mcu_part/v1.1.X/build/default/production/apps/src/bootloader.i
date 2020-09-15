@@ -11248,7 +11248,7 @@ _Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
 _Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
 # 20 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/bootloader.h" 2
-# 43 "./apps/api/bootloader.h"
+# 47 "./apps/api/bootloader.h"
 void ClearArray(uint8_t*);
 
 _Bool DefineError(uint8_t*);
@@ -11260,6 +11260,8 @@ _Bool DefineError(uint8_t*);
 _Bool ReadFromMem(uint8_t*, uint8_t*);
 
 _Bool WriteToMem(uint8_t*, uint8_t*);
+
+void StartApp(void);
 # 2 "apps/src/bootloader.c" 2
 
 void ClearArray(uint8_t *array){
@@ -11272,22 +11274,18 @@ _Bool DefineError(uint8_t *send_frame){
  send_frame[1] = 0xFF;
  return 1;
 }
-# 37 "apps/src/bootloader.c"
+# 36 "apps/src/bootloader.c"
 _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
  uint8_t i = 0;
  uint16_t dbyte = 0;
  uint16_t def_addr = 0;
-
  def_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
-
  if (recv_frame[2] == 0x80){
   dbyte = FLASH_Read(def_addr);
   send_frame[2] = (uint8_t)((dbyte & 0xFF00) >> 8);
   send_frame[3] = (uint8_t)(dbyte & 0x00FF);
   i++; i++;
-
  } else {
-
   for (i = 0; i != 0x0020 + 0x0020; i += 2){
    dbyte = FLASH_Read(def_addr);
    send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
@@ -11295,7 +11293,6 @@ _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
    def_addr++;
   }
  }
-
  send_frame[0] = i + 2;
  send_frame[1] = 0x02;
  return 1;
@@ -11303,11 +11300,17 @@ _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 
 _Bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
  _Bool result;
-
  result = FLASH_Write(recv_frame);
  if (result) {
  send_frame[0] = 0x02;
  send_frame[1] = 0x04;
  }
  return result;
+}
+
+void StartApp(void){
+
+
+    __asm("pagesel " "0x3FFC");
+    __asm("goto " "0x3FFC");
 }
