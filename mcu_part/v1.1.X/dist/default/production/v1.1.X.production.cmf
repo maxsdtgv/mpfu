@@ -11,52 +11,53 @@
 # All addresses and the length are given in unqualified hexadecimal
 # in delta units.  Any other numeric values are decimal.
 %PSECTS
-$/tmp/xcXEpIadn.o
-reset_vec CODE 0 0 0 2 2
-end_init CODE 0 2 2 2 2
-config CONFIG 4 8007 8007 2 2
 $dist/default/production/v1.1.X.production.o
 cinit CODE 0 7FB 7FB 5 2
-text1 CODE 0 671 671 B2 2
-text2 CODE 0 398 398 1F 2
-text3 CODE 0 5D0 5D0 A1 2
-text4 CODE 0 2E0 2E0 9 2
-text5 CODE 0 362 362 18 2
-text6 CODE 0 2C1 2C1 5 2
-text7 CODE 0 424 424 30 2
-text8 CODE 0 31B 31B F 2
-text9 CODE 0 2BD 2BD 4 2
-text10 CODE 0 2E9 2E9 A 2
-text11 CODE 0 2B9 2B9 4 2
-text12 CODE 0 30C 30C F 2
-text13 CODE 0 32A 32A 10 2
-text14 CODE 0 2B5 2B5 4 2
-text15 CODE 0 2F3 2F3 C 2
-text16 CODE 0 454 454 3C 2
-text17 CODE 0 2D8 2D8 8 2
-text18 CODE 0 3D8 3D8 23 2
-text19 CODE 0 2D2 2D2 6 2
-text20 CODE 0 2CC 2CC 6 2
-text21 CODE 0 2C6 2C6 6 2
-text22 CODE 0 4DF 4DF 5B 2
-text23 CODE 0 37A 37A 1E 2
-text24 CODE 0 3B7 3B7 21 2
-text25 CODE 0 2FF 2FF D 2
-text26 CODE 0 490 490 4F 2
-text27 CODE 0 2B2 2B2 3 2
-text28 CODE 0 53A 53A 96 2
-text29 CODE 0 3FB 3FB 29 2
-text30 CODE 0 33A 33A 11 2
-text31 CODE 0 34B 34B 17 2
+text1 CODE 0 665 665 B2 2
+text2 CODE 0 38C 38C 1F 2
+text3 CODE 0 5C4 5C4 A1 2
+text4 CODE 0 2D4 2D4 9 2
+text5 CODE 0 356 356 18 2
+text6 CODE 0 2B5 2B5 5 2
+text7 CODE 0 418 418 30 2
+text8 CODE 0 30F 30F F 2
+text9 CODE 0 2B1 2B1 4 2
+text10 CODE 0 2DD 2DD A 2
+text11 CODE 0 2AD 2AD 4 2
+text12 CODE 0 300 300 F 2
+text13 CODE 0 2A6 2A6 3 2
+text14 CODE 0 31E 31E 10 2
+text15 CODE 0 2A9 2A9 4 2
+text16 CODE 0 2E7 2E7 C 2
+text17 CODE 0 448 448 3C 2
+text18 CODE 0 2CC 2CC 8 2
+text19 CODE 0 3CC 3CC 23 2
+text20 CODE 0 2C6 2C6 6 2
+text21 CODE 0 2C0 2C0 6 2
+text22 CODE 0 2BA 2BA 6 2
+text23 CODE 0 4D3 4D3 5B 2
+text24 CODE 0 36E 36E 1E 2
+text25 CODE 0 3AB 3AB 21 2
+text26 CODE 0 2F3 2F3 D 2
+text27 CODE 0 484 484 4F 2
+text28 CODE 0 2A3 2A3 3 2
+text29 CODE 0 52E 52E 96 2
+text30 CODE 0 3EF 3EF 29 2
+text31 CODE 0 32E 32E 11 2
+text32 CODE 0 33F 33F 17 2
 nvBANK0 BANK0 1 6B 6B 4 1
 nvBANK1 BANK1 1 E2 E2 2 1
-maintext CODE 0 723 723 D8 2
+maintext CODE 0 717 717 E4 2
 cstackCOMMON COMMON 1 70 70 E 1
 cstackBANK0 BANK0 1 20 20 4B 1
 cstackBANK1 BANK1 1 A0 A0 42 1
 cstackBANK2 BANK2 1 120 120 44 1
 stringtext1 STRCODE 0 800 800 4 2
 bssBANK0 BANK0 1 6F 6F 1 1
+config CONFIG 4 8007 8007 2 2
+$/tmp/xcXFGMNMl.o
+reset_vec CODE 0 0 0 2 2
+end_init CODE 0 2 2 2 2
 config CONFIG 4 8007 8007 2 2
 # %UNUSED Section
 # This section enumerates the unused ranges of each CLASS. Each entry
@@ -98,9 +99,9 @@ BANK6 320-36F 1
 BANK7 3A0-3EF 1
 BANK8 420-46F 1
 BANK9 4A0-4EF 1
-CONST 4-2B1 2
+CONST 4-2A2 2
 CONST 804-3FFF 2
-ENTRY 4-2B1 2
+ENTRY 4-2A2 2
 ENTRY 804-3FFF 2
 IDLOC 8000-8003 2
 SFR10 500-51F 1
@@ -126,7 +127,7 @@ SFR29 E80-EEF 1
 SFR30 F00-F6F 1
 SFR31 F80-FEF 1
 STACK 20E4-27EF 1
-CODE 4-2B1 2
+CODE 4-2A2 2
 CODE 804-3FFF 2
 SFR0 0-1F 1
 SFR1 80-9F 1
@@ -156,9 +157,9 @@ BANK24 C20-C6F 1
 BANK25 CA0-CBF 1
 BIGRAM 2000-27EF 1
 EEDATA F000-F0FF 2
-STRCODE 4-2B1 2
+STRCODE 4-2A2 2
 STRCODE 804-3FFF 2
-STRING 4-2B1 2
+STRING 4-2A2 2
 STRING 804-3FFF 2
 # %LINETAB Section
 # This section enumerates the file/line to address mappings.
@@ -174,364 +175,370 @@ STRING 804-3FFF 2
 # All other numeric values are in decimal.
 %LINETAB
 $dist/default/production/v1.1.X.production.o
-7FB cinit CODE >7078:/tmp/xcXMDCEGg.s
-7FB cinit CODE >7081:/tmp/xcXMDCEGg.s
-7FB cinit CODE >7093:/tmp/xcXMDCEGg.s
-7FC cinit CODE >7094:/tmp/xcXMDCEGg.s
-7FD cinit CODE >7100:/tmp/xcXMDCEGg.s
-7FD cinit CODE >7102:/tmp/xcXMDCEGg.s
-7FE cinit CODE >7103:/tmp/xcXMDCEGg.s
-34B text31 CODE >3:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-34B text31 CODE >4:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-34C text31 CODE >5:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-361 text31 CODE >6:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-33A text30 CODE >8:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-33B text30 CODE >9:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-342 text30 CODE >10:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-349 text30 CODE >11:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-34A text30 CODE >12:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-3FB text29 CODE >49:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-3FB text29 CODE >50:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-3FF text29 CODE >51:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-400 text29 CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-403 text29 CODE >54:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-405 text29 CODE >56:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-412 text29 CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-413 text29 CODE >58:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-414 text29 CODE >59:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-415 text29 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-415 text29 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-416 text29 CODE >64:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-417 text29 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-418 text29 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-419 text29 CODE >68:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-41E text29 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-423 text29 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-53A text28 CODE >37:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-53C text28 CODE >38:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-53D text28 CODE >40:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-53F text28 CODE >42:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-55E text28 CODE >44:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-569 text28 CODE >45:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-575 text28 CODE >46:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-57D text28 CODE >47:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-585 text28 CODE >48:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-58D text28 CODE >50:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-58E text28 CODE >52:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-58F text28 CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-59B text28 CODE >54:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-5A6 text28 CODE >55:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-5B1 text28 CODE >56:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-5B5 text28 CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-5BF text28 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-5C7 text28 CODE >61:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-5CE text28 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-5CF text28 CODE >63:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-2B2 text27 CODE >87:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2B2 text27 CODE >89:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2B4 text27 CODE >90:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-490 text26 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-491 text26 CODE >74:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-496 text26 CODE >76:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-4A5 text26 CODE >77:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-4B4 text26 CODE >78:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-4B5 text26 CODE >79:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-4C4 text26 CODE >80:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-4DC text26 CODE >81:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-4DE text26 CODE >85:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2FF text25 CODE >92:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-300 text25 CODE >94:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-303 text25 CODE >95:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-308 text25 CODE >96:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-309 text25 CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-30B text25 CODE >98:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-3B7 text24 CODE >122:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-3B8 text24 CODE >124:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-3BC text24 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-3BD text24 CODE >127:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-3CB text24 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-3D7 text24 CODE >129:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-37A text23 CODE >113:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-37B text23 CODE >115:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-37F text23 CODE >116:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-380 text23 CODE >118:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-38B text23 CODE >116:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-397 text23 CODE >120:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-4DF text22 CODE >4:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-4E1 text22 CODE >5:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-4E1 text22 CODE >9:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-4E5 text22 CODE >11:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-4EA text22 CODE >12:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-4F1 text22 CODE >13:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-4F8 text22 CODE >15:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-4FA text22 CODE >16:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-502 text22 CODE >17:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-50A text22 CODE >18:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-50C text22 CODE >19:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-50F text22 CODE >21:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-516 text22 CODE >22:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-51D text22 CODE >23:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-51F text22 CODE >24:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-52E text22 CODE >25:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-538 text22 CODE >27:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-539 text22 CODE >28:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-2C6 text21 CODE >165:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2C6 text21 CODE >166:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2CB text21 CODE >167:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2CC text20 CODE >157:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2CC text20 CODE >158:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2D1 text20 CODE >159:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2D2 text19 CODE >161:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2D2 text19 CODE >162:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2D7 text19 CODE >163:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3D8 text18 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3D8 text18 CODE >71:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3DB text18 CODE >74:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3DD text18 CODE >77:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3DF text18 CODE >80:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3E1 text18 CODE >83:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3E3 text18 CODE >86:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3EA text18 CODE >87:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3F1 text18 CODE >88:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3F8 text18 CODE >90:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-3FA text18 CODE >92:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2D8 text17 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-2D8 text17 CODE >63:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-2DB text17 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-2DC text17 CODE >67:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-2DD text17 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-2DF text17 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-454 text16 CODE >55:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-454 text16 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-456 text16 CODE >61:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-457 text16 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-458 text16 CODE >63:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-459 text16 CODE >64:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-45A text16 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-45D text16 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-45F text16 CODE >71:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-461 text16 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-463 text16 CODE >73:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-465 text16 CODE >78:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-468 text16 CODE >79:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-46A text16 CODE >80:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-46C text16 CODE >81:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-46D text16 CODE >82:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-46F text16 CODE >87:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-471 text16 CODE >88:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-472 text16 CODE >89:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-473 text16 CODE >90:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-474 text16 CODE >91:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-475 text16 CODE >92:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-477 text16 CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-479 text16 CODE >98:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-47A text16 CODE >99:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-47B text16 CODE >100:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-47C text16 CODE >101:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-47D text16 CODE >106:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-47F text16 CODE >107:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-480 text16 CODE >108:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-481 text16 CODE >109:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-482 text16 CODE >110:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-483 text16 CODE >115:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-485 text16 CODE >116:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-486 text16 CODE >117:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-488 text16 CODE >118:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-48A text16 CODE >119:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-48C text16 CODE >124:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-48E text16 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-48F text16 CODE >132:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
-2F3 text15 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2F3 text15 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2F6 text15 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2F8 text15 CODE >67:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2FA text15 CODE >68:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2FC text15 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2FE text15 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
-2B5 text14 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-2B5 text14 CODE >75:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-2B8 text14 CODE >76:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-32A text13 CODE >50:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-32A text13 CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-32D text13 CODE >54:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-330 text13 CODE >55:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-333 text13 CODE >56:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-336 text13 CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-339 text13 CODE >58:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
-30C text12 CODE >113:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-30C text12 CODE >115:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-30C text12 CODE >117:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-311 text12 CODE >119:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-312 text12 CODE >121:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-317 text12 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-318 text12 CODE >126:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-319 text12 CODE >129:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-31A text12 CODE >130:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2B9 text11 CODE >19:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-2B9 text11 CODE >20:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-2BC text11 CODE >21:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-2E9 text10 CODE >132:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2EA text10 CODE >134:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2EA text10 CODE >136:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2EF text10 CODE >138:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2F2 text10 CODE >139:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2BD text9 CODE >104:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2BD text9 CODE >106:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2C0 text9 CODE >107:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-31B text8 CODE >94:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-31B text8 CODE >96:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-329 text8 CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-424 text7 CODE >3:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-425 text7 CODE >4:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-425 text7 CODE >5:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-42D text7 CODE >6:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-431 text7 CODE >9:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-439 text7 CODE >10:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-43D text7 CODE >11:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-43F text7 CODE >12:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-449 text7 CODE >13:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-453 text7 CODE >17:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-2C1 text6 CODE >99:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2C1 text6 CODE >101:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-2C5 text6 CODE >102:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
-362 text5 CODE >23:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-362 text5 CODE >24:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-362 text5 CODE >25:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-36A text5 CODE >26:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-370 text5 CODE >27:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-376 text5 CODE >28:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-378 text5 CODE >31:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-379 text5 CODE >32:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
-2E0 text4 CODE >41:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-2E0 text4 CODE >42:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-2E3 text4 CODE >43:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-2E5 text4 CODE >44:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-2E6 text4 CODE >45:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-2E7 text4 CODE >46:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-2E8 text4 CODE >47:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5D0 text3 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5D1 text3 CODE >73:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5D5 text3 CODE >76:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5D6 text3 CODE >78:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5F5 text3 CODE >79:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5F8 text3 CODE >80:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5FA text3 CODE >82:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5FB text3 CODE >83:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5FC text3 CODE >84:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-5FD text3 CODE >86:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-608 text3 CODE >87:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-609 text3 CODE >88:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-610 text3 CODE >89:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-617 text3 CODE >90:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-618 text3 CODE >93:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-619 text3 CODE >94:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-61A text3 CODE >96:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-61D text3 CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-624 text3 CODE >99:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-629 text3 CODE >100:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-62B text3 CODE >101:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-62B text3 CODE >103:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-62C text3 CODE >104:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-62D text3 CODE >105:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-630 text3 CODE >106:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-632 text3 CODE >108:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-63C text3 CODE >109:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-646 text3 CODE >111:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-649 text3 CODE >113:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-64D text3 CODE >115:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-657 text3 CODE >116:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-659 text3 CODE >120:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-65C text3 CODE >121:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-663 text3 CODE >124:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-665 text3 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-66A text3 CODE >126:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-66F text3 CODE >129:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-670 text3 CODE >132:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
-398 text2 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-39A text2 CODE >68:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-3A2 text2 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-3A7 text2 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-3AE text2 CODE >71:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-3B5 text2 CODE >73:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-3B6 text2 CODE >74:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
-671 text1 CODE >30:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-673 text1 CODE >31:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-673 text1 CODE >35:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-677 text1 CODE >37:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-67C text1 CODE >38:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-67E text1 CODE >39:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-686 text1 CODE >40:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-688 text1 CODE >41:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-68F text1 CODE >43:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-694 text1 CODE >44:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-69B text1 CODE >45:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6A2 text1 CODE >46:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6A4 text1 CODE >47:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6AC text1 CODE >48:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6AE text1 CODE >49:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6B5 text1 CODE >51:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6BA text1 CODE >52:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6BC text1 CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6C4 text1 CODE >54:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6C6 text1 CODE >55:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6CD text1 CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6D2 text1 CODE >58:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6D9 text1 CODE >59:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6E0 text1 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6E4 text1 CODE >61:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6F3 text1 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6FD text1 CODE >63:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-6FF text1 CODE >64:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-707 text1 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-709 text1 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-710 text1 CODE >74:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-713 text1 CODE >75:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-71A text1 CODE >76:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-721 text1 CODE >77:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-722 text1 CODE >78:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
-723 maintext CODE >49:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-723 maintext CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-726 maintext CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-726 maintext CODE >58:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-726 maintext CODE >59:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-726 maintext CODE >61:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-72D maintext CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-734 maintext CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-736 maintext CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-737 maintext CODE >68:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-739 maintext CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-73B maintext CODE >83:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-73C maintext CODE >85:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-73C maintext CODE >89:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-73D maintext CODE >91:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-745 maintext CODE >93:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-747 maintext CODE >94:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-748 maintext CODE >96:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-750 maintext CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-75B maintext CODE >99:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-75C maintext CODE >100:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-75D maintext CODE >101:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-75D maintext CODE >102:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-761 maintext CODE >104:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-76D maintext CODE >105:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-77A maintext CODE >117:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-786 maintext CODE >118:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-787 maintext CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-793 maintext CODE >126:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-794 maintext CODE >130:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7A0 maintext CODE >131:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7A1 maintext CODE >134:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7AD maintext CODE >135:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7AE maintext CODE >138:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7B6 maintext CODE >139:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7CF maintext CODE >142:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7DA maintext CODE >144:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7DE maintext CODE >145:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7DE maintext CODE >147:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7E8 maintext CODE >148:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7E8 maintext CODE >149:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7EF maintext CODE >150:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
-7F6 maintext CODE >152:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7FB cinit CODE >7079:/tmp/xcXkecFOH.s
+7FB cinit CODE >7082:/tmp/xcXkecFOH.s
+7FB cinit CODE >7094:/tmp/xcXkecFOH.s
+7FC cinit CODE >7095:/tmp/xcXkecFOH.s
+7FD cinit CODE >7101:/tmp/xcXkecFOH.s
+7FD cinit CODE >7103:/tmp/xcXkecFOH.s
+7FE cinit CODE >7104:/tmp/xcXkecFOH.s
+33F text32 CODE >3:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+33F text32 CODE >4:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+340 text32 CODE >5:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+355 text32 CODE >6:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+32E text31 CODE >8:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+32F text31 CODE >9:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+336 text31 CODE >10:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+33D text31 CODE >11:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+33E text31 CODE >12:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+3EF text30 CODE >49:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+3EF text30 CODE >50:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+3F3 text30 CODE >51:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+3F4 text30 CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+3F7 text30 CODE >54:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+3F9 text30 CODE >56:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+406 text30 CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+407 text30 CODE >58:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+408 text30 CODE >59:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+409 text30 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+409 text30 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+40A text30 CODE >64:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+40B text30 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+40C text30 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+40D text30 CODE >68:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+412 text30 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+417 text30 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+52E text29 CODE >36:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+530 text29 CODE >37:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+531 text29 CODE >39:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+533 text29 CODE >40:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+552 text29 CODE >41:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+55D text29 CODE >42:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+569 text29 CODE >43:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+571 text29 CODE >44:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+579 text29 CODE >45:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+581 text29 CODE >46:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+582 text29 CODE >47:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+583 text29 CODE >48:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+58F text29 CODE >49:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+59A text29 CODE >50:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+5A5 text29 CODE >51:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+5A9 text29 CODE >52:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+5B3 text29 CODE >54:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+5BB text29 CODE >55:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+5C2 text29 CODE >56:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+5C3 text29 CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+2A3 text28 CODE >87:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2A3 text28 CODE >89:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2A5 text28 CODE >90:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+484 text27 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+485 text27 CODE >74:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+48A text27 CODE >76:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+499 text27 CODE >77:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+4A8 text27 CODE >78:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+4A9 text27 CODE >79:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+4B8 text27 CODE >80:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+4D0 text27 CODE >81:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+4D2 text27 CODE >85:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2F3 text26 CODE >92:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2F4 text26 CODE >94:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2F7 text26 CODE >95:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2FC text26 CODE >96:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2FD text26 CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2FF text26 CODE >98:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+3AB text25 CODE >122:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+3AC text25 CODE >124:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+3B0 text25 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+3B1 text25 CODE >127:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+3BF text25 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+3CB text25 CODE >129:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+36E text24 CODE >113:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+36F text24 CODE >115:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+373 text24 CODE >116:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+374 text24 CODE >118:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+37F text24 CODE >116:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+38B text24 CODE >120:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+4D3 text23 CODE >4:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4D5 text23 CODE >5:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4D5 text23 CODE >9:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4D9 text23 CODE >11:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4DE text23 CODE >12:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4E5 text23 CODE >13:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4EC text23 CODE >15:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4EE text23 CODE >16:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4F6 text23 CODE >17:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+4FE text23 CODE >18:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+500 text23 CODE >19:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+503 text23 CODE >21:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+50A text23 CODE >22:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+511 text23 CODE >23:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+513 text23 CODE >24:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+522 text23 CODE >25:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+52C text23 CODE >27:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+52D text23 CODE >28:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+2BA text22 CODE >165:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2BA text22 CODE >166:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2BF text22 CODE >167:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2C0 text21 CODE >157:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2C0 text21 CODE >158:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2C5 text21 CODE >159:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2C6 text20 CODE >161:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2C6 text20 CODE >162:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2CB text20 CODE >163:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3CC text19 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3CC text19 CODE >71:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3CF text19 CODE >74:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3D1 text19 CODE >77:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3D3 text19 CODE >80:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3D5 text19 CODE >83:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3D7 text19 CODE >86:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3DE text19 CODE >87:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3E5 text19 CODE >88:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3EC text19 CODE >90:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+3EE text19 CODE >92:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2CC text18 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+2CC text18 CODE >63:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+2CF text18 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+2D0 text18 CODE >67:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+2D1 text18 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+2D3 text18 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+448 text17 CODE >55:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+448 text17 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+44A text17 CODE >61:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+44B text17 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+44C text17 CODE >63:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+44D text17 CODE >64:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+44E text17 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+451 text17 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+453 text17 CODE >71:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+455 text17 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+457 text17 CODE >73:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+459 text17 CODE >78:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+45C text17 CODE >79:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+45E text17 CODE >80:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+460 text17 CODE >81:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+461 text17 CODE >82:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+463 text17 CODE >87:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+465 text17 CODE >88:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+466 text17 CODE >89:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+467 text17 CODE >90:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+468 text17 CODE >91:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+469 text17 CODE >92:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+46B text17 CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+46D text17 CODE >98:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+46E text17 CODE >99:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+46F text17 CODE >100:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+470 text17 CODE >101:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+471 text17 CODE >106:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+473 text17 CODE >107:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+474 text17 CODE >108:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+475 text17 CODE >109:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+476 text17 CODE >110:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+477 text17 CODE >115:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+479 text17 CODE >116:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+47A text17 CODE >117:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+47C text17 CODE >118:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+47E text17 CODE >119:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+480 text17 CODE >124:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+482 text17 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+483 text17 CODE >132:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/pin_manager.c
+2E7 text16 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2E7 text16 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2EA text16 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2EC text16 CODE >67:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2EE text16 CODE >68:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2F0 text16 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2F2 text16 CODE >70:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/spi.c
+2A9 text15 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+2A9 text15 CODE >75:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+2AC text15 CODE >76:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+31E text14 CODE >50:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+31E text14 CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+321 text14 CODE >54:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+324 text14 CODE >55:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+327 text14 CODE >56:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+32A text14 CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+32D text14 CODE >58:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/mcc.c
+2A6 text13 CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+2A6 text13 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+2A7 text13 CODE >73:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+2A8 text13 CODE >74:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+300 text12 CODE >113:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+300 text12 CODE >115:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+300 text12 CODE >117:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+305 text12 CODE >119:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+306 text12 CODE >121:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+30B text12 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+30C text12 CODE >126:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+30D text12 CODE >129:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+30E text12 CODE >130:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2AD text11 CODE >19:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+2AD text11 CODE >20:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+2B0 text11 CODE >21:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+2DD text10 CODE >132:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2DE text10 CODE >134:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2DE text10 CODE >136:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2E3 text10 CODE >138:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2E6 text10 CODE >139:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2B1 text9 CODE >104:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2B1 text9 CODE >106:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2B4 text9 CODE >107:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+30F text8 CODE >94:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+30F text8 CODE >96:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+31D text8 CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+418 text7 CODE >3:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+419 text7 CODE >4:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+419 text7 CODE >5:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+421 text7 CODE >6:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+425 text7 CODE >9:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+42D text7 CODE >10:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+431 text7 CODE >11:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+433 text7 CODE >12:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+43D text7 CODE >13:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+447 text7 CODE >17:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+2B5 text6 CODE >99:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2B5 text6 CODE >101:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+2B9 text6 CODE >102:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/mcc_generated_files/eusart.c
+356 text5 CODE >23:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+356 text5 CODE >24:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+356 text5 CODE >25:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+35E text5 CODE >26:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+364 text5 CODE >27:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+36A text5 CODE >28:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+36C text5 CODE >31:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+36D text5 CODE >32:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/serial.c
+2D4 text4 CODE >41:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+2D4 text4 CODE >42:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+2D7 text4 CODE >43:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+2D9 text4 CODE >44:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+2DA text4 CODE >45:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+2DB text4 CODE >46:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+2DC text4 CODE >47:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5C4 text3 CODE >72:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5C5 text3 CODE >73:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5C9 text3 CODE >76:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5CA text3 CODE >78:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5E9 text3 CODE >79:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5EC text3 CODE >80:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5EE text3 CODE >82:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5EF text3 CODE >83:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5F0 text3 CODE >84:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5F1 text3 CODE >86:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5FC text3 CODE >87:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+5FD text3 CODE >88:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+604 text3 CODE >89:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+60B text3 CODE >90:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+60C text3 CODE >93:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+60D text3 CODE >94:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+60E text3 CODE >96:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+611 text3 CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+618 text3 CODE >99:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+61D text3 CODE >100:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+61F text3 CODE >101:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+61F text3 CODE >103:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+620 text3 CODE >104:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+621 text3 CODE >105:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+624 text3 CODE >106:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+626 text3 CODE >108:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+630 text3 CODE >109:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+63A text3 CODE >111:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+63D text3 CODE >113:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+641 text3 CODE >115:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+64B text3 CODE >116:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+64D text3 CODE >120:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+650 text3 CODE >121:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+657 text3 CODE >124:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+659 text3 CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+65E text3 CODE >126:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+663 text3 CODE >129:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+664 text3 CODE >132:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/memory.c
+38C text2 CODE >59:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+38E text2 CODE >61:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+396 text2 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+39B text2 CODE >63:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+3A2 text2 CODE >64:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+3A9 text2 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+3AA text2 CODE >67:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/bootloader.c
+665 text1 CODE >30:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+667 text1 CODE >31:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+667 text1 CODE >35:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+66B text1 CODE >37:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+670 text1 CODE >38:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+672 text1 CODE >39:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+67A text1 CODE >40:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+67C text1 CODE >41:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+683 text1 CODE >43:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+688 text1 CODE >44:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+68F text1 CODE >45:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+696 text1 CODE >46:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+698 text1 CODE >47:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6A0 text1 CODE >48:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6A2 text1 CODE >49:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6A9 text1 CODE >51:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6AE text1 CODE >52:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6B0 text1 CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6B8 text1 CODE >54:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6BA text1 CODE >55:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6C1 text1 CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6C6 text1 CODE >58:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6CD text1 CODE >59:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6D4 text1 CODE >60:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6D8 text1 CODE >61:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6E7 text1 CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6F1 text1 CODE >63:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6F3 text1 CODE >64:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6FB text1 CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+6FD text1 CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+704 text1 CODE >74:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+707 text1 CODE >75:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+70E text1 CODE >76:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+715 text1 CODE >77:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+716 text1 CODE >78:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/apps/src/eeprom_25lc512.c
+717 maintext CODE >49:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+717 maintext CODE >53:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+71A maintext CODE >57:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+71A maintext CODE >58:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+71A maintext CODE >59:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+71C maintext CODE >61:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+723 maintext CODE >62:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+72A maintext CODE >65:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+72C maintext CODE >66:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+72D maintext CODE >68:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+72F maintext CODE >69:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+731 maintext CODE >83:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+732 maintext CODE >85:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+732 maintext CODE >89:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+733 maintext CODE >91:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+73B maintext CODE >93:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+73D maintext CODE >94:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+73E maintext CODE >96:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+746 maintext CODE >97:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+751 maintext CODE >99:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+752 maintext CODE >100:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+753 maintext CODE >101:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+753 maintext CODE >102:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+757 maintext CODE >104:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+763 maintext CODE >105:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+770 maintext CODE >117:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+77C maintext CODE >118:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+77D maintext CODE >125:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+789 maintext CODE >126:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+78A maintext CODE >129:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+796 maintext CODE >130:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+797 maintext CODE >133:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7A3 maintext CODE >134:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7A4 maintext CODE >137:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7A7 maintext CODE >138:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7A8 maintext CODE >141:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7B0 maintext CODE >142:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7CC maintext CODE >145:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7D8 maintext CODE >147:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7DC maintext CODE >148:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7DC maintext CODE >150:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7E6 maintext CODE >151:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7E8 maintext CODE >152:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7EF maintext CODE >153:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
+7F6 maintext CODE >155:/home/mvysochinenko/workspace_mplab/mpfu/mcu_part/v1.1.X/main.c
 # %SYMTAB Section
 # An enumeration of all symbols in the program.
 # The beginning of the section is indicated by %SYMTAB.
@@ -544,10 +551,10 @@ $dist/default/production/v1.1.X.production.o
 # was defined in a psect then <psect> will be "-". File-name
 # is the name of the object file in which the symbol was defined.
 %SYMTAB
-_UART_byteRead 572 0 CODE 0 text11 dist/default/production/v1.1.X.production.o
+_UART_byteRead 55A 0 CODE 0 text11 dist/default/production/v1.1.X.production.o
 ___latbits 3 0 ABS 0 - dist/default/production/v1.1.X.production.o
-_EUSART_Read 618 0 CODE 0 text12 dist/default/production/v1.1.X.production.o
-__end_of_ReadFromSerialEEPROM A74 0 CODE 0 text22 dist/default/production/v1.1.X.production.o
+_EUSART_Read 600 0 CODE 0 text12 dist/default/production/v1.1.X.production.o
+__end_of_ReadFromSerialEEPROM A5C 0 CODE 0 text23 dist/default/production/v1.1.X.production.o
 __Hspace_0 804 0 ABS 0 - -
 __Hspace_1 164 0 ABS 0 - -
 __Hspace_2 0 0 ABS 0 - -
@@ -556,11 +563,11 @@ __Hspace_4 10010 0 ABS 0 - -
 ReadFromMem@dbyte 23 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 __Heeprom_data 0 0 EEDATA 3 eeprom_data -
 __size_of_ReadFromMem 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-_ClearArray 696 0 CODE 0 text31 dist/default/production/v1.1.X.production.o
-__end_of_WDT_Initialize 572 0 CODE 0 text14 dist/default/production/v1.1.X.production.o
+_ClearArray 67E 0 CODE 0 text32 dist/default/production/v1.1.X.production.o
+__end_of_WDT_Initialize 55A 0 CODE 0 text15 dist/default/production/v1.1.X.production.o
 main@i 69 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 __Hstrings 0 0 ABS 0 strings -
-__end_of_EUSART_is_tx_ready 654 0 CODE 0 text8 dist/default/production/v1.1.X.production.o
+__end_of_EUSART_is_tx_ready 63C 0 CODE 0 text8 dist/default/production/v1.1.X.production.o
 _LATA 10C 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _LATB 10D 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _LATC 10E 0 ABS 0 - dist/default/production/v1.1.X.production.o
@@ -571,34 +578,34 @@ _WPUB 20D 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _WPUC 20E 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _WPUD 20F 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _WPUE 210 0 ABS 0 - dist/default/production/v1.1.X.production.o
-___sp 0 0 STACK 2 stack /tmp/xcXEpIadn.o
-_main E46 0 CODE 0 maintext dist/default/production/v1.1.X.production.o
+___sp 0 0 STACK 2 stack /tmp/xcXFGMNMl.o
+_main E2E 0 CODE 0 maintext dist/default/production/v1.1.X.production.o
 DefineError@send_frame 71 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 btemp 7E 0 ABS 0 - dist/default/production/v1.1.X.production.o
 ReadFromSerialEEPROM@SPI1 60 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 FLASH_Write@INR_state 77 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-start 4 0 CODE 0 init /tmp/xcXEpIadn.o
-_EUSART_Write 5D2 0 CODE 0 text10 dist/default/production/v1.1.X.production.o
+start 4 0 CODE 0 init /tmp/xcXFGMNMl.o
+_EUSART_Write 5BA 0 CODE 0 text10 dist/default/production/v1.1.X.production.o
 FLASH_Write@buffer 7B 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 __size_of_main 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_EUSART_SetFramingErrorHandler 5A4 0 CODE 0 text20 dist/default/production/v1.1.X.production.o
-__end_of_EUSART_SetOverrunErrorHandler 5B0 0 CODE 0 text19 dist/default/production/v1.1.X.production.o
-__end_of_SPI_Close 56A 0 CODE 0 text27 dist/default/production/v1.1.X.production.o
+__end_of_EUSART_SetFramingErrorHandler 58C 0 CODE 0 text21 dist/default/production/v1.1.X.production.o
+__end_of_EUSART_SetOverrunErrorHandler 598 0 CODE 0 text20 dist/default/production/v1.1.X.production.o
+__end_of_SPI_Close 54C 0 CODE 0 text28 dist/default/production/v1.1.X.production.o
 _OPTION_REGbits 95 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __size_of_SPI_Close 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_EUSART_Initialize 7F6 0 CODE 0 text18 dist/default/production/v1.1.X.production.o
+__end_of_EUSART_Initialize 7DE 0 CODE 0 text19 dist/default/production/v1.1.X.production.o
 __Hpowerup 0 0 CODE 0 powerup -
 main@processing_status 6A 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 ClearArray@array 70 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 __size_of_SYSTEM_Initialize 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-intlevel0 0 0 ENTRY 0 functab /tmp/xcXEpIadn.o
-intlevel1 0 0 ENTRY 0 functab /tmp/xcXEpIadn.o
-intlevel2 0 0 ENTRY 0 functab /tmp/xcXEpIadn.o
-intlevel3 0 0 ENTRY 0 functab /tmp/xcXEpIadn.o
-intlevel4 0 0 ENTRY 0 functab /tmp/xcXEpIadn.o
-intlevel5 0 0 ENTRY 0 functab /tmp/xcXEpIadn.o
-_EUSART_is_tx_ready 636 0 CODE 0 text8 dist/default/production/v1.1.X.production.o
-_SPI_Close 564 0 CODE 0 text27 dist/default/production/v1.1.X.production.o
+intlevel0 0 0 ENTRY 0 functab /tmp/xcXFGMNMl.o
+intlevel1 0 0 ENTRY 0 functab /tmp/xcXFGMNMl.o
+intlevel2 0 0 ENTRY 0 functab /tmp/xcXFGMNMl.o
+intlevel3 0 0 ENTRY 0 functab /tmp/xcXFGMNMl.o
+intlevel4 0 0 ENTRY 0 functab /tmp/xcXFGMNMl.o
+intlevel5 0 0 ENTRY 0 functab /tmp/xcXFGMNMl.o
+_EUSART_is_tx_ready 61E 0 CODE 0 text8 dist/default/production/v1.1.X.production.o
+_SPI_Close 546 0 CODE 0 text28 dist/default/production/v1.1.X.production.o
 wtemp0 7E 0 ABS 0 - dist/default/production/v1.1.X.production.o
 WriteToSerialEEPROM@SPI1 63 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 __Hfunctab 0 0 ENTRY 0 functab -
@@ -611,7 +618,7 @@ __Hclrtext 0 0 ABS 0 clrtext -
 __size_of_SPI_WriteBlock 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __size_of_WriteToSerialEEPROM 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __size_of_SPI_Initialize 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_ClearArray 6C4 0 CODE 0 text31 dist/default/production/v1.1.X.production.o
+__end_of_ClearArray 6AC 0 CODE 0 text32 dist/default/production/v1.1.X.production.o
 WriteToSerialEEPROM@buffer 20 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 _ANSELA 18C 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _ANSELB 18D 0 ABS 0 - dist/default/production/v1.1.X.production.o
@@ -622,9 +629,9 @@ _ANSELE 190 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __size_of_UART_byteRead 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _BORCON 116 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _EECON1bits 195 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_EUSART_is_rx_ready 58C 0 CODE 0 text6 dist/default/production/v1.1.X.production.o
-_SPI_ReadBlock 76E 0 CODE 0 text24 dist/default/production/v1.1.X.production.o
-__end_of_EUSART_Write 5E6 0 CODE 0 text10 dist/default/production/v1.1.X.production.o
+__end_of_EUSART_is_rx_ready 574 0 CODE 0 text6 dist/default/production/v1.1.X.production.o
+_SPI_ReadBlock 756 0 CODE 0 text25 dist/default/production/v1.1.X.production.o
+__end_of_EUSART_Write 5CE 0 CODE 0 text10 dist/default/production/v1.1.X.production.o
 _EEADRH 192 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _EEADRL 191 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _EECON2 196 0 ABS 0 - dist/default/production/v1.1.X.production.o
@@ -635,20 +642,20 @@ __Lmaintext 0 0 ABS 0 maintext -
 ReadFromSerialEEPROM@send_frame 76 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 __LnvBANK0 0 0 ABS 0 nvBANK0 -
 __LnvBANK1 0 0 ABS 0 nvBANK1 -
-__end_of_DefineError 696 0 CODE 0 text30 dist/default/production/v1.1.X.production.o
+__end_of_DefineError 67E 0 CODE 0 text31 dist/default/production/v1.1.X.production.o
 _INLVLA 38C 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _INLVLB 38D 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _INLVLC 38E 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _INLVLD 38F 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _INLVLE 390 0 ABS 0 - dist/default/production/v1.1.X.production.o
-___stackhi 27EF 0 ABS 0 - /tmp/xcXEpIadn.o
-___stacklo 20E4 0 ABS 0 - /tmp/xcXEpIadn.o
-__end_of_UART_byteRead 57A 0 CODE 0 text11 dist/default/production/v1.1.X.production.o
-_WriteToSerialEEPROM CE2 0 CODE 0 text1 dist/default/production/v1.1.X.production.o
-_EUSART_Initialize 7B0 0 CODE 0 text18 dist/default/production/v1.1.X.production.o
-__end_of_FLASH_Write CE2 0 CODE 0 text3 dist/default/production/v1.1.X.production.o
-_EUSART_is_rx_ready 582 0 CODE 0 text6 dist/default/production/v1.1.X.production.o
-_PIN_MANAGER_Initialize 8A8 0 CODE 0 text16 dist/default/production/v1.1.X.production.o
+___stackhi 27EF 0 ABS 0 - /tmp/xcXFGMNMl.o
+___stacklo 20E4 0 ABS 0 - /tmp/xcXFGMNMl.o
+__end_of_UART_byteRead 562 0 CODE 0 text11 dist/default/production/v1.1.X.production.o
+_WriteToSerialEEPROM CCA 0 CODE 0 text1 dist/default/production/v1.1.X.production.o
+_EUSART_Initialize 798 0 CODE 0 text19 dist/default/production/v1.1.X.production.o
+__end_of_FLASH_Write CCA 0 CODE 0 text3 dist/default/production/v1.1.X.production.o
+_EUSART_is_rx_ready 56A 0 CODE 0 text6 dist/default/production/v1.1.X.production.o
+_PIN_MANAGER_Initialize 890 0 CODE 0 text17 dist/default/production/v1.1.X.production.o
 start_initialization FF6 0 CODE 0 cinit dist/default/production/v1.1.X.production.o
 __size_of_UART_dataWrite 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _ODCONA 28C 0 ABS 0 - dist/default/production/v1.1.X.production.o
@@ -657,7 +664,7 @@ _ODCONC 28E 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _ODCOND 28F 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _ODCONE 290 0 ABS 0 - dist/default/production/v1.1.X.production.o
 FLASH_Write@writeAddr 78 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-_EUSART_SetErrorHandler 58C 0 CODE 0 text21 dist/default/production/v1.1.X.production.o
+_EUSART_SetErrorHandler 574 0 CODE 0 text22 dist/default/production/v1.1.X.production.o
 _OSCCON 99 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _TRISCbits 8E 0 ABS 0 - dist/default/production/v1.1.X.production.o
 EUSART_SetOverrunErrorHandler@interruptHandler 70 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
@@ -666,20 +673,20 @@ _RC1REG 199 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _RC1STA 19D 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __size_of_EUSART_SetFramingErrorHandler 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __size_of_EUSART_SetOverrunErrorHandler 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_SYSTEM_Initialize 674 0 CODE 0 text13 dist/default/production/v1.1.X.production.o
+__end_of_SYSTEM_Initialize 65C 0 CODE 0 text14 dist/default/production/v1.1.X.production.o
 __pcstackBANK0 20 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 __pcstackBANK1 A0 0 BANK1 1 cstackBANK1 dist/default/production/v1.1.X.production.o
 __pcstackBANK2 120 0 BANK2 1 cstackBANK2 dist/default/production/v1.1.X.production.o
 ReadFromSerialEEPROM@buffer 20 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
-_ReadFromMem A74 0 CODE 0 text28 dist/default/production/v1.1.X.production.o
+_ReadFromMem A5C 0 CODE 0 text29 dist/default/production/v1.1.X.production.o
 _TX1REG 19A 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _TX1STA 19E 0 ABS 0 - dist/default/production/v1.1.X.production.o
 UART_preamFound@byte 71 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-_WriteToMem 730 0 CODE 0 text2 dist/default/production/v1.1.X.production.o
+_WriteToMem 718 0 CODE 0 text2 dist/default/production/v1.1.X.production.o
 _WDTCON 97 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __size_of_SPI_Open 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-___int_sp 0 0 STACK 2 stack /tmp/xcXEpIadn.o
-__end_of_EUSART_Read 636 0 CODE 0 text12 dist/default/production/v1.1.X.production.o
+___int_sp 0 0 STACK 2 stack /tmp/xcXFGMNMl.o
+__end_of_EUSART_Read 61E 0 CODE 0 text12 dist/default/production/v1.1.X.production.o
 __Hbank0 0 0 ABS 0 bank0 -
 __Hbank1 0 0 ABS 0 bank1 -
 __Hbank2 0 0 ABS 0 bank2 -
@@ -740,11 +747,11 @@ __Hbank30 0 0 BANK30 1 bank30 -
 __Hbank31 0 0 BANK31 1 bank31 -
 __Hbigram 0 0 ABS 0 bigram -
 __Hmaintext 0 0 ABS 0 maintext -
-__end_of_UART_preamFound 6F4 0 CODE 0 text5 dist/default/production/v1.1.X.production.o
+__end_of_UART_preamFound 6DC 0 CODE 0 text5 dist/default/production/v1.1.X.production.o
 _BAUD1CON 19F 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __Hcommon 0 0 ABS 0 common -
 __Hconfig 10012 0 CONFIG 4 config -
-_ReadFromSerialEEPROM 9BE 0 CODE 0 text22 dist/default/production/v1.1.X.production.o
+_ReadFromSerialEEPROM 9A6 0 CODE 0 text23 dist/default/production/v1.1.X.production.o
 __Lbank0 0 0 ABS 0 bank0 -
 __Lbank1 0 0 ABS 0 bank1 -
 __Lbank2 0 0 ABS 0 bank2 -
@@ -756,6 +763,7 @@ __Lbank7 0 0 ABS 0 bank7 -
 __Lbank8 0 0 ABS 0 bank8 -
 __Lbank9 0 0 ABS 0 bank9 -
 __Lcinit FF6 0 CODE 0 cinit -
+__size_of_StartApp 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 EUSART_SetErrorHandler@interruptHandler 70 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 __Lsfr10 0 0 ABS 0 sfr10 -
 __Lsfr11 0 0 ABS 0 sfr11 -
@@ -780,7 +788,7 @@ __Lsfr29 0 0 ABS 0 sfr29 -
 __Lsfr30 0 0 ABS 0 sfr30 -
 __Lsfr31 0 0 ABS 0 sfr31 -
 __Lstack 0 0 STACK 2 stack -
-_SPI_ExchangeByte 5FE 0 CODE 0 text25 dist/default/production/v1.1.X.production.o
+_SPI_ExchangeByte 5E6 0 CODE 0 text26 dist/default/production/v1.1.X.production.o
 _APFCON1 11D 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _APFCON2 11C 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _INTCONbits B 0 ABS 0 - dist/default/production/v1.1.X.production.o
@@ -821,7 +829,7 @@ _SSP1STAT 214 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __LcstackBANK0 0 0 ABS 0 cstackBANK0 -
 __LcstackBANK1 0 0 ABS 0 cstackBANK1 -
 __LcstackBANK2 0 0 ABS 0 cstackBANK2 -
-__end_of_WriteToSerialEEPROM E46 0 CODE 0 text1 dist/default/production/v1.1.X.production.o
+__end_of_WriteToSerialEEPROM E2E 0 CODE 0 text1 dist/default/production/v1.1.X.production.o
 __HcstackCOMMON 0 0 ABS 0 cstackCOMMON -
 __size_of_WDT_Initialize 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 FLASH_Read@addr 70 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
@@ -831,53 +839,56 @@ __S2 0 0 ABS 0 - -
 __S3 0 0 ABS 0 - -
 ReadFromSerialEEPROM@recv_frame 61 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 __size_of_ClearArray 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_SPI_ReadBlock 7B0 0 CODE 0 text24 dist/default/production/v1.1.X.production.o
+__end_of_SPI_ReadBlock 798 0 CODE 0 text25 dist/default/production/v1.1.X.production.o
 FLASH_Write@i 7A 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 SPI_Open@spiUniqueConfiguration 73 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 __size_of_EUSART_is_tx_ready 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_WriteToMem 76E 0 CODE 0 text2 dist/default/production/v1.1.X.production.o
-_SPI_Open 920 0 CODE 0 text26 dist/default/production/v1.1.X.production.o
+__end_of_WriteToMem 756 0 CODE 0 text2 dist/default/production/v1.1.X.production.o
+_SPI_Open 908 0 CODE 0 text27 dist/default/production/v1.1.X.production.o
 __size_of_DefineError 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-_SYSTEM_Initialize 654 0 CODE 0 text13 dist/default/production/v1.1.X.production.o
-_UART_preamFound 6C4 0 CODE 0 text5 dist/default/production/v1.1.X.production.o
-__end_of_SPI_Open 9BE 0 CODE 0 text26 dist/default/production/v1.1.X.production.o
+_SYSTEM_Initialize 63C 0 CODE 0 text14 dist/default/production/v1.1.X.production.o
+_UART_preamFound 6AC 0 CODE 0 text5 dist/default/production/v1.1.X.production.o
+__end_of_SPI_Open 9A6 0 CODE 0 text27 dist/default/production/v1.1.X.production.o
 __HnvBANK0 0 0 ABS 0 nvBANK0 -
 __HnvBANK1 0 0 ABS 0 nvBANK1 -
 __Lintentry 4 0 CODE 0 intentry -
 __size_of_EUSART_is_tx_done 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 WriteToMem@send_frame 7C 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-reset_vec 0 0 CODE 0 reset_vec /tmp/xcXEpIadn.o
+reset_vec 0 0 CODE 0 reset_vec /tmp/xcXFGMNMl.o
 __size_of_FLASH_Write 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 SPI_ReadBlock@blockSize 71 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-_UnlockFlashWrite 5C0 0 CODE 0 text4 dist/default/production/v1.1.X.production.o
+_StartApp 54C 0 CODE 0 text13 dist/default/production/v1.1.X.production.o
+_UnlockFlashWrite 5A8 0 CODE 0 text4 dist/default/production/v1.1.X.production.o
 __LbssBANK0 0 0 ABS 0 bssBANK0 -
 ReadFromMem@recv_frame 22 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 __Lstringtext1 0 0 ABS 0 stringtext1 -
 UART_dataWrite@i 74 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
+__end_of_StartApp 552 0 CODE 0 text13 dist/default/production/v1.1.X.production.o
 EUSART_SetFramingErrorHandler@interruptHandler 70 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-__ptext10 5D2 0 CODE 0 text10 dist/default/production/v1.1.X.production.o
-__ptext11 572 0 CODE 0 text11 dist/default/production/v1.1.X.production.o
-__ptext12 618 0 CODE 0 text12 dist/default/production/v1.1.X.production.o
-__ptext13 654 0 CODE 0 text13 dist/default/production/v1.1.X.production.o
-__ptext14 56A 0 CODE 0 text14 dist/default/production/v1.1.X.production.o
-__ptext15 5E6 0 CODE 0 text15 dist/default/production/v1.1.X.production.o
-__ptext16 8A8 0 CODE 0 text16 dist/default/production/v1.1.X.production.o
-__ptext17 5B0 0 CODE 0 text17 dist/default/production/v1.1.X.production.o
-__ptext18 7B0 0 CODE 0 text18 dist/default/production/v1.1.X.production.o
-__ptext19 5A4 0 CODE 0 text19 dist/default/production/v1.1.X.production.o
-__ptext20 598 0 CODE 0 text20 dist/default/production/v1.1.X.production.o
-__ptext21 58C 0 CODE 0 text21 dist/default/production/v1.1.X.production.o
-__ptext22 9BE 0 CODE 0 text22 dist/default/production/v1.1.X.production.o
-__ptext23 6F4 0 CODE 0 text23 dist/default/production/v1.1.X.production.o
-__ptext24 76E 0 CODE 0 text24 dist/default/production/v1.1.X.production.o
-__ptext25 5FE 0 CODE 0 text25 dist/default/production/v1.1.X.production.o
-__ptext26 920 0 CODE 0 text26 dist/default/production/v1.1.X.production.o
-__ptext27 564 0 CODE 0 text27 dist/default/production/v1.1.X.production.o
-__ptext28 A74 0 CODE 0 text28 dist/default/production/v1.1.X.production.o
-__ptext29 7F6 0 CODE 0 text29 dist/default/production/v1.1.X.production.o
-__ptext30 674 0 CODE 0 text30 dist/default/production/v1.1.X.production.o
-__ptext31 696 0 CODE 0 text31 dist/default/production/v1.1.X.production.o
-__end_of_PIN_MANAGER_Initialize 920 0 CODE 0 text16 dist/default/production/v1.1.X.production.o
+__ptext10 5BA 0 CODE 0 text10 dist/default/production/v1.1.X.production.o
+__ptext11 55A 0 CODE 0 text11 dist/default/production/v1.1.X.production.o
+__ptext12 600 0 CODE 0 text12 dist/default/production/v1.1.X.production.o
+__ptext13 54C 0 CODE 0 text13 dist/default/production/v1.1.X.production.o
+__ptext14 63C 0 CODE 0 text14 dist/default/production/v1.1.X.production.o
+__ptext15 552 0 CODE 0 text15 dist/default/production/v1.1.X.production.o
+__ptext16 5CE 0 CODE 0 text16 dist/default/production/v1.1.X.production.o
+__ptext17 890 0 CODE 0 text17 dist/default/production/v1.1.X.production.o
+__ptext18 598 0 CODE 0 text18 dist/default/production/v1.1.X.production.o
+__ptext19 798 0 CODE 0 text19 dist/default/production/v1.1.X.production.o
+__ptext20 58C 0 CODE 0 text20 dist/default/production/v1.1.X.production.o
+__ptext21 580 0 CODE 0 text21 dist/default/production/v1.1.X.production.o
+__ptext22 574 0 CODE 0 text22 dist/default/production/v1.1.X.production.o
+__ptext23 9A6 0 CODE 0 text23 dist/default/production/v1.1.X.production.o
+__ptext24 6DC 0 CODE 0 text24 dist/default/production/v1.1.X.production.o
+__ptext25 756 0 CODE 0 text25 dist/default/production/v1.1.X.production.o
+__ptext26 5E6 0 CODE 0 text26 dist/default/production/v1.1.X.production.o
+__ptext27 908 0 CODE 0 text27 dist/default/production/v1.1.X.production.o
+__ptext28 546 0 CODE 0 text28 dist/default/production/v1.1.X.production.o
+__ptext29 A5C 0 CODE 0 text29 dist/default/production/v1.1.X.production.o
+__ptext30 7DE 0 CODE 0 text30 dist/default/production/v1.1.X.production.o
+__ptext31 65C 0 CODE 0 text31 dist/default/production/v1.1.X.production.o
+__ptext32 67E 0 CODE 0 text32 dist/default/production/v1.1.X.production.o
+__end_of_PIN_MANAGER_Initialize 908 0 CODE 0 text17 dist/default/production/v1.1.X.production.o
 __Lbank10 0 0 ABS 0 bank10 -
 __Lbank11 0 0 ABS 0 bank11 -
 __Lbank12 0 0 ABS 0 bank12 -
@@ -900,12 +911,12 @@ __Lbank28 0 0 BANK28 1 bank28 -
 __Lbank29 0 0 BANK29 1 bank29 -
 __Lbank30 0 0 BANK30 1 bank30 -
 __Lbank31 0 0 BANK31 1 bank31 -
-_SPI_WriteBlock 6F4 0 CODE 0 text23 dist/default/production/v1.1.X.production.o
-__pmaintext E46 0 CODE 0 maintext dist/default/production/v1.1.X.production.o
+_SPI_WriteBlock 6DC 0 CODE 0 text24 dist/default/production/v1.1.X.production.o
+__pmaintext E2E 0 CODE 0 maintext dist/default/production/v1.1.X.production.o
 __Lbigram 0 0 ABS 0 bigram -
-_SPI_Initialize 5E6 0 CODE 0 text15 dist/default/production/v1.1.X.production.o
-__end_of_SPI_ExchangeByte 618 0 CODE 0 text25 dist/default/production/v1.1.X.production.o
-__end_of_EUSART_SetErrorHandler 598 0 CODE 0 text21 dist/default/production/v1.1.X.production.o
+_SPI_Initialize 5CE 0 CODE 0 text16 dist/default/production/v1.1.X.production.o
+__end_of_SPI_ExchangeByte 600 0 CODE 0 text26 dist/default/production/v1.1.X.production.o
+__end_of_EUSART_SetErrorHandler 580 0 CODE 0 text22 dist/default/production/v1.1.X.production.o
 SPI_ExchangeByte@data 70 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 __Lcommon 0 0 ABS 0 common -
 __Lconfig 0 0 CONFIG 4 config -
@@ -937,35 +948,35 @@ _EUSART_DefaultErrorHandler 0 0 ABS 0 - dist/default/production/v1.1.X.productio
 __end_of_spi_configuration 1008 0 STRCODE 0 stringtext1 dist/default/production/v1.1.X.production.o
 ReadFromMem@def_addr 20 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 __LcstackCOMMON 0 0 ABS 0 cstackCOMMON -
-_FLASH_Read 7F6 0 CODE 0 text29 dist/default/production/v1.1.X.production.o
+_FLASH_Read 7DE 0 CODE 0 text30 dist/default/production/v1.1.X.production.o
 ReadFromMem@i 25 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
-_EUSART_SetFramingErrorHandler 598 0 CODE 0 text20 dist/default/production/v1.1.X.production.o
+_EUSART_SetFramingErrorHandler 580 0 CODE 0 text21 dist/default/production/v1.1.X.production.o
 __size_of_UART_preamFound 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-_EUSART_SetOverrunErrorHandler 5A4 0 CODE 0 text19 dist/default/production/v1.1.X.production.o
+_EUSART_SetOverrunErrorHandler 58C 0 CODE 0 text20 dist/default/production/v1.1.X.production.o
 end_of_initialization FFA 0 CODE 0 cinit dist/default/production/v1.1.X.production.o
 __Hintentry 4 0 CODE 0 intentry -
-__end_of_SPI_WriteBlock 730 0 CODE 0 text23 dist/default/production/v1.1.X.production.o
+__end_of_SPI_WriteBlock 718 0 CODE 0 text24 dist/default/production/v1.1.X.production.o
 _TX1STAbits 19E 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_SPI_Initialize 5FE 0 CODE 0 text15 dist/default/production/v1.1.X.production.o
+__end_of_SPI_Initialize 5E6 0 CODE 0 text16 dist/default/production/v1.1.X.production.o
 __Lstrings 0 0 ABS 0 strings -
-__end_of_UnlockFlashWrite 5D2 0 CODE 0 text4 dist/default/production/v1.1.X.production.o
+__end_of_UnlockFlashWrite 5BA 0 CODE 0 text4 dist/default/production/v1.1.X.production.o
 main@send_frame A0 0 BANK1 1 cstackBANK1 dist/default/production/v1.1.X.production.o
 __Hreset_vec 4 0 CODE 0 reset_vec -
 __HbssBANK0 0 0 ABS 0 bssBANK0 -
 FLASH_Read@INR_state 74 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-_UART_dataWrite 848 0 CODE 0 text7 dist/default/production/v1.1.X.production.o
-__end_of_ReadFromMem BA0 0 CODE 0 text28 dist/default/production/v1.1.X.production.o
+_UART_dataWrite 830 0 CODE 0 text7 dist/default/production/v1.1.X.production.o
+__end_of_ReadFromMem B88 0 CODE 0 text29 dist/default/production/v1.1.X.production.o
 __size_of_UnlockFlashWrite 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__ptext1 CE2 0 CODE 0 text1 dist/default/production/v1.1.X.production.o
-__ptext2 730 0 CODE 0 text2 dist/default/production/v1.1.X.production.o
-__ptext3 BA0 0 CODE 0 text3 dist/default/production/v1.1.X.production.o
-__ptext4 5C0 0 CODE 0 text4 dist/default/production/v1.1.X.production.o
-__ptext5 6C4 0 CODE 0 text5 dist/default/production/v1.1.X.production.o
-__ptext6 582 0 CODE 0 text6 dist/default/production/v1.1.X.production.o
-__ptext7 848 0 CODE 0 text7 dist/default/production/v1.1.X.production.o
-__ptext8 636 0 CODE 0 text8 dist/default/production/v1.1.X.production.o
-__ptext9 57A 0 CODE 0 text9 dist/default/production/v1.1.X.production.o
-__end_of_EUSART_is_tx_done 582 0 CODE 0 text9 dist/default/production/v1.1.X.production.o
+__ptext1 CCA 0 CODE 0 text1 dist/default/production/v1.1.X.production.o
+__ptext2 718 0 CODE 0 text2 dist/default/production/v1.1.X.production.o
+__ptext3 B88 0 CODE 0 text3 dist/default/production/v1.1.X.production.o
+__ptext4 5A8 0 CODE 0 text4 dist/default/production/v1.1.X.production.o
+__ptext5 6AC 0 CODE 0 text5 dist/default/production/v1.1.X.production.o
+__ptext6 56A 0 CODE 0 text6 dist/default/production/v1.1.X.production.o
+__ptext7 830 0 CODE 0 text7 dist/default/production/v1.1.X.production.o
+__ptext8 61E 0 CODE 0 text8 dist/default/production/v1.1.X.production.o
+__ptext9 562 0 CODE 0 text9 dist/default/production/v1.1.X.production.o
+__end_of_EUSART_is_tx_done 56A 0 CODE 0 text9 dist/default/production/v1.1.X.production.o
 __Lpowerup 0 0 CODE 0 powerup -
 __Leeprom_data 0 0 EEDATA 3 eeprom_data -
 WriteToMem@recv_frame 20 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
@@ -982,19 +993,19 @@ EUSART_Write@txData 70 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.pr
 __end_of__initialization FFA 0 CODE 0 cinit dist/default/production/v1.1.X.production.o
 __Lfunctab 0 0 ENTRY 0 functab -
 SPI_ReadBlock@data 75 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-__end_of_FLASH_Read 848 0 CODE 0 text29 dist/default/production/v1.1.X.production.o
+__end_of_FLASH_Read 830 0 CODE 0 text30 dist/default/production/v1.1.X.production.o
 _SP1BRGH 19C 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _SP1BRGL 19B 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __Lclrtext 0 0 ABS 0 clrtext -
 _SSP1CON1bits 215 0 ABS 0 - dist/default/production/v1.1.X.production.o
-_DefineError 674 0 CODE 0 text30 dist/default/production/v1.1.X.production.o
+_DefineError 65C 0 CODE 0 text31 dist/default/production/v1.1.X.production.o
 WriteToSerialEEPROM@i 64 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
 __size_of_EUSART_Initialize 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 __pcstackCOMMON 70 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-__end_of_UART_dataWrite 8A8 0 CODE 0 text7 dist/default/production/v1.1.X.production.o
+__end_of_UART_dataWrite 890 0 CODE 0 text7 dist/default/production/v1.1.X.production.o
 _SSP1ADD 212 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _SSP1BUF 211 0 ABS 0 - dist/default/production/v1.1.X.production.o
-_FLASH_Write BA0 0 CODE 0 text3 dist/default/production/v1.1.X.production.o
+_FLASH_Write B88 0 CODE 0 text3 dist/default/production/v1.1.X.production.o
 __Hend_init 8 0 CODE 0 end_init -
 _spi_configuration 1000 0 STRCODE 0 stringtext1 dist/default/production/v1.1.X.production.o
 WriteToMem@result 21 0 BANK0 1 cstackBANK0 dist/default/production/v1.1.X.production.o
@@ -1009,19 +1020,19 @@ __Hram 0 0 ABS 0 ram -
 __Lram 0 0 ABS 0 ram -
 __size_of_PIN_MANAGER_Initialize 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 _eusartRxLastError 6F 0 BANK0 1 bssBANK0 dist/default/production/v1.1.X.production.o
-_WDT_Initialize 56A 0 CODE 0 text14 dist/default/production/v1.1.X.production.o
+_WDT_Initialize 552 0 CODE 0 text15 dist/default/production/v1.1.X.production.o
 __size_of_EUSART_SetErrorHandler 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
-__end_of_OSCILLATOR_Initialize 5C0 0 CODE 0 text17 dist/default/production/v1.1.X.production.o
+__end_of_OSCILLATOR_Initialize 5A8 0 CODE 0 text18 dist/default/production/v1.1.X.production.o
 __initialization FF6 0 CODE 0 cinit dist/default/production/v1.1.X.production.o
 SPI_WriteBlock@data 74 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 __pbssBANK0 6F 0 BANK0 1 bssBANK0 dist/default/production/v1.1.X.production.o
 __size_of_ReadFromSerialEEPROM 0 0 ABS 0 - dist/default/production/v1.1.X.production.o
 SPI_ReadBlock@block 74 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
-_EUSART_is_tx_done 57A 0 CODE 0 text9 dist/default/production/v1.1.X.production.o
+_EUSART_is_tx_done 562 0 CODE 0 text9 dist/default/production/v1.1.X.production.o
 ClearArray@i 74 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 WriteToSerialEEPROM@send_frame 76 0 COMMON 1 cstackCOMMON dist/default/production/v1.1.X.production.o
 main@recv_frame 120 0 BANK2 1 cstackBANK2 dist/default/production/v1.1.X.production.o
-_OSCILLATOR_Initialize 5B0 0 CODE 0 text17 dist/default/production/v1.1.X.production.o
+_OSCILLATOR_Initialize 598 0 CODE 0 text18 dist/default/production/v1.1.X.production.o
 # %SPLITSTAB Section
 # This section enumerates all the psect splits performed by the assembler.
 # The beginning of the section is indicated by %SPLITSTAB.
@@ -1048,38 +1059,39 @@ _OSCILLATOR_Initialize 5B0 0 CODE 0 text17 dist/default/production/v1.1.X.produc
 # All other numeric quantities are in decimal.
 %SEGMENTS
 cinit 0 7FB FF6 5 2
-text1 0 671 CE2 B2 2
-text2 0 398 730 1F 2
-text3 0 5D0 BA0 A1 2
-text4 0 2E0 5C0 9 2
-text5 0 362 6C4 18 2
-text6 0 2C1 582 5 2
-text7 0 424 848 30 2
-text8 0 31B 636 F 2
-text9 0 2BD 57A 4 2
-text10 0 2E9 5D2 A 2
-text11 0 2B9 572 4 2
-text12 0 30C 618 F 2
-text13 0 32A 654 10 2
-text14 0 2B5 56A 4 2
-text15 0 2F3 5E6 C 2
-text16 0 454 8A8 3C 2
-text17 0 2D8 5B0 8 2
-text18 0 3D8 7B0 23 2
-text19 0 2D2 5A4 6 2
-text20 0 2CC 598 6 2
-text21 0 2C6 58C 6 2
-text22 0 4DF 9BE 5B 2
-text23 0 37A 6F4 1E 2
-text24 0 3B7 76E 21 2
-text25 0 2FF 5FE D 2
-text26 0 490 920 4F 2
-text27 0 2B2 564 3 2
-text28 0 53A A74 96 2
-text29 0 3FB 7F6 29 2
-text30 0 33A 674 11 2
-text31 0 34B 696 17 2
-maintext 0 723 E46 D8 2
+text1 0 665 CCA B2 2
+text2 0 38C 718 1F 2
+text3 0 5C4 B88 A1 2
+text4 0 2D4 5A8 9 2
+text5 0 356 6AC 18 2
+text6 0 2B5 56A 5 2
+text7 0 418 830 30 2
+text8 0 30F 61E F 2
+text9 0 2B1 562 4 2
+text10 0 2DD 5BA A 2
+text11 0 2AD 55A 4 2
+text12 0 300 600 F 2
+text13 0 2A6 54C 3 2
+text14 0 31E 63C 10 2
+text15 0 2A9 552 4 2
+text16 0 2E7 5CE C 2
+text17 0 448 890 3C 2
+text18 0 2CC 598 8 2
+text19 0 3CC 798 23 2
+text20 0 2C6 58C 6 2
+text21 0 2C0 580 6 2
+text22 0 2BA 574 6 2
+text23 0 4D3 9A6 5B 2
+text24 0 36E 6DC 1E 2
+text25 0 3AB 756 21 2
+text26 0 2F3 5E6 D 2
+text27 0 484 908 4F 2
+text28 0 2A3 546 3 2
+text29 0 52E A5C 96 2
+text30 0 3EF 7DE 29 2
+text31 0 32E 65C 11 2
+text32 0 33F 67E 17 2
+maintext 0 717 E2E E4 2
 cstackCOMMON 1 70 70 E 1
 cstackBANK0 1 20 20 50 1
 cstackBANK1 1 A0 A0 44 1

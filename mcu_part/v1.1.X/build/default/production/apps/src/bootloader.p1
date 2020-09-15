@@ -1066,130 +1066,146 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/bootloader.c: 12: }
 [e :UE 765 ]
 }
-"37
-[; ;apps/src/bootloader.c: 37: _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
+"36
+[; ;apps/src/bootloader.c: 36: _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 [v _ReadFromMem `(a ~T0 @X0 1 ef2`*uc`*uc ]
 {
 [e :U _ReadFromMem ]
 [v _recv_frame `*uc ~T0 @X0 1 r1 ]
 [v _send_frame `*uc ~T0 @X0 1 r2 ]
 [f ]
-"38
-[; ;apps/src/bootloader.c: 38:  uint8_t i = 0;
+"37
+[; ;apps/src/bootloader.c: 37:  uint8_t i = 0;
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-"39
-[; ;apps/src/bootloader.c: 39:  uint16_t dbyte = 0;
+"38
+[; ;apps/src/bootloader.c: 38:  uint16_t dbyte = 0;
 [v _dbyte `us ~T0 @X0 1 a ]
 [e = _dbyte -> -> 0 `i `us ]
-"40
-[; ;apps/src/bootloader.c: 40:  uint16_t def_addr = 0;
+"39
+[; ;apps/src/bootloader.c: 39:  uint16_t def_addr = 0;
 [v _def_addr `us ~T0 @X0 1 a ]
 [e = _def_addr -> -> 0 `i `us ]
-"42
-[; ;apps/src/bootloader.c: 42:  def_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
+"40
+[; ;apps/src/bootloader.c: 40:  def_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
 [e = _def_addr -> | & -> << -> *U + _recv_frame * -> -> 2 `i `x -> -> # *U _recv_frame `i `x `i -> 8 `i `ui -> 65280 `ui -> & -> *U + _recv_frame * -> -> 3 `i `x -> -> # *U _recv_frame `i `x `i -> 255 `i `ui `us ]
-"44
-[; ;apps/src/bootloader.c: 44:  if (recv_frame[2] == 0x80){
+"41
+[; ;apps/src/bootloader.c: 41:  if (recv_frame[2] == 0x80){
 [e $ ! == -> *U + _recv_frame * -> -> 2 `i `x -> -> # *U _recv_frame `i `x `i -> 128 `i 767  ]
 {
-"45
-[; ;apps/src/bootloader.c: 45:   dbyte = FLASH_Read(def_addr);
+"42
+[; ;apps/src/bootloader.c: 42:   dbyte = FLASH_Read(def_addr);
 [e = _dbyte ( _FLASH_Read (1 _def_addr ]
-"46
-[; ;apps/src/bootloader.c: 46:   send_frame[2] = (uint8_t)((dbyte & 0xFF00) >> 8);
+"43
+[; ;apps/src/bootloader.c: 43:   send_frame[2] = (uint8_t)((dbyte & 0xFF00) >> 8);
 [e = *U + _send_frame * -> -> 2 `i `x -> -> # *U _send_frame `i `x -> >> & -> _dbyte `ui -> 65280 `ui -> 8 `i `uc ]
-"47
-[; ;apps/src/bootloader.c: 47:   send_frame[3] = (uint8_t)(dbyte & 0x00FF);
+"44
+[; ;apps/src/bootloader.c: 44:   send_frame[3] = (uint8_t)(dbyte & 0x00FF);
 [e = *U + _send_frame * -> -> 3 `i `x -> -> # *U _send_frame `i `x -> & -> _dbyte `ui -> -> 255 `i `ui `uc ]
-"48
-[; ;apps/src/bootloader.c: 48:   i++; i++;
+"45
+[; ;apps/src/bootloader.c: 45:   i++; i++;
 [e ++ _i -> -> 1 `i `uc ]
 [e ++ _i -> -> 1 `i `uc ]
-"50
-[; ;apps/src/bootloader.c: 50:  } else {
+"46
+[; ;apps/src/bootloader.c: 46:  } else {
 }
 [e $U 768  ]
 [e :U 767 ]
 {
-"52
-[; ;apps/src/bootloader.c: 52:   for (i = 0; i != 0x0020 + 0x0020; i += 2){
+"47
+[; ;apps/src/bootloader.c: 47:   for (i = 0; i != 0x0020 + 0x0020; i += 2){
 {
 [e = _i -> -> 0 `i `uc ]
 [e $ != -> _i `i + -> 32 `i -> 32 `i 769  ]
 [e $U 770  ]
 [e :U 769 ]
 {
-"53
-[; ;apps/src/bootloader.c: 53:    dbyte = FLASH_Read(def_addr);
+"48
+[; ;apps/src/bootloader.c: 48:    dbyte = FLASH_Read(def_addr);
 [e = _dbyte ( _FLASH_Read (1 _def_addr ]
-"54
-[; ;apps/src/bootloader.c: 54:    send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
+"49
+[; ;apps/src/bootloader.c: 49:    send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
 [e = *U + _send_frame * -> + -> _i `i -> 2 `i `x -> -> # *U _send_frame `i `x -> >> & -> _dbyte `ui -> 65280 `ui -> 8 `i `uc ]
-"55
-[; ;apps/src/bootloader.c: 55:    send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
+"50
+[; ;apps/src/bootloader.c: 50:    send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
 [e = *U + _send_frame * -> + -> _i `i -> 3 `i `x -> -> # *U _send_frame `i `x -> & -> _dbyte `ui -> -> 255 `i `ui `uc ]
-"56
-[; ;apps/src/bootloader.c: 56:    def_addr++;
+"51
+[; ;apps/src/bootloader.c: 51:    def_addr++;
 [e ++ _def_addr -> -> 1 `i `us ]
-"57
-[; ;apps/src/bootloader.c: 57:   }
+"52
+[; ;apps/src/bootloader.c: 52:   }
 }
 [e =+ _i -> -> 2 `i `uc ]
 [e $ != -> _i `i + -> 32 `i -> 32 `i 769  ]
 [e :U 770 ]
 }
-"58
-[; ;apps/src/bootloader.c: 58:  }
+"53
+[; ;apps/src/bootloader.c: 53:  }
 }
 [e :U 768 ]
-"60
-[; ;apps/src/bootloader.c: 60:  send_frame[0] = i + 2;
+"54
+[; ;apps/src/bootloader.c: 54:  send_frame[0] = i + 2;
 [e = *U + _send_frame * -> -> 0 `i `x -> -> # *U _send_frame `i `x -> + -> _i `i -> 2 `i `uc ]
-"61
-[; ;apps/src/bootloader.c: 61:  send_frame[1] = 0x02;
+"55
+[; ;apps/src/bootloader.c: 55:  send_frame[1] = 0x02;
 [e = *U + _send_frame * -> -> 1 `i `x -> -> # *U _send_frame `i `x -> -> 2 `i `uc ]
-"62
-[; ;apps/src/bootloader.c: 62:  return 1;
+"56
+[; ;apps/src/bootloader.c: 56:  return 1;
 [e ) -> -> 1 `i `a ]
 [e $UE 766  ]
-"63
-[; ;apps/src/bootloader.c: 63: }
+"57
+[; ;apps/src/bootloader.c: 57: }
 [e :UE 766 ]
 }
-"65
-[; ;apps/src/bootloader.c: 65: _Bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
+"59
+[; ;apps/src/bootloader.c: 59: _Bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
 [v _WriteToMem `(a ~T0 @X0 1 ef2`*uc`*uc ]
 {
 [e :U _WriteToMem ]
 [v _recv_frame `*uc ~T0 @X0 1 r1 ]
 [v _send_frame `*uc ~T0 @X0 1 r2 ]
 [f ]
-"66
-[; ;apps/src/bootloader.c: 66:  _Bool result;
+"60
+[; ;apps/src/bootloader.c: 60:  _Bool result;
 [v _result `a ~T0 @X0 1 a ]
-"68
-[; ;apps/src/bootloader.c: 68:  result = FLASH_Write(recv_frame);
+"61
+[; ;apps/src/bootloader.c: 61:  result = FLASH_Write(recv_frame);
 [e = _result ( _FLASH_Write (1 _recv_frame ]
-"69
-[; ;apps/src/bootloader.c: 69:  if (result) {
+"62
+[; ;apps/src/bootloader.c: 62:  if (result) {
 [e $ ! != -> _result `i -> 0 `i 773  ]
 {
-"70
-[; ;apps/src/bootloader.c: 70:  send_frame[0] = 0x02;
+"63
+[; ;apps/src/bootloader.c: 63:  send_frame[0] = 0x02;
 [e = *U + _send_frame * -> -> 0 `i `x -> -> # *U _send_frame `i `x -> -> 2 `i `uc ]
-"71
-[; ;apps/src/bootloader.c: 71:  send_frame[1] = 0x04;
+"64
+[; ;apps/src/bootloader.c: 64:  send_frame[1] = 0x04;
 [e = *U + _send_frame * -> -> 1 `i `x -> -> # *U _send_frame `i `x -> -> 4 `i `uc ]
-"72
-[; ;apps/src/bootloader.c: 72:  }
+"65
+[; ;apps/src/bootloader.c: 65:  }
 }
 [e :U 773 ]
-"73
-[; ;apps/src/bootloader.c: 73:  return result;
+"66
+[; ;apps/src/bootloader.c: 66:  return result;
 [e ) _result ]
 [e $UE 772  ]
+"67
+[; ;apps/src/bootloader.c: 67: }
+[e :UE 772 ]
+}
+"69
+[; ;apps/src/bootloader.c: 69: void StartApp(void){
+[v _StartApp `(v ~T0 @X0 1 ef ]
+{
+[e :U _StartApp ]
+[f ]
+"72
+[; ;apps/src/bootloader.c: 72:     __asm("pagesel " "0x3FFC");
+[; <" pagesel 0x3FFC ;# ">
+"73
+[; ;apps/src/bootloader.c: 73:     __asm("goto " "0x3FFC");
+[; <" goto 0x3FFC ;# ">
 "74
 [; ;apps/src/bootloader.c: 74: }
-[e :UE 772 ]
+[e :UE 774 ]
 }

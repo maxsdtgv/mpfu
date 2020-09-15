@@ -30,13 +30,17 @@ extern "C" {
 #define READ_FROM_MEM		0x02
 //#define ERASE_ROW_MEM		0x03
 #define WRITE_TO_MEM		0x04
+#define START_APPLICATION	0x0F
 
 #define READ_FROM_SERIAL_EEPROM		0x12
 #define WRITE_TO_SERIAL_EEPROM		0x14
-
+#define RESET_VECTOR_APP	0x3FFC		
 
 #define START_APPLICATION	0x0F
 //====================================================
+
+#define _str(x)			#x
+#define str(x)			_str(x)
 
 // Function registration
 
@@ -51,6 +55,8 @@ bool DefineError(uint8_t*);
 bool ReadFromMem(uint8_t*, uint8_t*);
 
 bool WriteToMem(uint8_t*, uint8_t*);
+
+void StartApp(void);
 
 #ifdef	__cplusplus
 }

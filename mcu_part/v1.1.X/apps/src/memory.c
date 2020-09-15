@@ -38,6 +38,14 @@
 //
 //    return true;
 //}
+
+struct BLFlags{
+    bool IsBLStart = false;
+    bool IsExtUpgrade = false;
+    uint16_t StartAddrExtUpgrade = 0;
+    uint16_t NumBlocksExtUpgrade = 0;
+}
+
 void UnlockFlashWrite(){
     EECON2 = 0x55;      // Start of required sequence to initiate erase
     EECON2 = 0xAA;
@@ -120,14 +128,28 @@ bool FLASH_Write(uint8_t *buffer){
     UnlockFlashWrite();
     __delay_ms(DELAY_WRITE_FLASH);
     
-    //EECON1bits.CFGS = 0; // Do not select Configuration Space
-    EECON1bits.WREN = 0;    // Disable writes
-    INTCONbits.GIE = INR_state; // Restore interrupts
+    //EECON1bits.CFGS = 0;          // Do not select Configuration Space
+    EECON1bits.WREN = 0;            // Disable writes
+    INTCONbits.GIE = INR_state;     // Restore interrupts
     if (EECON1bits.WRERR){ 
         return false;
     } else {
         return true;
     }
     
+}
+
+void BootloaderFlags(void){
+    uint16_t dbyte = 0;
+    uint16_t def_addr = FLAGS_VECTOR;
+
+    dbyte = FLASH_Read(def_addr);   
+            buf[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
+            buf[i+3] = (uint8_t)(dbyte & 0x00FF);
+            def_addr++;
+
+
+
+
 }
 

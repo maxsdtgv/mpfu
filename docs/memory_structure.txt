@@ -10,36 +10,49 @@
 			|  0002 |  GOTO BL (XXXX)         |--------+		|		REMAPPED RANGES				|
 			|  0003 |                         |        |		+---------------+-------------------+
 			+-------+-------------------------+        |		|FROM			|	TO				|
-			|  0004 |  Interrupt vector       |        |		|0x0000 - 0x0003|	0x3FE0 - 0x3FE3	|
+			|  0004 |  Interrupt vector       |        |		|0x0000 - 0x0003|	0x3FFC - 0x3FFF	|
 			|  0005 |    ...                  |        |		+---------------+-------------------+
-			|  0006 |    ...                  |        |
 			|  .... |                         |       GOTO BL
-			|  .... |                         |        |
 			+-------+-------------------------+        |		0x3FDF - last address of the BL
-	+------>|  YYYY |   APP here              |        |
+	+------>|  YYYY |   App here              |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
+	|		|  .... |                         |        |
 	|		|  .... |                         |        |
 	|		|  .... |                         |        |
 	|		+-------+-------------------------+        |
 	|		|  XXXX |  BL                     |<-------+
 	|		|  .... |  Bootloader here        |
 	|		|  .... |                         |
-	|		|  .... |  GOTO RV2               |--------+
-  GOTO APP	|   	|         			      |        |
+	|		|  .... |  GOTO RVA               |--------+
+  GOTO App	|   	|         			      |        |
 	|		|   	|         			      |        |
-	|		|  3FDF |       			      |      GOTO RV2
+	|		|  3FDF	|         			      |        |
 	|		+-------+-------------------------+        |
-	|		|  3FE0 |(RV2) Reset vector2      |<-------+
-	|		|  3FE1 |                         |
-	+-------|  3FE2 |  GOTO APP(YYYY)         |
-			|  3FE3 |                         |
-			+-------+-------------------------+
-  			|  3FE4 |	BL config 1           | <<< BL_REQ_CODE/BL_NREQ_CODE saved here
-			|  3FE5 |	BL config 2           |
-			|  3FE6 |	BL config 3           |
-			|  3FE7 |	BL config 4           |
-			|  3FE8 |	BL config 5           |
-			|  .... |	....                  |
-			|  3FFF |	28 regs               |
+	|		|  3FE0 |	BL config 1           |        |         <<< BL_REQ_CODE/BL_NREQ_CODE saved here
+	|		|  3FE1 |	BL config 2           |        |
+	|		|  3FE2 |	BL config 3           |        |
+	|		|  3FE3 |	BL config 4           |        |
+	|		|  3FE4 |	BL config 5           |        |
+	|		|  .... |	....                  |        |
+	|		|  .... |	28 regs               |        |
+	|		|  3FFB |       			      |      GOTO RVA
+	|		+-------+-------------------------+        |
+	|		|  3FFC |(RVA) Reset Vector App   |<-------+
+	|		|  3FFD |                         |
+	+-------|  3FFE |  GOTO App(YYYY)         |
+			|  3FFF |                         |
 			+-------+-------------------------+
 
 			* for devices with 0x4000 words, and addressed range 0x0000 - 0x3FFF (like PIC16F1789)
