@@ -1,5 +1,14 @@
 #include "../api/bootloader.h"
 
+bool KeyBLRequired(void){
+	if (IO_RB0_GetValue() == 1) { 
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
 void ClearArray(uint8_t *array){
 	uint8_t i = 0;
     for (i = 0; i != BL_MAX_SEND_DATA; i++){array[i]=0x00;} // Clear array to send
@@ -69,6 +78,8 @@ bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
 void StartApp(void){
     //STKPTR = 0x1F;
     //asm ("psect intentry,global,class=CODE,delta=2");  
+    IO_RE0_SetLow();
+    while(1){}
     asm ("pagesel " str(RESET_VECTOR_APP));
     asm ("goto " str(RESET_VECTOR_APP));
 }

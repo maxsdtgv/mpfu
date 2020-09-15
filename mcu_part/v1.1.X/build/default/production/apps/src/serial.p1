@@ -1,4 +1,8 @@
 Version 4.0 HI-TECH Software Intermediate Code
+"24 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 24: struct {
+[s S761 `a 1 `a 1 `us 1 `us 1 `uc 1 ]
+[n S761 . IsBLStart IsExtUpgrade StartAddrExtUpgrade NumBlocksExtUpgrade StatusCodeExtUpgrade ]
 "253 ./mcc_generated_files/eusart.h
 [; ;./mcc_generated_files/eusart.h: 253: _Bool EUSART_is_tx_done(void);
 [v _EUSART_is_tx_done `(a ~T0 @X0 0 ef ]
@@ -1029,6 +1033,20 @@ Version 4.0 HI-TECH Software Intermediate Code
 "16563
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 16563: __asm("TOSH equ 0FEFh");
 [; <" TOSH equ 0FEFh ;# ">
+"30 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 30: } BLFlags = {0, 0, 0, 0, 0};
+[v _BLFlags `S761 ~T0 @X0 1 e ]
+[i _BLFlags
+:U ..
+:U ..
+-> -> 0 `i `a
+-> -> 0 `i `a
+-> -> 0 `i `us
+-> -> 0 `i `us
+-> -> 0 `i `uc
+..
+..
+]
 "3 apps/src/serial.c
 [; ;apps/src/serial.c: 3: uint8_t UART_dataWrite(uint8_t *data_ptr, uint8_t size){
 [v _UART_dataWrite `(uc ~T0 @X0 1 ef2`*uc`uc ]
@@ -1043,7 +1061,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _i -> -> 0 `i `uc ]
 "5
 [; ;apps/src/serial.c: 5:     if (!EUSART_is_tx_done()){
-[e $ ! ! != -> ( _EUSART_is_tx_done ..  `i -> 0 `i 762  ]
+[e $ ! ! != -> ( _EUSART_is_tx_done ..  `i -> 0 `i 763  ]
 {
 "6
 [; ;apps/src/serial.c: 6:      _delay((unsigned long)((300)*(16000000/4000000.0)));
@@ -1051,10 +1069,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "7
 [; ;apps/src/serial.c: 7:     }
 }
-[e :U 762 ]
+[e :U 763 ]
 "9
 [; ;apps/src/serial.c: 9:     if (EUSART_is_tx_ready()){
-[e $ ! != -> ( _EUSART_is_tx_ready ..  `i -> 0 `i 763  ]
+[e $ ! != -> ( _EUSART_is_tx_ready ..  `i -> 0 `i 764  ]
 {
 "10
 [; ;apps/src/serial.c: 10:         EUSART_Write(0xAA);
@@ -1063,8 +1081,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/serial.c: 11:         for (i = 0; i != size; i++){
 {
 [e = _i -> -> 0 `i `uc ]
-[e $U 767  ]
-[e :U 764 ]
+[e $U 768  ]
+[e :U 765 ]
 {
 "12
 [; ;apps/src/serial.c: 12:             EUSART_Write(data_ptr[i]);
@@ -1073,21 +1091,21 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/serial.c: 13:         }
 }
 [e ++ _i -> -> 1 `i `uc ]
-[e :U 767 ]
-[e $ != -> _i `i -> _size `i 764  ]
-[e :U 765 ]
+[e :U 768 ]
+[e $ != -> _i `i -> _size `i 765  ]
+[e :U 766 ]
 }
 "15
 [; ;apps/src/serial.c: 15:     }
 }
-[e :U 763 ]
+[e :U 764 ]
 "16
 [; ;apps/src/serial.c: 16:     return i;
 [e ) _i ]
-[e $UE 761  ]
+[e $UE 762  ]
 "17
 [; ;apps/src/serial.c: 17: }
-[e :UE 761 ]
+[e :UE 762 ]
 }
 "19
 [; ;apps/src/serial.c: 19: uint8_t UART_byteRead(void){
@@ -1098,10 +1116,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 "20
 [; ;apps/src/serial.c: 20:         return EUSART_Read();
 [e ) ( _EUSART_Read ..  ]
-[e $UE 768  ]
+[e $UE 769  ]
 "21
 [; ;apps/src/serial.c: 21: }
-[e :UE 768 ]
+[e :UE 769 ]
 }
 "23
 [; ;apps/src/serial.c: 23: _Bool UART_preamFound(void){
@@ -1115,32 +1133,32 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _byte -> -> 0 `i `uc ]
 "25
 [; ;apps/src/serial.c: 25:     if (EUSART_is_rx_ready()){
-[e $ ! != -> ( _EUSART_is_rx_ready ..  `i -> 0 `i 770  ]
+[e $ ! != -> ( _EUSART_is_rx_ready ..  `i -> 0 `i 771  ]
 {
 "26
 [; ;apps/src/serial.c: 26:         byte = EUSART_Read();
 [e = _byte ( _EUSART_Read ..  ]
 "27
 [; ;apps/src/serial.c: 27:         if (byte == 0x55){
-[e $ ! == -> _byte `i -> 85 `i 771  ]
+[e $ ! == -> _byte `i -> 85 `i 772  ]
 {
 "28
 [; ;apps/src/serial.c: 28:             return 1;
 [e ) -> -> 1 `i `a ]
-[e $UE 769  ]
+[e $UE 770  ]
 "29
 [; ;apps/src/serial.c: 29:         }
 }
-[e :U 771 ]
+[e :U 772 ]
 "30
 [; ;apps/src/serial.c: 30:     }
 }
-[e :U 770 ]
+[e :U 771 ]
 "31
 [; ;apps/src/serial.c: 31:     return 0;
 [e ) -> -> 0 `i `a ]
-[e $UE 769  ]
+[e $UE 770  ]
 "32
 [; ;apps/src/serial.c: 32: }
-[e :UE 769 ]
+[e :UE 770 ]
 }

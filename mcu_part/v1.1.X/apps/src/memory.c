@@ -39,12 +39,7 @@
 //    return true;
 //}
 
-struct BLFlags{
-    bool IsBLStart = false;
-    bool IsExtUpgrade = false;
-    uint16_t StartAddrExtUpgrade = 0;
-    uint16_t NumBlocksExtUpgrade = 0;
-}
+
 
 void UnlockFlashWrite(){
     EECON2 = 0x55;      // Start of required sequence to initiate erase
@@ -139,17 +134,57 @@ bool FLASH_Write(uint8_t *buffer){
     
 }
 
-void BootloaderFlags(void){
+void ReadBootloaderFlags(void){
+    uint8_t i = 0;
+    uint16_t buf[MAX_BLOCK_SIZE];
     uint16_t dbyte = 0;
     uint16_t def_addr = FLAGS_VECTOR;
 
-    dbyte = FLASH_Read(def_addr);   
-            buf[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
-            buf[i+3] = (uint8_t)(dbyte & 0x00FF);
+        for (i = 0; i != MAX_BLOCK_SIZE; i ++){
+            buf[i] = FLASH_Read(def_addr);   
             def_addr++;
+        }
 
-
-
+    if ((uint8_t)(buf[0] & 0x00FF) == 0x00){ BLFlags.IsBLStart = true;}
+    if ((uint8_t)(buf[1] & 0x00FF) == 0x00){ BLFlags.IsExtUpgrade = true;}
+    BLFlags.StartAddrExtUpgrade = (uint16_t)(((buf[2] << 8) & 0xFF00) | (buf[3] & 0x00FF));
+    BLFlags.NumBlocksExtUpgrade = (uint16_t)(((buf[4] << 8) & 0xFF00) | (buf[5] & 0x00FF));
+    BLFlags.StatusCodeExtUpgrade = (uint8_t)(buf[6] & 0x00FF);
 
 }
 
+void WriteBootloaderFlags(void){
+    uint8_t i = 0;
+    uint8_t buf[MAX_BLOCK_SIZE + MAX_BLOCK_SIZE + 4];
+    uint16_t dbyte = 0;
+    uint16_t def_addr = FLAGS_VECTOR;
+
+        for (i = 0; i != MAX_BLOCK_SIZE + MAX_BLOCK_SIZE; i += 2){
+            dbyte = FLASH_Read(def_addr);   
+            buf[i+4] = (uint8_t)((dbyte & 0xFF00) >> 8);
+            buf[i+5] = (uint8_t)(dbyte & 0x00FF);
+            def_addr++;
+        }
+
+        buf[2] = (uint8_t)((FLAGS_VECTOR & 0xFF00) >> 8);
+        buf[3] = (uint8_t)(FLAGS_VECTOR & 0x00FF);
+
+    if (BLFlags.IsBLStart == true){
+        buf[5] = 0x00;
+    } else {
+        buf[5] = 0xFF;
+    }
+
+    if (BLFlags.IsExtUpgrade == true){
+        buf[7] = 0x00;
+    } else {
+        buf[7] = 0xFF;
+    }
+
+    buf[17] = BLFlags.StatusCodeExtUpgrade;
+
+
+    FLASH_Write(buf);
+
+
+}
