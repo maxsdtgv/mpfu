@@ -1,6 +1,6 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"24 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 24: struct {
+"25 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 25: struct {
 [s S761 `a 1 `a 1 `us 1 `us 1 `uc 1 ]
 [n S761 . IsBLStart IsExtUpgrade StartAddrExtUpgrade NumBlocksExtUpgrade StatusCodeExtUpgrade ]
 "253 ./mcc_generated_files/eusart.h
@@ -1033,8 +1033,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "16563
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 16563: __asm("TOSH equ 0FEFh");
 [; <" TOSH equ 0FEFh ;# ">
-"30 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 30: } BLFlags = {0, 0, 0, 0, 0};
+"31 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 31: } BLFlags = {0, 0, 0, 0, 0};
 [v _BLFlags `S761 ~T0 @X0 1 e ]
 [i _BLFlags
 :U ..

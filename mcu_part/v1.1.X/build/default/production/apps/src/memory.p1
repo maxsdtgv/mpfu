@@ -1,6 +1,6 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"24 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 24: struct {
+"25 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 25: struct {
 [s S761 `a 1 `a 1 `us 1 `us 1 `uc 1 ]
 [n S761 . IsBLStart IsExtUpgrade StartAddrExtUpgrade NumBlocksExtUpgrade StatusCodeExtUpgrade ]
 "4405 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
@@ -1062,8 +1062,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "16563
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 16563: __asm("TOSH equ 0FEFh");
 [; <" TOSH equ 0FEFh ;# ">
-"30 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 30: } BLFlags = {0, 0, 0, 0, 0};
+"31 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 31: } BLFlags = {0, 0, 0, 0, 0};
 [v _BLFlags `S761 ~T0 @X0 1 e ]
 [i _BLFlags
 :U ..
@@ -1247,10 +1247,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/memory.c: 106:     EECON1bits.LWLO = 1;
 [e = . . _EECON1bits 0 5 -> -> 1 `i `uc ]
 "107
-[; ;apps/src/memory.c: 107:         for (i = 0; i != 0x0020 + 0x0020; i += 2){
+[; ;apps/src/memory.c: 107:         for (i = 0; i != 0x0040; i += 2){
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ != -> _i `i + -> 32 `i -> 32 `i 770  ]
+[e $ != -> _i `i -> 64 `i 770  ]
 [e $U 771  ]
 [e :U 770 ]
 {
@@ -1276,7 +1276,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/memory.c: 118:         }
 }
 [e =+ _i -> -> 2 `i `uc ]
-[e $ != -> _i `i + -> 32 `i -> 32 `i 770  ]
+[e $ != -> _i `i -> 64 `i 770  ]
 [e :U 771 ]
 }
 "119
@@ -1404,7 +1404,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
 "158
-[; ;apps/src/memory.c: 158:     uint8_t buf[0x0020 + 0x0020 + 4];
+[; ;apps/src/memory.c: 158:     uint8_t buf[0x0040 + 4];
 [v _buf `uc ~T0 @X0 -> 68 `i a ]
 "159
 [; ;apps/src/memory.c: 159:     uint16_t dbyte = 0;
@@ -1415,10 +1415,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _def_addr `us ~T0 @X0 1 a ]
 [e = _def_addr -> -> 16352 `i `us ]
 "162
-[; ;apps/src/memory.c: 162:         for (i = 0; i != 0x0020 + 0x0020; i += 2){
+[; ;apps/src/memory.c: 162:         for (i = 0; i != 0x0040; i += 2){
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ != -> _i `i + -> 32 `i -> 32 `i 782  ]
+[e $ != -> _i `i -> 64 `i 782  ]
 [e $U 783  ]
 [e :U 782 ]
 {
@@ -1438,7 +1438,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/memory.c: 167:         }
 }
 [e =+ _i -> -> 2 `i `uc ]
-[e $ != -> _i `i + -> 32 `i -> 32 `i 782  ]
+[e $ != -> _i `i -> 64 `i 782  ]
 [e :U 783 ]
 }
 "169

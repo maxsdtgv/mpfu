@@ -58,17 +58,17 @@ void main(void)
     uint8_t byte = 0;
     bool    processing_status = false;
 
-    ClearArray(recv_frame);
-    ClearArray(send_frame);
+    ClearArray(recv_frame, BL_MAX_RECV_DATA);
+    ClearArray(send_frame, BL_MAX_SEND_DATA);
 
     //TRISx registers
 
-    TRISA = 0x00;
-    TRISB = 0x03;   // PortB - 0,1,2 for input
-    TRISE = 0x00;
+    //TRISA = 0x00;
+    //TRISB = 0x03;   // PortB - 0,1,2 for input
+    //TRISE = 0x00;
 
-    LATA = 0xFF;    
-    LATE = 0x00;
+    //LATA = 0xFF;    
+    //LATE = 0x00;
 
 
 /**
@@ -89,7 +89,7 @@ void main(void)
     ReadBootloaderFlags();
 
     if (BLFlags.IsExtUpgrade){
-        //ExtUpgrade();
+        ExtUpgrade();
         BLFlags.IsExtUpgrade = false;
         WriteBootloaderFlags();
         StartApp();
@@ -157,6 +157,11 @@ CLRWDT();                                   // Clear WDT;
                     processing_status = WriteToSerialEEPROM(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
+                case 0x99:    // 0x99 - test Write to external serial eeprom
+                    ExtUpgrade(); // Send_frame will be filled after execution
+                    processing_status = true;
+                    break;
+
                 case START_APPLICATION:         // 0x0F - Exit Bootloader. GOTO to RVA (see memory structure)
                     StartApp();
                     break;
@@ -173,8 +178,8 @@ CLRWDT();                                   // Clear WDT;
 
                 UART_dataWrite(send_frame, send_frame[0]);          // Send frame to uart
                 processing_status = false;                          // Finish processing
-            ClearArray(recv_frame);
-            ClearArray(send_frame);
+            ClearArray(recv_frame, BL_MAX_RECV_DATA);
+            ClearArray(send_frame, BL_MAX_SEND_DATA);
                             
             IO_RE1_SetLow();
 

@@ -4,15 +4,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 "51
 [p x WDTE = OFF ]
 "52
-[p x PWRTE = ON ]
+[p x PWRTE = OFF ]
 "53
-[p x MCLRE = OFF ]
+[p x MCLRE = ON ]
 "54
 [p x CP = OFF ]
 "55
 [p x CPD = OFF ]
 "56
-[p x BOREN = OFF ]
+[p x BOREN = ON ]
 "57
 [p x CLKOUTEN = OFF ]
 "58
@@ -24,7 +24,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "63
 [p x VCAPEN = OFF ]
 "64
-[p x PLLEN = ON ]
+[p x PLLEN = OFF ]
 "65
 [p x STVREN = ON ]
 "66

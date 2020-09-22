@@ -45,20 +45,14 @@ extern "C" {
 // Function registration
 
 bool KeyBLRequired(void);
-
-void ClearArray(uint8_t*);
-
+void ClearArray(uint8_t*, uint8_t);
 bool DefineError(uint8_t*);
-
 //bool PingRequest(uint8_t*, uint8_t*);
-
 //bool EraseRowMem(uint8_t*, uint8_t*);
-
 bool ReadFromMem(uint8_t*, uint8_t*);
-
 bool WriteToMem(uint8_t*, uint8_t*);
-
 void StartApp(void);
+void ExtUpgrade(void);
 
 #ifdef	__cplusplus
 }

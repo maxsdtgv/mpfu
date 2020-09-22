@@ -1,38 +1,26 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"24 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 24: struct {
+"25 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 25: struct {
 [s S761 `a 1 `a 1 `us 1 `us 1 `uc 1 ]
 [n S761 . IsBLStart IsExtUpgrade StartAddrExtUpgrade NumBlocksExtUpgrade StatusCodeExtUpgrade ]
 [p mainexit ]
 "71 ./mcc_generated_files/mcc.h
 [; ;./mcc_generated_files/mcc.h: 71: void SYSTEM_Initialize(void);
 [v _SYSTEM_Initialize `(v ~T0 @X0 0 ef ]
-"49 ./apps/api/bootloader.h
-[; ;./apps/api/bootloader.h: 49: void ClearArray(uint8_t*);
-[v _ClearArray `(v ~T0 @X0 0 ef1`*uc ]
-"1282 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
-[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 1282: extern volatile unsigned char TRISA __attribute__((address(0x08C)));
-[v _TRISA `Vuc ~T0 @X0 0 e@140 ]
-"1352
-[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 1352: extern volatile unsigned char TRISB __attribute__((address(0x08D)));
-[v _TRISB `Vuc ~T0 @X0 0 e@141 ]
-"1562
-[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 1562: extern volatile unsigned char TRISE __attribute__((address(0x090)));
-[v _TRISE `Vuc ~T0 @X0 0 e@144 ]
-"2505
-[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2505: extern volatile unsigned char LATA __attribute__((address(0x10C)));
-[v _LATA `Vuc ~T0 @X0 0 e@268 ]
-"2785
-[; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2785: extern volatile unsigned char LATE __attribute__((address(0x110)));
-[v _LATE `Vuc ~T0 @X0 0 e@272 ]
-"54 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 54: void ReadBootloaderFlags(void);
+"48 ./apps/api/bootloader.h
+[; ;./apps/api/bootloader.h: 48: void ClearArray(uint8_t*, uint8_t);
+[v _ClearArray `(v ~T0 @X0 0 ef2`*uc`uc ]
+"55 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 55: void ReadBootloaderFlags(void);
 [v _ReadBootloaderFlags `(v ~T0 @X0 0 ef ]
-"56
-[; ;./apps/api/memory.h: 56: void WriteBootloaderFlags(void);
+"55 ./apps/api/bootloader.h
+[; ;./apps/api/bootloader.h: 55: void ExtUpgrade(void);
+[v _ExtUpgrade `(v ~T0 @X0 0 ef ]
+"57 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 57: void WriteBootloaderFlags(void);
 [v _WriteBootloaderFlags `(v ~T0 @X0 0 ef ]
-"61 ./apps/api/bootloader.h
-[; ;./apps/api/bootloader.h: 61: void StartApp(void);
+"54 ./apps/api/bootloader.h
+[; ;./apps/api/bootloader.h: 54: void StartApp(void);
 [v _StartApp `(v ~T0 @X0 0 ef ]
 "47
 [; ;./apps/api/bootloader.h: 47: _Bool KeyBLRequired(void);
@@ -58,11 +46,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 "28
 [; ;./apps/api/serial.h: 28: uint8_t UART_byteRead(void);
 [v _UART_byteRead `(uc ~T0 @X0 0 ef ]
-"57 ./apps/api/bootloader.h
-[; ;./apps/api/bootloader.h: 57: _Bool ReadFromMem(uint8_t*, uint8_t*);
+"52 ./apps/api/bootloader.h
+[; ;./apps/api/bootloader.h: 52: _Bool ReadFromMem(uint8_t*, uint8_t*);
 [v _ReadFromMem `(a ~T0 @X0 0 ef2`*uc`*uc ]
-"59
-[; ;./apps/api/bootloader.h: 59: _Bool WriteToMem(uint8_t*, uint8_t*);
+"53
+[; ;./apps/api/bootloader.h: 53: _Bool WriteToMem(uint8_t*, uint8_t*);
 [v _WriteToMem `(a ~T0 @X0 0 ef2`*uc`*uc ]
 "31 ./apps/api/eeprom_25lc512.h
 [; ;./apps/api/eeprom_25lc512.h: 31: _Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
@@ -70,8 +58,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "32
 [; ;./apps/api/eeprom_25lc512.h: 32: _Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
 [v _WriteToSerialEEPROM `(a ~T0 @X0 0 ef2`*uc`*uc ]
-"51 ./apps/api/bootloader.h
-[; ;./apps/api/bootloader.h: 51: _Bool DefineError(uint8_t*);
+"49 ./apps/api/bootloader.h
+[; ;./apps/api/bootloader.h: 49: _Bool DefineError(uint8_t*);
 [v _DefineError `(a ~T0 @X0 0 ef1`*uc ]
 "26 ./apps/api/serial.h
 [; ;./apps/api/serial.h: 26: uint8_t UART_dataWrite(uint8_t*, uint8_t);
@@ -1087,8 +1075,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "16563
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 16563: __asm("TOSH equ 0FEFh");
 [; <" TOSH equ 0FEFh ;# ">
-"30 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 30: } BLFlags = {0, 0, 0, 0, 0};
+"31 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 31: } BLFlags = {0, 0, 0, 0, 0};
 [v _BLFlags `S761 ~T0 @X0 1 e ]
 [i _BLFlags
 :U ..
@@ -1132,26 +1120,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _processing_status `a ~T0 @X0 1 a ]
 [e = _processing_status -> -> 0 `i `a ]
 "61
-[; ;main.c: 61:     ClearArray(recv_frame);
-[e ( _ClearArray (1 &U _recv_frame ]
+[; ;main.c: 61:     ClearArray(recv_frame, 68);
+[e ( _ClearArray (2 , &U _recv_frame -> -> 68 `i `uc ]
 "62
-[; ;main.c: 62:     ClearArray(send_frame);
-[e ( _ClearArray (1 &U _send_frame ]
-"66
-[; ;main.c: 66:     TRISA = 0x00;
-[e = _TRISA -> -> 0 `i `uc ]
-"67
-[; ;main.c: 67:     TRISB = 0x03;
-[e = _TRISB -> -> 3 `i `uc ]
-"68
-[; ;main.c: 68:     TRISE = 0x00;
-[e = _TRISE -> -> 0 `i `uc ]
-"70
-[; ;main.c: 70:     LATA = 0xFF;
-[e = _LATA -> -> 255 `i `uc ]
-"71
-[; ;main.c: 71:     LATE = 0x00;
-[e = _LATE -> -> 0 `i `uc ]
+[; ;main.c: 62:     ClearArray(send_frame, 66);
+[e ( _ClearArray (2 , &U _send_frame -> -> 66 `i `uc ]
 "89
 [; ;main.c: 89:     ReadBootloaderFlags();
 [e ( _ReadBootloaderFlags ..  ]
@@ -1159,6 +1132,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;main.c: 91:     if (BLFlags.IsExtUpgrade){
 [e $ ! != -> . _BLFlags 1 `i -> 0 `i 763  ]
 {
+"92
+[; ;main.c: 92:         ExtUpgrade();
+[e ( _ExtUpgrade ..  ]
 "93
 [; ;main.c: 93:         BLFlags.IsExtUpgrade = 0;
 [e = . _BLFlags 1 -> -> 0 `i `a ]
@@ -1308,22 +1284,34 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;main.c: 158:                     break;
 [e $U 781  ]
 "160
-[; ;main.c: 160:                 case 0x0F:
+[; ;main.c: 160:                 case 0x99:
 [e :U 787 ]
 "161
-[; ;main.c: 161:                     StartApp();
-[e ( _StartApp ..  ]
+[; ;main.c: 161:                     ExtUpgrade();
+[e ( _ExtUpgrade ..  ]
 "162
-[; ;main.c: 162:                     break;
+[; ;main.c: 162:                     processing_status = 1;
+[e = _processing_status -> -> 1 `i `a ]
+"163
+[; ;main.c: 163:                     break;
 [e $U 781  ]
-"164
-[; ;main.c: 164:                 default:
-[e :U 788 ]
 "165
-[; ;main.c: 165:                     processing_status = DefineError(send_frame);
-[e = _processing_status ( _DefineError (1 &U _send_frame ]
+[; ;main.c: 165:                 case 0x0F:
+[e :U 788 ]
 "166
-[; ;main.c: 166:                 }
+[; ;main.c: 166:                     StartApp();
+[e ( _StartApp ..  ]
+"167
+[; ;main.c: 167:                     break;
+[e $U 781  ]
+"169
+[; ;main.c: 169:                 default:
+[e :U 789 ]
+"170
+[; ;main.c: 170:                     processing_status = DefineError(send_frame);
+[e = _processing_status ( _DefineError (1 &U _send_frame ]
+"171
+[; ;main.c: 171:                 }
 }
 [e $U 781  ]
 [e :U 782 ]
@@ -1331,52 +1319,53 @@ Version 4.0 HI-TECH Software Intermediate Code
  , $ -> 4 `i 784
  , $ -> 18 `i 785
  , $ -> 20 `i 786
- , $ -> 15 `i 787
- 788 ]
+ , $ -> 153 `i 787
+ , $ -> 15 `i 788
+ 789 ]
 [e :U 781 ]
-"169
-[; ;main.c: 169:             if (!((processing_status == 1) && (send_frame[0] != 0x00)))
-[e $ ! ! && == -> _processing_status `i -> 1 `i != -> *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux `i -> 0 `i 789  ]
-"170
-[; ;main.c: 170:                 {
-{
-"171
-[; ;main.c: 171:                 DefineError(send_frame);
-[e ( _DefineError (1 &U _send_frame ]
-"172
-[; ;main.c: 172:                 }
-}
-[e :U 789 ]
 "174
-[; ;main.c: 174:                 UART_dataWrite(send_frame, send_frame[0]);
-[e ( _UART_dataWrite (2 , &U _send_frame *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux ]
+[; ;main.c: 174:             if (!((processing_status == 1) && (send_frame[0] != 0x00)))
+[e $ ! ! && == -> _processing_status `i -> 1 `i != -> *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux `i -> 0 `i 790  ]
 "175
-[; ;main.c: 175:                 processing_status = 0;
-[e = _processing_status -> -> 0 `i `a ]
+[; ;main.c: 175:                 {
+{
 "176
-[; ;main.c: 176:             ClearArray(recv_frame);
-[e ( _ClearArray (1 &U _recv_frame ]
+[; ;main.c: 176:                 DefineError(send_frame);
+[e ( _DefineError (1 &U _send_frame ]
 "177
-[; ;main.c: 177:             ClearArray(send_frame);
-[e ( _ClearArray (1 &U _send_frame ]
+[; ;main.c: 177:                 }
+}
+[e :U 790 ]
 "179
-[; ;main.c: 179:             do { LATEbits.LATE1 = 0; } while(0);
-[e :U 792 ]
+[; ;main.c: 179:                 UART_dataWrite(send_frame, send_frame[0]);
+[e ( _UART_dataWrite (2 , &U _send_frame *U + &U _send_frame * -> -> -> 0 `i `ui `ux -> -> # *U &U _send_frame `ui `ux ]
+"180
+[; ;main.c: 180:                 processing_status = 0;
+[e = _processing_status -> -> 0 `i `a ]
+"181
+[; ;main.c: 181:             ClearArray(recv_frame, 68);
+[e ( _ClearArray (2 , &U _recv_frame -> -> 68 `i `uc ]
+"182
+[; ;main.c: 182:             ClearArray(send_frame, 66);
+[e ( _ClearArray (2 , &U _send_frame -> -> 66 `i `uc ]
+"184
+[; ;main.c: 184:             do { LATEbits.LATE1 = 0; } while(0);
+[e :U 793 ]
 {
 [e = . . _LATEbits 0 1 -> -> 0 `i `uc ]
 }
-[e :U 791 ]
-"181
-[; ;main.c: 181:             }
+[e :U 792 ]
+"186
+[; ;main.c: 186:             }
 }
 [e :U 771 ]
-"182
-[; ;main.c: 182:     }
+"187
+[; ;main.c: 187:     }
 }
 [e :U 768 ]
 [e $U 769  ]
 [e :U 770 ]
-"183
-[; ;main.c: 183: }
+"188
+[; ;main.c: 188: }
 [e :UE 762 ]
 }

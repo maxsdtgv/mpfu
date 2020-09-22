@@ -104,7 +104,7 @@ bool FLASH_Write(uint8_t *buffer){
     }
 
     EECON1bits.LWLO = 1; // Only Load Write Latches        
-        for (i = 0; i != MAX_BLOCK_SIZE + MAX_BLOCK_SIZE; i += 2){
+        for (i = 0; i != MAX_BLOCK_BYTES_SIZE; i += 2){
         EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8); 
         EEADRL = (uint8_t)(writeAddr & 0x00FF);
 
@@ -155,11 +155,11 @@ void ReadBootloaderFlags(void){
 
 void WriteBootloaderFlags(void){
     uint8_t i = 0;
-    uint8_t buf[MAX_BLOCK_SIZE + MAX_BLOCK_SIZE + 4];
+    uint8_t buf[MAX_BLOCK_BYTES_SIZE + 4];
     uint16_t dbyte = 0;
     uint16_t def_addr = FLAGS_VECTOR;
 
-        for (i = 0; i != MAX_BLOCK_SIZE + MAX_BLOCK_SIZE; i += 2){
+        for (i = 0; i != MAX_BLOCK_BYTES_SIZE; i += 2){
             dbyte = FLASH_Read(def_addr);   
             buf[i+4] = (uint8_t)((dbyte & 0xFF00) >> 8);
             buf[i+5] = (uint8_t)(dbyte & 0x00FF);
