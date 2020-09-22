@@ -11242,20 +11242,14 @@ _Bool UART_preamFound(void);
 # 16 "./apps/api/bootloader.h" 2
 # 47 "./apps/api/bootloader.h"
 _Bool KeyBLRequired(void);
-
-void ClearArray(uint8_t*);
-
+void ClearArray(uint8_t*, uint8_t);
 _Bool DefineError(uint8_t*);
 
 
-
-
-
 _Bool ReadFromMem(uint8_t*, uint8_t*);
-
 _Bool WriteToMem(uint8_t*, uint8_t*);
-
 void StartApp(void);
+void ExtUpgrade(void);
 # 18 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/memory.h" 1
 # 19 "apps/src/../api/../../main.h" 2
@@ -11268,14 +11262,7 @@ _Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
 _Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
 # 20 "apps/src/../api/../../main.h" 2
 # 16 "./apps/api/memory.h" 2
-
-
-
-
-
-
-
-
+# 25 "./apps/api/memory.h"
 struct {
     _Bool IsBLStart;
     _Bool IsExtUpgrade;
@@ -11290,7 +11277,7 @@ struct {
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
-# 54 "./apps/api/memory.h"
+# 55 "./apps/api/memory.h"
 void ReadBootloaderFlags(void);
 
 void WriteBootloaderFlags(void);
@@ -11359,7 +11346,7 @@ _Bool FLASH_Write(uint8_t *buffer){
     }
 
     EECON1bits.LWLO = 1;
-        for (i = 0; i != 0x0020 + 0x0020; i += 2){
+        for (i = 0; i != 0x0040; i += 2){
         EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8);
         EEADRL = (uint8_t)(writeAddr & 0x00FF);
 
@@ -11410,11 +11397,11 @@ void ReadBootloaderFlags(void){
 
 void WriteBootloaderFlags(void){
     uint8_t i = 0;
-    uint8_t buf[0x0020 + 0x0020 + 4];
+    uint8_t buf[0x0040 + 4];
     uint16_t dbyte = 0;
     uint16_t def_addr = 0x3FE0;
 
-        for (i = 0; i != 0x0020 + 0x0020; i += 2){
+        for (i = 0; i != 0x0040; i += 2){
             dbyte = FLASH_Read(def_addr);
             buf[i+4] = (uint8_t)((dbyte & 0xFF00) >> 8);
             buf[i+5] = (uint8_t)(dbyte & 0x00FF);

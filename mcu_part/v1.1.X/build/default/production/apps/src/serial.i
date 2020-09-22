@@ -11225,33 +11225,20 @@ void WDT_Initialize(void);
 # 16 "./apps/api/bootloader.h" 2
 # 47 "./apps/api/bootloader.h"
 _Bool KeyBLRequired(void);
-
-void ClearArray(uint8_t*);
-
+void ClearArray(uint8_t*, uint8_t);
 _Bool DefineError(uint8_t*);
 
 
-
-
-
 _Bool ReadFromMem(uint8_t*, uint8_t*);
-
 _Bool WriteToMem(uint8_t*, uint8_t*);
-
 void StartApp(void);
+void ExtUpgrade(void);
 # 18 "apps/src/../api/../../main.h" 2
 # 1 "./apps/api/memory.h" 1
 # 15 "./apps/api/memory.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/memory.h" 2
-
-
-
-
-
-
-
-
+# 25 "./apps/api/memory.h"
 struct {
     _Bool IsBLStart;
     _Bool IsExtUpgrade;
@@ -11266,7 +11253,7 @@ struct {
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
-# 54 "./apps/api/memory.h"
+# 55 "./apps/api/memory.h"
 void ReadBootloaderFlags(void);
 
 void WriteBootloaderFlags(void);

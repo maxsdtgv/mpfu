@@ -14,6 +14,7 @@ bool ReadFromSerialEEPROM(uint8_t *recv_frame, uint8_t *send_frame){
 
     Enable_serial_eeprom();
     SPI_WriteBlock(buffer, 0x03);    	// Send block
+
     SPI_ReadBlock(buffer, MAX_BYTES_TO_READ_PER_BLOCK);
 	Disable_serial_eeprom();
 	SPI_Close();

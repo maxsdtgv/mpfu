@@ -1,6 +1,6 @@
 Version 4.0 HI-TECH Software Intermediate Code
-"24 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 24: struct {
+"25 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 25: struct {
 [s S761 `a 1 `a 1 `us 1 `us 1 `uc 1 ]
 [n S761 . IsBLStart IsExtUpgrade StartAddrExtUpgrade NumBlocksExtUpgrade StatusCodeExtUpgrade ]
 "505 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
@@ -18,11 +18,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 "519
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 519: extern volatile PORTBbits_t PORTBbits __attribute__((address(0x00D)));
 [v _PORTBbits `VS36 ~T0 @X0 0 e@13 ]
-"35 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 35: uint16_t FLASH_Read(uint16_t);
+"36 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 36: uint16_t FLASH_Read(uint16_t);
 [v _FLASH_Read `(us ~T0 @X0 0 ef1`us ]
-"37
-[; ;./apps/api/memory.h: 37: _Bool FLASH_Write(uint8_t*);
+"38
+[; ;./apps/api/memory.h: 38: _Bool FLASH_Write(uint8_t*);
 [v _FLASH_Write `(a ~T0 @X0 0 ef1`*uc ]
 "2791 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2791:     struct {
@@ -39,6 +39,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "2800
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 2800: extern volatile LATEbits_t LATEbits __attribute__((address(0x110)));
 [v _LATEbits `VS142 ~T0 @X0 0 e@272 ]
+"31 ./apps/api/eeprom_25lc512.h
+[; ;./apps/api/eeprom_25lc512.h: 31: _Bool ReadFromSerialEEPROM(uint8_t *, uint8_t *);
+[v _ReadFromSerialEEPROM `(a ~T0 @X0 0 ef2`*uc`*uc ]
+"26 ./apps/api/serial.h
+[; ;./apps/api/serial.h: 26: uint8_t UART_dataWrite(uint8_t*, uint8_t);
+[v _UART_dataWrite `(uc ~T0 @X0 0 ef2`*uc`uc ]
 "54 /opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 54: __asm("INDF0 equ 00h");
 [; <" INDF0 equ 00h ;# ">
@@ -1050,8 +1056,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "16563
 [; ;/opt/microchip/mplabx/v5.40/packs/Microchip/PIC12-16F1xxx_DFP/1.2.63/xc8/pic/include/proc/pic16f1789.h: 16563: __asm("TOSH equ 0FEFh");
 [; <" TOSH equ 0FEFh ;# ">
-"30 ./apps/api/memory.h
-[; ;./apps/api/memory.h: 30: } BLFlags = {0, 0, 0, 0, 0};
+"31 ./apps/api/memory.h
+[; ;./apps/api/memory.h: 31: } BLFlags = {0, 0, 0, 0, 0};
 [v _BLFlags `S761 ~T0 @X0 1 e ]
 [i _BLFlags
 :U ..
@@ -1092,215 +1098,309 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;apps/src/bootloader.c: 8:  }
 }
 [e :U 764 ]
-"10
-[; ;apps/src/bootloader.c: 10: }
+"9
+[; ;apps/src/bootloader.c: 9: }
 [e :UE 762 ]
 }
-"12
-[; ;apps/src/bootloader.c: 12: void ClearArray(uint8_t *array){
-[v _ClearArray `(v ~T0 @X0 1 ef1`*uc ]
+"11
+[; ;apps/src/bootloader.c: 11: void ClearArray(uint8_t *array, uint8_t len){
+[v _ClearArray `(v ~T0 @X0 1 ef2`*uc`uc ]
 {
 [e :U _ClearArray ]
 [v _array `*uc ~T0 @X0 1 r1 ]
+[v _len `uc ~T0 @X0 1 r2 ]
 [f ]
-"13
-[; ;apps/src/bootloader.c: 13:  uint8_t i = 0;
+"12
+[; ;apps/src/bootloader.c: 12:  uint8_t i = 0;
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-"14
-[; ;apps/src/bootloader.c: 14:     for (i = 0; i != 66; i++){array[i]=0x00;}
+"13
+[; ;apps/src/bootloader.c: 13:     for (i = 0; i != len; i++){array[i]=0x00;}
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ != -> _i `i -> 66 `i 766  ]
-[e $U 767  ]
+[e $U 769  ]
 [e :U 766 ]
 {
 [e = *U + _array * -> _i `ux -> -> # *U _array `ui `ux -> -> 0 `i `uc ]
 }
 [e ++ _i -> -> 1 `i `uc ]
-[e $ != -> _i `i -> 66 `i 766  ]
+[e :U 769 ]
+[e $ != -> _i `i -> _len `i 766  ]
 [e :U 767 ]
 }
-"15
-[; ;apps/src/bootloader.c: 15: }
+"14
+[; ;apps/src/bootloader.c: 14: }
 [e :UE 765 ]
 }
-"17
-[; ;apps/src/bootloader.c: 17: _Bool DefineError(uint8_t *send_frame){
+"16
+[; ;apps/src/bootloader.c: 16: _Bool DefineError(uint8_t *send_frame){
 [v _DefineError `(a ~T0 @X0 1 ef1`*uc ]
 {
 [e :U _DefineError ]
 [v _send_frame `*uc ~T0 @X0 1 r1 ]
 [f ]
-"18
-[; ;apps/src/bootloader.c: 18:  send_frame[0] = 0x02;
+"17
+[; ;apps/src/bootloader.c: 17:  send_frame[0] = 0x02;
 [e = *U + _send_frame * -> -> 0 `i `x -> -> # *U _send_frame `i `x -> -> 2 `i `uc ]
-"19
-[; ;apps/src/bootloader.c: 19:  send_frame[1] = 0xFF;
+"18
+[; ;apps/src/bootloader.c: 18:  send_frame[1] = 0xFF;
 [e = *U + _send_frame * -> -> 1 `i `x -> -> # *U _send_frame `i `x -> -> 255 `i `uc ]
-"20
-[; ;apps/src/bootloader.c: 20:  return 1;
+"19
+[; ;apps/src/bootloader.c: 19:  return 1;
 [e ) -> -> 1 `i `a ]
-[e $UE 769  ]
-"21
-[; ;apps/src/bootloader.c: 21: }
-[e :UE 769 ]
+[e $UE 770  ]
+"20
+[; ;apps/src/bootloader.c: 20: }
+[e :UE 770 ]
 }
-"45
-[; ;apps/src/bootloader.c: 45: _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
+"44
+[; ;apps/src/bootloader.c: 44: _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 [v _ReadFromMem `(a ~T0 @X0 1 ef2`*uc`*uc ]
 {
 [e :U _ReadFromMem ]
 [v _recv_frame `*uc ~T0 @X0 1 r1 ]
 [v _send_frame `*uc ~T0 @X0 1 r2 ]
 [f ]
-"46
-[; ;apps/src/bootloader.c: 46:  uint8_t i = 0;
+"45
+[; ;apps/src/bootloader.c: 45:  uint8_t i = 0;
 [v _i `uc ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `uc ]
-"47
-[; ;apps/src/bootloader.c: 47:  uint16_t dbyte = 0;
+"46
+[; ;apps/src/bootloader.c: 46:  uint16_t dbyte = 0;
 [v _dbyte `us ~T0 @X0 1 a ]
 [e = _dbyte -> -> 0 `i `us ]
-"48
-[; ;apps/src/bootloader.c: 48:  uint16_t def_addr = 0;
+"47
+[; ;apps/src/bootloader.c: 47:  uint16_t def_addr = 0;
 [v _def_addr `us ~T0 @X0 1 a ]
 [e = _def_addr -> -> 0 `i `us ]
-"49
-[; ;apps/src/bootloader.c: 49:  def_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
+"48
+[; ;apps/src/bootloader.c: 48:  def_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
 [e = _def_addr -> | & -> << -> *U + _recv_frame * -> -> 2 `i `x -> -> # *U _recv_frame `i `x `i -> 8 `i `ui -> 65280 `ui -> & -> *U + _recv_frame * -> -> 3 `i `x -> -> # *U _recv_frame `i `x `i -> 255 `i `ui `us ]
+"49
+[; ;apps/src/bootloader.c: 49:  if (recv_frame[2] == 0x80){
+[e $ ! == -> *U + _recv_frame * -> -> 2 `i `x -> -> # *U _recv_frame `i `x `i -> 128 `i 772  ]
+{
 "50
-[; ;apps/src/bootloader.c: 50:  if (recv_frame[2] == 0x80){
-[e $ ! == -> *U + _recv_frame * -> -> 2 `i `x -> -> # *U _recv_frame `i `x `i -> 128 `i 771  ]
-{
-"51
-[; ;apps/src/bootloader.c: 51:   dbyte = FLASH_Read(def_addr);
+[; ;apps/src/bootloader.c: 50:   dbyte = FLASH_Read(def_addr);
 [e = _dbyte ( _FLASH_Read (1 _def_addr ]
-"52
-[; ;apps/src/bootloader.c: 52:   send_frame[2] = (uint8_t)((dbyte & 0xFF00) >> 8);
+"51
+[; ;apps/src/bootloader.c: 51:   send_frame[2] = (uint8_t)((dbyte & 0xFF00) >> 8);
 [e = *U + _send_frame * -> -> 2 `i `x -> -> # *U _send_frame `i `x -> >> & -> _dbyte `ui -> 65280 `ui -> 8 `i `uc ]
-"53
-[; ;apps/src/bootloader.c: 53:   send_frame[3] = (uint8_t)(dbyte & 0x00FF);
+"52
+[; ;apps/src/bootloader.c: 52:   send_frame[3] = (uint8_t)(dbyte & 0x00FF);
 [e = *U + _send_frame * -> -> 3 `i `x -> -> # *U _send_frame `i `x -> & -> _dbyte `ui -> -> 255 `i `ui `uc ]
+"53
+[; ;apps/src/bootloader.c: 53:   i++; i++;
+[e ++ _i -> -> 1 `i `uc ]
+[e ++ _i -> -> 1 `i `uc ]
 "54
-[; ;apps/src/bootloader.c: 54:   i++; i++;
-[e ++ _i -> -> 1 `i `uc ]
-[e ++ _i -> -> 1 `i `uc ]
-"55
-[; ;apps/src/bootloader.c: 55:  } else {
+[; ;apps/src/bootloader.c: 54:  } else {
 }
-[e $U 772  ]
-[e :U 771 ]
+[e $U 773  ]
+[e :U 772 ]
 {
-"56
-[; ;apps/src/bootloader.c: 56:   for (i = 0; i != 0x0020 + 0x0020; i += 2){
+"55
+[; ;apps/src/bootloader.c: 55:   for (i = 0; i != 0x0040; i += 2){
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ != -> _i `i + -> 32 `i -> 32 `i 773  ]
-[e $U 774  ]
-[e :U 773 ]
+[e $ != -> _i `i -> 64 `i 774  ]
+[e $U 775  ]
+[e :U 774 ]
 {
-"57
-[; ;apps/src/bootloader.c: 57:    dbyte = FLASH_Read(def_addr);
+"56
+[; ;apps/src/bootloader.c: 56:    dbyte = FLASH_Read(def_addr);
 [e = _dbyte ( _FLASH_Read (1 _def_addr ]
-"58
-[; ;apps/src/bootloader.c: 58:    send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
+"57
+[; ;apps/src/bootloader.c: 57:    send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
 [e = *U + _send_frame * -> + -> _i `i -> 2 `i `x -> -> # *U _send_frame `i `x -> >> & -> _dbyte `ui -> 65280 `ui -> 8 `i `uc ]
-"59
-[; ;apps/src/bootloader.c: 59:    send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
+"58
+[; ;apps/src/bootloader.c: 58:    send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
 [e = *U + _send_frame * -> + -> _i `i -> 3 `i `x -> -> # *U _send_frame `i `x -> & -> _dbyte `ui -> -> 255 `i `ui `uc ]
-"60
-[; ;apps/src/bootloader.c: 60:    def_addr++;
+"59
+[; ;apps/src/bootloader.c: 59:    def_addr++;
 [e ++ _def_addr -> -> 1 `i `us ]
-"61
-[; ;apps/src/bootloader.c: 61:   }
+"60
+[; ;apps/src/bootloader.c: 60:   }
 }
 [e =+ _i -> -> 2 `i `uc ]
-[e $ != -> _i `i + -> 32 `i -> 32 `i 773  ]
-[e :U 774 ]
+[e $ != -> _i `i -> 64 `i 774  ]
+[e :U 775 ]
 }
+"61
+[; ;apps/src/bootloader.c: 61:  }
+}
+[e :U 773 ]
 "62
-[; ;apps/src/bootloader.c: 62:  }
-}
-[e :U 772 ]
-"63
-[; ;apps/src/bootloader.c: 63:  send_frame[0] = i + 2;
+[; ;apps/src/bootloader.c: 62:  send_frame[0] = i + 2;
 [e = *U + _send_frame * -> -> 0 `i `x -> -> # *U _send_frame `i `x -> + -> _i `i -> 2 `i `uc ]
-"64
-[; ;apps/src/bootloader.c: 64:  send_frame[1] = 0x02;
+"63
+[; ;apps/src/bootloader.c: 63:  send_frame[1] = 0x02;
 [e = *U + _send_frame * -> -> 1 `i `x -> -> # *U _send_frame `i `x -> -> 2 `i `uc ]
-"65
-[; ;apps/src/bootloader.c: 65:  return 1;
+"64
+[; ;apps/src/bootloader.c: 64:  return 1;
 [e ) -> -> 1 `i `a ]
-[e $UE 770  ]
-"66
-[; ;apps/src/bootloader.c: 66: }
-[e :UE 770 ]
+[e $UE 771  ]
+"65
+[; ;apps/src/bootloader.c: 65: }
+[e :UE 771 ]
 }
-"68
-[; ;apps/src/bootloader.c: 68: _Bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
+"67
+[; ;apps/src/bootloader.c: 67: _Bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
 [v _WriteToMem `(a ~T0 @X0 1 ef2`*uc`*uc ]
 {
 [e :U _WriteToMem ]
 [v _recv_frame `*uc ~T0 @X0 1 r1 ]
 [v _send_frame `*uc ~T0 @X0 1 r2 ]
 [f ]
-"69
-[; ;apps/src/bootloader.c: 69:  _Bool result;
+"68
+[; ;apps/src/bootloader.c: 68:  _Bool result;
 [v _result `a ~T0 @X0 1 a ]
-"70
-[; ;apps/src/bootloader.c: 70:  result = FLASH_Write(recv_frame);
+"69
+[; ;apps/src/bootloader.c: 69:  result = FLASH_Write(recv_frame);
 [e = _result ( _FLASH_Write (1 _recv_frame ]
-"71
-[; ;apps/src/bootloader.c: 71:  if (result) {
-[e $ ! != -> _result `i -> 0 `i 777  ]
+"70
+[; ;apps/src/bootloader.c: 70:  if (result) {
+[e $ ! != -> _result `i -> 0 `i 778  ]
 {
-"72
-[; ;apps/src/bootloader.c: 72:  send_frame[0] = 0x02;
+"71
+[; ;apps/src/bootloader.c: 71:  send_frame[0] = 0x02;
 [e = *U + _send_frame * -> -> 0 `i `x -> -> # *U _send_frame `i `x -> -> 2 `i `uc ]
-"73
-[; ;apps/src/bootloader.c: 73:  send_frame[1] = 0x04;
+"72
+[; ;apps/src/bootloader.c: 72:  send_frame[1] = 0x04;
 [e = *U + _send_frame * -> -> 1 `i `x -> -> # *U _send_frame `i `x -> -> 4 `i `uc ]
+"73
+[; ;apps/src/bootloader.c: 73:  }
+}
+[e :U 778 ]
 "74
-[; ;apps/src/bootloader.c: 74:  }
-}
-[e :U 777 ]
-"75
-[; ;apps/src/bootloader.c: 75:  return result;
+[; ;apps/src/bootloader.c: 74:  return result;
 [e ) _result ]
-[e $UE 776  ]
-"76
-[; ;apps/src/bootloader.c: 76: }
-[e :UE 776 ]
+[e $UE 777  ]
+"75
+[; ;apps/src/bootloader.c: 75: }
+[e :UE 777 ]
 }
-"78
-[; ;apps/src/bootloader.c: 78: void StartApp(void){
+"77
+[; ;apps/src/bootloader.c: 77: void StartApp(void){
 [v _StartApp `(v ~T0 @X0 1 ef ]
 {
 [e :U _StartApp ]
 [f ]
-"81
-[; ;apps/src/bootloader.c: 81:     do { LATEbits.LATE0 = 0; } while(0);
-[e :U 781 ]
+"80
+[; ;apps/src/bootloader.c: 80:     do { LATEbits.LATE0 = 0; } while(0);
+[e :U 782 ]
 {
 [e = . . _LATEbits 0 0 -> -> 0 `i `uc ]
 }
-[e :U 780 ]
-"82
-[; ;apps/src/bootloader.c: 82:     while(1){}
-[e :U 783 ]
+[e :U 781 ]
+"81
+[; ;apps/src/bootloader.c: 81:     while(1){}
+[e :U 784 ]
 {
 }
-[e :U 782 ]
-[e $U 783  ]
-[e :U 784 ]
-"83
-[; ;apps/src/bootloader.c: 83:     __asm("pagesel " "0x3FFC");
+[e :U 783 ]
+[e $U 784  ]
+[e :U 785 ]
+"82
+[; ;apps/src/bootloader.c: 82:     __asm("pagesel " "0x3FFC");
 [; <" pagesel 0x3FFC ;# ">
-"84
-[; ;apps/src/bootloader.c: 84:     __asm("goto " "0x3FFC");
+"83
+[; ;apps/src/bootloader.c: 83:     __asm("goto " "0x3FFC");
 [; <" goto 0x3FFC ;# ">
-"85
-[; ;apps/src/bootloader.c: 85: }
-[e :UE 778 ]
+"84
+[; ;apps/src/bootloader.c: 84: }
+[e :UE 779 ]
+}
+"86
+[; ;apps/src/bootloader.c: 86: void ExtUpgrade(void){
+[v _ExtUpgrade `(v ~T0 @X0 1 ef ]
+{
+[e :U _ExtUpgrade ]
+[f ]
+"87
+[; ;apps/src/bootloader.c: 87:  uint16_t i = 0, k = 0, addr = BLFlags.NumBlocksExtUpgrade;
+[v _i `us ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `us ]
+[v _k `us ~T0 @X0 1 a ]
+[e = _k -> -> 0 `i `us ]
+[v _addr `us ~T0 @X0 1 a ]
+[e = _addr . _BLFlags 3 ]
+"88
+[; ;apps/src/bootloader.c: 88:  uint8_t command_to_read[4];
+[v _command_to_read `uc ~T0 @X0 -> 4 `i a ]
+"89
+[; ;apps/src/bootloader.c: 89:  uint8_t buf_from_serial_mem[0x0040 + 2];
+[v _buf_from_serial_mem `uc ~T0 @X0 -> 66 `i a ]
+"90
+[; ;apps/src/bootloader.c: 90:     uint8_t data_to_flash[0x0040 + 4];
+[v _data_to_flash `uc ~T0 @X0 -> 68 `i a ]
+"92
+[; ;apps/src/bootloader.c: 92:     ClearArray(data_to_flash, 0x0040 + 4);
+[e ( _ClearArray (2 , &U _data_to_flash -> + -> 64 `i -> 4 `i `uc ]
+"94
+[; ;apps/src/bootloader.c: 94:  for (i = 0; i != BLFlags.NumBlocksExtUpgrade; i++){
+{
+[e = _i -> -> 0 `i `us ]
+[e $U 790  ]
+[e :U 787 ]
+{
+"96
+[; ;apps/src/bootloader.c: 96:   command_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
+[e = *U + &U _command_to_read * -> -> -> 2 `i `ui `ux -> -> # *U &U _command_to_read `ui `ux -> >> & -> _addr `ui -> 65280 `ui -> 8 `i `uc ]
+"97
+[; ;apps/src/bootloader.c: 97:   command_to_read[3] = (uint8_t)((addr & 0x00FF));
+[e = *U + &U _command_to_read * -> -> -> 3 `i `ui `ux -> -> # *U &U _command_to_read `ui `ux -> & -> _addr `ui -> -> 255 `i `ui `uc ]
+"100
+[; ;apps/src/bootloader.c: 100:   ReadFromSerialEEPROM(command_to_read, buf_from_serial_mem);
+[e ( _ReadFromSerialEEPROM (2 , &U _command_to_read &U _buf_from_serial_mem ]
+"102
+[; ;apps/src/bootloader.c: 102:   data_to_flash[2] = buf_from_serial_mem[2];
+[e = *U + &U _data_to_flash * -> -> -> 2 `i `ui `ux -> -> # *U &U _data_to_flash `ui `ux *U + &U _buf_from_serial_mem * -> -> -> 2 `i `ui `ux -> -> # *U &U _buf_from_serial_mem `ui `ux ]
+"103
+[; ;apps/src/bootloader.c: 103:   data_to_flash[3] = buf_from_serial_mem[3];
+[e = *U + &U _data_to_flash * -> -> -> 3 `i `ui `ux -> -> # *U &U _data_to_flash `ui `ux *U + &U _buf_from_serial_mem * -> -> -> 3 `i `ui `ux -> -> # *U &U _buf_from_serial_mem `ui `ux ]
+"105
+[; ;apps/src/bootloader.c: 105:   addr++;
+[e ++ _addr -> -> 1 `i `us ]
+"107
+[; ;apps/src/bootloader.c: 107:   command_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
+[e = *U + &U _command_to_read * -> -> -> 2 `i `ui `ux -> -> # *U &U _command_to_read `ui `ux -> >> & -> _addr `ui -> 65280 `ui -> 8 `i `uc ]
+"108
+[; ;apps/src/bootloader.c: 108:   command_to_read[3] = (uint8_t)((addr & 0x00FF));
+[e = *U + &U _command_to_read * -> -> -> 3 `i `ui `ux -> -> # *U &U _command_to_read `ui `ux -> & -> _addr `ui -> -> 255 `i `ui `uc ]
+"110
+[; ;apps/src/bootloader.c: 110:   ReadFromSerialEEPROM(command_to_read, buf_from_serial_mem);
+[e ( _ReadFromSerialEEPROM (2 , &U _command_to_read &U _buf_from_serial_mem ]
+"112
+[; ;apps/src/bootloader.c: 112:   for (k = 0; k != 0x0040; k++){
+{
+[e = _k -> -> 0 `i `us ]
+[e $ != -> _k `ui -> -> 64 `i `ui 791  ]
+[e $U 792  ]
+[e :U 791 ]
+{
+"113
+[; ;apps/src/bootloader.c: 113:    data_to_flash[k + 4] = buf_from_serial_mem[k + 2];
+[e = *U + &U _data_to_flash * -> + -> _k `ui -> -> 4 `i `ui `ux -> -> # *U &U _data_to_flash `ui `ux *U + &U _buf_from_serial_mem * -> + -> _k `ui -> -> 2 `i `ui `ux -> -> # *U &U _buf_from_serial_mem `ui `ux ]
+"114
+[; ;apps/src/bootloader.c: 114:   }
+}
+[e ++ _k -> -> 1 `i `us ]
+[e $ != -> _k `ui -> -> 64 `i `ui 791  ]
+[e :U 792 ]
+}
+"118
+[; ;apps/src/bootloader.c: 118:   UART_dataWrite(data_to_flash, 0x44);
+[e ( _UART_dataWrite (2 , &U _data_to_flash -> -> 68 `i `uc ]
+"121
+[; ;apps/src/bootloader.c: 121:  }
+}
+[e ++ _i -> -> 1 `i `us ]
+[e :U 790 ]
+[e $ != -> _i `ui -> . _BLFlags 3 `ui 787  ]
+[e :U 788 ]
+}
+"125
+[; ;apps/src/bootloader.c: 125: }
+[e :UE 786 ]
 }

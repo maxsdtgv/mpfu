@@ -6,12 +6,11 @@ bool KeyBLRequired(void){
 	} else {
 		return false;
 	}
-
 }
 
-void ClearArray(uint8_t *array){
+void ClearArray(uint8_t *array, uint8_t len){
 	uint8_t i = 0;
-    for (i = 0; i != BL_MAX_SEND_DATA; i++){array[i]=0x00;} // Clear array to send
+    for (i = 0; i != len; i++){array[i]=0x00;} // Clear array to send
 }
 
 bool DefineError(uint8_t *send_frame){
@@ -53,7 +52,7 @@ bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 		send_frame[3] = (uint8_t)(dbyte & 0x00FF);
 		i++; i++;
 	} else {
-		for (i = 0; i != MAX_BLOCK_SIZE + MAX_BLOCK_SIZE; i += 2){
+		for (i = 0; i != MAX_BLOCK_BYTES_SIZE; i += 2){
 			dbyte = FLASH_Read(def_addr);	
 			send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
 			send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
@@ -84,3 +83,43 @@ void StartApp(void){
     asm ("goto " str(RESET_VECTOR_APP));
 }
 
+void ExtUpgrade(void){
+	uint16_t i = 0, k = 0, addr = BLFlags.NumBlocksExtUpgrade;
+	uint8_t command_to_read[4];
+	uint8_t buf_from_serial_mem[MAX_BLOCK_BYTES_SIZE + 2];
+    uint8_t data_to_flash[MAX_BLOCK_BYTES_SIZE + 4];
+
+    ClearArray(data_to_flash, MAX_BLOCK_BYTES_SIZE + 4);
+    
+	for (i = 0; i != BLFlags.NumBlocksExtUpgrade; i++){
+
+		command_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
+		command_to_read[3] = (uint8_t)((addr & 0x00FF));
+
+
+		ReadFromSerialEEPROM(command_to_read, buf_from_serial_mem);
+
+		data_to_flash[2] = buf_from_serial_mem[2];
+		data_to_flash[3] = buf_from_serial_mem[3];
+
+		addr++;
+
+		command_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
+		command_to_read[3] = (uint8_t)((addr & 0x00FF));
+
+		ReadFromSerialEEPROM(command_to_read, buf_from_serial_mem);
+
+		for (k = 0; k != MAX_BLOCK_BYTES_SIZE; k++){
+			data_to_flash[k + 4] = buf_from_serial_mem[k + 2];
+		}
+
+
+
+		UART_dataWrite(data_to_flash, 0x44);
+		//FLASH_Write(data_to_flash);
+
+	}
+
+
+
+}

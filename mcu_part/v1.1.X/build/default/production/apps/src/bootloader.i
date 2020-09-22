@@ -11234,14 +11234,7 @@ _Bool UART_preamFound(void);
 # 15 "./apps/api/memory.h"
 # 1 "apps/src/../api/../../main.h" 1
 # 16 "./apps/api/memory.h" 2
-
-
-
-
-
-
-
-
+# 25 "./apps/api/memory.h"
 struct {
     _Bool IsBLStart;
     _Bool IsExtUpgrade;
@@ -11256,7 +11249,7 @@ struct {
 uint16_t FLASH_Read(uint16_t);
 
 _Bool FLASH_Write(uint8_t*);
-# 54 "./apps/api/memory.h"
+# 55 "./apps/api/memory.h"
 void ReadBootloaderFlags(void);
 
 void WriteBootloaderFlags(void);
@@ -11272,20 +11265,14 @@ _Bool WriteToSerialEEPROM(uint8_t *, uint8_t *);
 # 16 "./apps/api/bootloader.h" 2
 # 47 "./apps/api/bootloader.h"
 _Bool KeyBLRequired(void);
-
-void ClearArray(uint8_t*);
-
+void ClearArray(uint8_t*, uint8_t);
 _Bool DefineError(uint8_t*);
 
 
-
-
-
 _Bool ReadFromMem(uint8_t*, uint8_t*);
-
 _Bool WriteToMem(uint8_t*, uint8_t*);
-
 void StartApp(void);
+void ExtUpgrade(void);
 # 2 "apps/src/bootloader.c" 2
 
 _Bool KeyBLRequired(void){
@@ -11294,12 +11281,11 @@ _Bool KeyBLRequired(void){
  } else {
   return 0;
  }
-
 }
 
-void ClearArray(uint8_t *array){
+void ClearArray(uint8_t *array, uint8_t len){
  uint8_t i = 0;
-    for (i = 0; i != 66; i++){array[i]=0x00;}
+    for (i = 0; i != len; i++){array[i]=0x00;}
 }
 
 _Bool DefineError(uint8_t *send_frame){
@@ -11307,7 +11293,7 @@ _Bool DefineError(uint8_t *send_frame){
  send_frame[1] = 0xFF;
  return 1;
 }
-# 45 "apps/src/bootloader.c"
+# 44 "apps/src/bootloader.c"
 _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
  uint8_t i = 0;
  uint16_t dbyte = 0;
@@ -11319,7 +11305,7 @@ _Bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
   send_frame[3] = (uint8_t)(dbyte & 0x00FF);
   i++; i++;
  } else {
-  for (i = 0; i != 0x0020 + 0x0020; i += 2){
+  for (i = 0; i != 0x0040; i += 2){
    dbyte = FLASH_Read(def_addr);
    send_frame[i+2] = (uint8_t)((dbyte & 0xFF00) >> 8);
    send_frame[i+3] = (uint8_t)(dbyte & 0x00FF);
@@ -11348,4 +11334,45 @@ void StartApp(void){
     while(1){}
     __asm("pagesel " "0x3FFC");
     __asm("goto " "0x3FFC");
+}
+
+void ExtUpgrade(void){
+ uint16_t i = 0, k = 0, addr = BLFlags.NumBlocksExtUpgrade;
+ uint8_t command_to_read[4];
+ uint8_t buf_from_serial_mem[0x0040 + 2];
+    uint8_t data_to_flash[0x0040 + 4];
+
+    ClearArray(data_to_flash, 0x0040 + 4);
+
+ for (i = 0; i != BLFlags.NumBlocksExtUpgrade; i++){
+
+  command_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
+  command_to_read[3] = (uint8_t)((addr & 0x00FF));
+
+
+  ReadFromSerialEEPROM(command_to_read, buf_from_serial_mem);
+
+  data_to_flash[2] = buf_from_serial_mem[2];
+  data_to_flash[3] = buf_from_serial_mem[3];
+
+  addr++;
+
+  command_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
+  command_to_read[3] = (uint8_t)((addr & 0x00FF));
+
+  ReadFromSerialEEPROM(command_to_read, buf_from_serial_mem);
+
+  for (k = 0; k != 0x0040; k++){
+   data_to_flash[k + 4] = buf_from_serial_mem[k + 2];
+  }
+
+
+
+  UART_dataWrite(data_to_flash, 0x44);
+
+
+ }
+
+
+
 }
