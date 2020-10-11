@@ -56,3 +56,19 @@
 			+-------+-------------------------+
 
 			* for devices with 0x4000 words, and addressed range 0x0000 - 0x3FFF (like PIC16F1789)
+
+
+FLAGS DESCRIPTION:
+------------------
+
+3FE0 |	BL config 1 - isBLStart << xxFF - no, xx00 - yes
+3FE1 |	BL config 2 - isExtUpgrade << xxFF - no, xx00 - yes (flag will initiate upgrade from ext serial eeprom)
+3FE2 |	BL config 3 - start addr of ext serial eeprom to read fw << H part
+3FE3 |	BL config 4 - start addr of ext serial eeprom to read fw << L part
+3FE4 |	BL config 5 - number of lines to read from serial eeprom << H part
+3FE5 |	BL config 6 - number of lines to read from serial eeprom << L part
+3FE6 |	BL config 7 - BL processing status << xx00 - xxFF (currently not supported)
+
+
+Serial eeprom structure:
+------------------------

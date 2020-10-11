@@ -84,8 +84,8 @@ void StartApp(void){
 }
 
 void ExtUpgrade(void){
-	uint16_t i = 0, k = 0, addr = BLFlags.NumBlocksExtUpgrade;
-	uint8_t command_to_read[4];
+	uint16_t i = 0, k = 0, addr = BLFlags.StartAddrExtUpgrade;
+	uint8_t ext_mem_addr_to_read[4];
 	uint8_t buf_from_serial_mem[MAX_BLOCK_BYTES_SIZE + 2];
     uint8_t data_to_flash[MAX_BLOCK_BYTES_SIZE + 4];
 
@@ -93,21 +93,21 @@ void ExtUpgrade(void){
     
 	for (i = 0; i != BLFlags.NumBlocksExtUpgrade; i++){
 
-		command_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
-		command_to_read[3] = (uint8_t)((addr & 0x00FF));
+		ext_mem_addr_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
+		ext_mem_addr_to_read[3] = (uint8_t)((addr & 0x00FF));
 
 
-		ReadFromSerialEEPROM(command_to_read, buf_from_serial_mem);
+		ReadFromSerialEEPROM(ext_mem_addr_to_read, buf_from_serial_mem);
 
 		data_to_flash[2] = buf_from_serial_mem[2];
 		data_to_flash[3] = buf_from_serial_mem[3];
 
 		addr++;
+		// To read second time with shift for 1 byte, to append in format > addr+data
+		ext_mem_addr_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
+		ext_mem_addr_to_read[3] = (uint8_t)((addr & 0x00FF));
 
-		command_to_read[2] = (uint8_t)((addr & 0xFF00) >> 8);
-		command_to_read[3] = (uint8_t)((addr & 0x00FF));
-
-		ReadFromSerialEEPROM(command_to_read, buf_from_serial_mem);
+		ReadFromSerialEEPROM(ext_mem_addr_to_read, buf_from_serial_mem);
 
 		for (k = 0; k != MAX_BLOCK_BYTES_SIZE; k++){
 			data_to_flash[k + 4] = buf_from_serial_mem[k + 2];
