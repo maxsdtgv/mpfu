@@ -155,11 +155,6 @@ CLRWDT();                                   // Clear WDT;
                     processing_status = WriteToSerialEEPROM(recv_frame, send_frame); // Send_frame will be filled after execution
                     break;
 
-                case 0x99:    // 0x99 - test Write to external serial eeprom
-                    ExtUpgrade(); // Send_frame will be filled after execution
-                    processing_status = true;
-                    break;
-
                 case START_APPLICATION:         // 0x0F - Exit Bootloader. GOTO to RVA (see memory structure)
                     StartApp();
                     break;

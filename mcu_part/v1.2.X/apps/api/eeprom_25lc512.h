@@ -21,8 +21,9 @@ extern "C" {
 #define	SPI_COMMAND_PE		0x42 	// Page Erase – erase one page in memory array
 #define	SPI_COMMAND_RDSR	0x05 	// Read STATUS register
 
+#define EEPROM_25LC512_BLOCK_SIZE_BYTES 0x80 // Block size in EEPROM 25LC512 
 #define MAX_BYTES_TO_READ_PER_BLOCK 	0x40 // Will be read 64 bytes (32 words)
-#define MAX_BYTES_TO_WRITE_PER_BLOCK	0x43 // Will be write 64 bytes (32 words)
+#define MAX_BYTES_TO_WRITE_PER_BLOCK	0x43 // Will be write 64 bytes (32 words) + 3 system flags
 #define DELAY_TO_PROCEED_COMMAND		0x0A // Delay on pin !CS to proceed command
 
 #define Enable_serial_eeprom() do {IO_RA0_SetLow();} while(0)
