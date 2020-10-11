@@ -85,6 +85,7 @@ bool FLASH_Write(uint8_t *buffer){
 
     EECON1bits.EEPGD = 1; // Select Program Memory
     EECON1bits.WREN = 1; // Enable writes
+    EECON1bits.WRERR = 0; // Clear errors flag
 
     if (buffer[2] == 0x80){
             EECON1bits.CFGS = 1; // Select Configuration Space

@@ -69,6 +69,19 @@ FLAGS DESCRIPTION:
 3FE5 |	BL config 6 - number of lines to read from serial eeprom << L part
 3FE6 |	BL config 7 - BL processing status << xx00 - xxFF (currently not supported)
 
+0x3FE0
+3FFF 3F00 3F52 3F00 3F00 3F01 ....
+
+
+
+
+
 
 Serial eeprom structure:
 ------------------------
+
+
+0x5200 - aabb xx.....  // aabb - addr to write in main flash, data -64 bytes
+0x5280 - ...
+0x5300 - ...
+0x5380 - ...

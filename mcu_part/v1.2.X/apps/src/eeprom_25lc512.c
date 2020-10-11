@@ -16,6 +16,8 @@ bool ReadFromSerialEEPROM(uint8_t *recv_frame, uint8_t *send_frame){
 
     SPI_WriteBlock(buffer, 0x03);    	// Send block
 
+    ClearArray(buffer, MAX_BYTES_TO_READ_PER_BLOCK);
+
     SPI_ReadBlock(buffer, MAX_BYTES_TO_READ_PER_BLOCK);
     
     SPI_Close();
