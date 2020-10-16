@@ -1,5 +1,5 @@
-CC=gcc
-CFLAGS=-c -Wall
+CC=g++
+CFLAGS=-c -Wall -lstdc
 
 all: mpfu
 

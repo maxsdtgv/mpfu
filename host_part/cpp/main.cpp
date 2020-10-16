@@ -1,9 +1,11 @@
 #include <unistd.h>
 
+
 #include "fw_converter.h"
 #include "uart_procedures.h"
 
 using namespace std;
+
 
 #define MAX_BYTES_TO_SEND   66
 #define MAX_BYTES_TO_RECV   66
@@ -15,11 +17,13 @@ printf("Microchip firmware uploader v1.1\n");
 char serial_name[32] = {};
 char serial_speed[6] = {};
 char fw_path[64] = {};
+char fw_path_converted[64] = {};
 int param_count = 0;
 short verbose = 0;
 int received_bytes = 0; 
 char read_buf[MAX_BYTES_TO_RECV] = {};
 char send_buf[MAX_BYTES_TO_SEND] = {};
+
 
 
 	for (int i = 1; i < argc; ++i) {
@@ -77,29 +81,38 @@ if (param_count < 3) {
 printf("Connect to %s, %s\n", serial_name, serial_speed);
 printf("Firmware %s\n\n", fw_path);
 
+
+
+fwConvert16(fw_path, fw_path_converted);
+
+
+return 1; //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,
+
 int serial_port = UART_Init(serial_name, serial_speed);
 UART_Recv(serial_port, read_buf, sizeof(read_buf)/sizeof(*read_buf));   // Clear UART before send
+
+
 
 printf("Trying to found device ... \n");
 
 //======= Ping to device =====================================================================================
 
-    send_buf[0] = 0x04;    // Length of data in frame include this byte also
+    send_buf[0] = 0x04;    // Length of data in frame, include this byte also
     send_buf[1] = READ_FROM_MEM;
-    send_buf[2] = 0x00;
+    send_buf[2] = 0x80;
     send_buf[3] = 0x00;
 
     UART_Send(serial_port, send_buf, send_buf[0]);
 
     received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);
     if (received_bytes == -1) {
-        printf("     ERROR Device not found!");
+        printf("     ERROR Device not found!\n");
         exit(6);
     } else {
-
             if (read_buf[1] == 0x04 && read_buf[2] == READ_FROM_MEM){
                 printf("     Device found!\n");
-                printf("BL version: %hhX.%hhX\n",(unsigned)read_buf[3],(unsigned)read_buf[4]);
+
+                printf("     BL version: %hhX.%hhX\n",(unsigned)read_buf[3],(unsigned)read_buf[4]);
             }
             }
 
@@ -108,6 +121,7 @@ printf("Trying to found device ... \n");
 //============================================================================================
 
 
+//============================================================================================
 //while(1)
 //    {
 //
