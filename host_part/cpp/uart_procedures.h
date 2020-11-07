@@ -16,7 +16,8 @@
 #define ERROR_CODE			'\xFF'
 #define SUCCESS_CODE		'\xEE'
 //#define PING_REQUEST		'\x01'
-#define READ_FROM_MEM		'\x02'	
+#define READ_FROM_MEM		'\x02'
+#define WRITE_FROM_MEM		'\x04'
 #define START_APPLICATION	'\x0F'
 //====================================================
 
