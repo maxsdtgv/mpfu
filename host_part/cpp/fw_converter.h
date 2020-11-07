@@ -4,4 +4,4 @@
 #include <stdlib.h>
 #include <string>
 #include <cstring>
-void fwConvert16(char*, char*);
+void fwConvertPic16F1xxx(char*, char*);

@@ -1,38 +1,34 @@
 #include <unistd.h>
-
-
 #include "fw_converter.h"
 #include "uart_procedures.h"
 
 using namespace std;
 
-
 #define MAX_BYTES_TO_SEND   66
 #define MAX_BYTES_TO_RECV   66
-
 
 int main(int argc, char** argv) {
 printf("Microchip firmware uploader v1.1\n");
 
 char serial_name[32] = {};
 char serial_speed[6] = {};
-char fw_path[64] = {};
-char fw_path_converted[64] = {};
+char inFilename[64] = {};
+char outFilename[64] = {};
 int param_count = 0;
 short verbose = 0;
 int received_bytes = 0; 
 char read_buf[MAX_BYTES_TO_RECV] = {};
 char send_buf[MAX_BYTES_TO_SEND] = {};
 
+                strcpy(outFilename, "./last_fw.cof");
 
 
 	for (int i = 1; i < argc; ++i) {
-
         if (strcmp(argv[i], "-h") == 0) {
         		printf("Cli arguments keys: \n");
         		printf("     -D     Port name (e.g. /dev/ttyUSB0)\n");
         		printf("     -b     Port speed (e.g. 9600)\n");
-        		printf("     -f     Path to firmware\n");      		        		
+        		printf("     -f     Path to HEX file with firmware\n");      		        		
         		printf("     -v     Verbose mode\n");  
         		return 1;
         	}
@@ -59,10 +55,10 @@ char send_buf[MAX_BYTES_TO_SEND] = {};
 
         if (strcmp(argv[i], "-f") == 0) {
         	if (argv[i+1]) {
-        		strcpy(fw_path, argv[i+1]);
+        		strcpy(inFilename, argv[i+1]);
         		++param_count;
         	} else {
-        		printf("Define firmware path.\n");
+        		printf("Define path to firmware in HEX format.\n");
         		return 1;
         	}
         }
@@ -79,11 +75,10 @@ if (param_count < 3) {
 }
 
 printf("Connect to %s, %s\n", serial_name, serial_speed);
-printf("Firmware %s\n\n", fw_path);
+printf("Firmware %s\n\n", inFilename);
 
 
-
-fwConvert16(fw_path, fw_path_converted);
+fwConvertPic16F1xxx(inFilename, outFilename);
 
 
 return 1; //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,
