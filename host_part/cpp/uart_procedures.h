@@ -9,16 +9,16 @@
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
 
-#define PREAM_TO_DEVICE     '\x55'
-#define PREAM_FROM_DEVICE   '\xAA'
+#define PREAM_TO_DEVICE     "55"
+#define PREAM_FROM_DEVICE   "AA"
 
 //=============    SUPPORTED CODES IN RETURNED COMMANDS ================
-#define ERROR_CODE			'\xFF'
-#define SUCCESS_CODE		'\xEE'
-//#define PING_REQUEST		'\x01'
-#define READ_FROM_MEM		'\x02'
-#define WRITE_FROM_MEM		'\x04'
-#define START_APPLICATION	'\x0F'
+#define ERROR_CODE			"FF"
+#define SUCCESS_CODE		"EE"
+//#define PING_REQUEST		"01"
+#define READ_FROM_MEM		"02"
+#define WRITE_TO_MEM		"04"
+#define START_APPLICATION	"0F"
 //====================================================
 
 
