@@ -4,8 +4,8 @@
 
 using namespace std;
 
-#define MAX_BYTES_TO_SEND   66
-#define MAX_BYTES_TO_RECV   66
+#define MAX_BYTES_TO_SEND   68
+#define MAX_BYTES_TO_RECV   67
 
 int main(int argc, char** argv) {
 printf("Microchip firmware uploader v1.1\n");
@@ -16,10 +16,17 @@ char inFilename[64] = {};
 char outFilename[64] = {};
 int param_count = 0;
 short verbose = 0;
-int received_bytes = 0; 
+int received_bytes = 0;
 char read_buf[MAX_BYTES_TO_RECV] = {};
 char send_buf[MAX_BYTES_TO_SEND] = {};
-
+ifstream convertedFwFileFd;
+string str;
+char hex_buffer[43] = {};
+char outFilenameAbsolutePath[64] = {};
+char tmp_buffer[4+1] = {};
+int lineAddr = 0;
+int lineBytesNum = 0;
+int tmp = 0;
                 strcpy(outFilename, "./last_fw.cof");
 
 
@@ -74,44 +81,184 @@ if (param_count < 3) {
 	return 1;
 }
 
-printf("Connect to %s, %s\n", serial_name, serial_speed);
 printf("Firmware %s\n\n", inFilename);
-
-
 fwConvertPic16F1xxx(inFilename, outFilename);
+printf("Converted firmware %s\n\n", outFilename);
 
-
-return 1; //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,
-
+printf("Connecting to %s, %s\n", serial_name, serial_speed);
 int serial_port = UART_Init(serial_name, serial_speed);
 UART_Recv(serial_port, read_buf, sizeof(read_buf)/sizeof(*read_buf));   // Clear UART before send
 
 
-
-printf("Trying to found device ... \n");
-
+printf("Trying to found device ...\n");
 //======= Ping to device =====================================================================================
-
+    memset (send_buf, 0, sizeof(send_buf));
     send_buf[0] = 0x04;    // Length of data in frame, include this byte also
     send_buf[1] = READ_FROM_MEM;
     send_buf[2] = 0x80;
     send_buf[3] = 0x00;
-
     UART_Send(serial_port, send_buf, send_buf[0]);
-
     received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);
     if (received_bytes == -1) {
         printf("     ERROR Device not found!\n");
         exit(6);
     } else {
             if (read_buf[1] == 0x04 && read_buf[2] == READ_FROM_MEM){
-                printf("     Device found!\n");
-
-                printf("     BL version: %hhX.%hhX\n",(unsigned)read_buf[3],(unsigned)read_buf[4]);
+                printf("Device ID: %hhX.%hhX\n",(unsigned)read_buf[3],(unsigned)read_buf[4]);
+            }else{
+                printf("Device respose with wrong code!\n");
+                exit(6);
             }
             }
 
+realpath(outFilename, outFilenameAbsolutePath);
+convertedFwFileFd.open(outFilenameAbsolutePath);
 
+while (getline(convertedFwFileFd, str)) {
+
+    memset (hex_buffer, 0, sizeof(hex_buffer));
+    strcpy(hex_buffer, str.c_str()); //char * strcpy( char * destptr, const char * srcptr );
+
+    memset (tmp_buffer, 0, sizeof(tmp_buffer));
+    strncpy(tmp_buffer, hex_buffer + 4, 4); //char * strncpy( char * destptr, const char * srcptr, size_t num );
+    lineAddr = stoi (tmp_buffer, nullptr, 16); //int stoi( const std::string& str, std::size_t* pos = 0, int base = 10 );
+//    printf("%d \n", lineAddr);
+
+    memset (tmp_buffer, 0, sizeof(tmp_buffer));
+    strncpy(tmp_buffer, hex_buffer, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
+    lineBytesNum = stoi (tmp_buffer, nullptr, 16); //int stoi( const std::string& str, std::size_t* pos = 0, int base = 10 );
+
+
+    switch (lineAddr){
+        case 0:
+            printf("[FW] String with Main Reset Vector (MRV) found. Data %s \n", hex_buffer+10);
+            printf("[READ] Read flags block from device.\n");
+            send_buf[0] = 0x04;    // Length of data in frame, include this byte also
+            send_buf[1] = READ_FROM_MEM;
+            send_buf[2] = 0x3F; // Read BL flags block
+            send_buf[3] = 0xE0;
+            UART_Send(serial_port, send_buf, send_buf[0]);
+            received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);            
+            if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
+                printf("[READ] ERROR Wrong number of bytes was received!\n");
+                exit(6);
+            }
+            //printf("Read buf %s \n", read_buf); 
+            memset (send_buf, 0, sizeof(send_buf));
+            printf("[FW] Preparing string with modified App Reset Vector (ARV).\n");
+
+            send_buf[0] = 0x44;    // Length of data in frame, include this byte also
+            send_buf[1] = WRITE_TO_MEM;            
+            send_buf[2] = 0x3F; // Read BL flags block
+            send_buf[3] = 0xE0;
+            for (int u = 0; u < MAX_BYTES_TO_SEND - 8; u++){
+                send_buf[u+4] = read_buf[u+3];
+            }
+            tmp = 0;
+            for (int u = MAX_BYTES_TO_SEND - 8; u < MAX_BYTES_TO_SEND; u++){
+                memset (tmp_buffer, 0, sizeof(tmp_buffer));
+                strncpy(tmp_buffer, hex_buffer + 8 + tmp, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
+                send_buf[u] = stoi (tmp_buffer, nullptr, 16);
+                tmp += 2;
+            }            
+            printf("[WRITE] Write flags block with ARV, addr=0x%hhX%hhX ... ",(unsigned)send_buf[2],(unsigned)send_buf[3]);
+            UART_Send(serial_port, send_buf, send_buf[0]);
+            received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);            
+            if ((received_bytes == -1)) {
+                printf("\n[READ] ERROR Wrong number of bytes was received!\n");
+                exit(6);
+            }
+            if ((read_buf[2] != (char)SUCCESS_CODE)) {
+                printf("\n[READ] ERROR Wrong number of bytes was received!\n");
+                exit(6);
+            }        
+            printf(" SUCCESS.\n");
+            //for (int s=0; s < (int)sizeof(send_buf); s+=2){
+            //    printf("%i Send buf %02hhX%02hhX \n", s/2, send_buf[s], send_buf[s+1]);
+            //}
+            break;
+        default:
+            if (lineBytesNum != 0x44){
+                printf("[FW] Block is not full\n");
+
+                memset (send_buf, 0, sizeof(send_buf));
+
+                send_buf[0] = 0x04;    // Length of data in frame, include this byte also
+                send_buf[1] = READ_FROM_MEM;
+
+                memset (tmp_buffer, 0, sizeof(tmp_buffer));
+                strncpy(tmp_buffer, hex_buffer + 4, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
+                send_buf[2] = stoi (tmp_buffer, nullptr, 16);
+
+                memset (tmp_buffer, 0, sizeof(tmp_buffer));
+                strncpy(tmp_buffer, hex_buffer + 6, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
+                send_buf[3] = stoi (tmp_buffer, nullptr, 16);
+
+                printf("[READ] Read block from addr=0x%02hhX%02hhX...", send_buf[2], send_buf[3]);
+                UART_Send(serial_port, send_buf, send_buf[0]);
+                received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);            
+                if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
+                    printf("\n[READ] ERROR Wrong number of bytes was received!\n");
+                    exit(6);
+                    }
+                printf(" SUCCESS.\n");
+
+            //for (int s=0; s < (int)sizeof(read_buf)+1; s+=2){
+            //    printf("%i Read buf %02hhX%02hhX \n", s/2, read_buf[s], read_buf[s+1]);
+            //}
+                printf("[FW] Preparing full line...\n");
+                send_buf[0] = 0x44;    // Length of data in frame, include this byte also
+                send_buf[1] = WRITE_TO_MEM;            
+
+                tmp = 0;
+                for (int u = 0; u < lineBytesNum-4; u++){
+                    memset (tmp_buffer, 0, sizeof(tmp_buffer));
+                    strncpy(tmp_buffer, hex_buffer + 8 + tmp, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
+                    send_buf[u + 4] = stoi (tmp_buffer, NULL, 16);
+                    tmp += 2;
+                    }
+
+                for (int u = lineBytesNum - 4; u < MAX_BYTES_TO_SEND; u++){
+                    send_buf[u + 4] = read_buf[u + 3];
+                    }    
+            //for (int s=0; s < (int)sizeof(send_buf); s+=2){
+            //    printf("%i Send buf %02hhX%02hhX \n", s/2, send_buf[s], send_buf[s+1]);
+            //}
+
+
+            } else {
+                tmp = 0;
+                for (int u = 0; u < MAX_BYTES_TO_SEND; u++){
+                    memset (tmp_buffer, 0, sizeof(tmp_buffer));
+                    strncpy(tmp_buffer, hex_buffer + tmp, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
+                    send_buf[u] = stoi (tmp_buffer, nullptr, 16);
+                    tmp += 2;
+                    }
+            }  
+                printf("[WRITE] Write to addr 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum);
+                UART_Send(serial_port, send_buf, send_buf[0]);
+                received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);            
+                if ((received_bytes == -1)) {
+                    printf("\n[READ] ERROR Wrong number of bytes was received!\n");
+                    exit(6);
+                    }
+                printf(" SUCCESS.\n");           
+            break;
+    }
+
+
+}
+
+
+printf("[FW] Flasing done.\n");
+printf("[WRITE] Starting App ...\n");
+memset (send_buf, 0, sizeof(send_buf));
+send_buf[0] = 0x0;    // Length of data in frame, include this byte also
+send_buf[1] = START_APPLICATION;
+UART_Send(serial_port, send_buf, send_buf[0]);
+received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);            
+
+return 1; //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,
 
 //============================================================================================
 
