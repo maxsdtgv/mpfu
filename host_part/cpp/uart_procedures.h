@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <string>
+#include <stdlib.h>
 
 // Linux headers
 #include <fcntl.h> // Contains file controls like O_RDWR
@@ -9,16 +10,16 @@
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
 
-#define PREAM_TO_DEVICE     "55"
-#define PREAM_FROM_DEVICE   "AA"
+#define PREAM_TO_DEVICE     0x55
+#define PREAM_FROM_DEVICE   0xAA
 
 //=============    SUPPORTED CODES IN RETURNED COMMANDS ================
-#define ERROR_CODE			"FF"
-#define SUCCESS_CODE		"EE"
-//#define PING_REQUEST		"01"
-#define READ_FROM_MEM		"02"
-#define WRITE_TO_MEM		"04"
-#define START_APPLICATION	"0F"
+#define ERROR_CODE			0xFF
+#define SUCCESS_CODE		0xEE
+//#define PING_REQUEST		0x01
+#define READ_FROM_MEM		0x02
+#define WRITE_TO_MEM		0x04
+#define START_APPLICATION	0x0F
 //====================================================
 
 

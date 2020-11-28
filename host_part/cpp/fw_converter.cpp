@@ -11,16 +11,19 @@ void swapBytesInLine(char *LineToProceed, int LineSize){
 }
 
 void WriteLineToFile(ofstream &outFile_fd, int lineSize, int Addr, char *LineToProceed){
+	char hhex[4] = {};
+
 	// Add pream to send to MCU
-	outFile_fd.write(PREAM_TO_DEVICE, 2);
+//	sprintf(hhex, "%02X", PREAM_TO_DEVICE);
+//	outFile_fd.write(hhex, 2);
 
 	// Add length of data + 4
-	char hhex[4] = {};
 	sprintf(hhex, "%02X", lineSize/2 + 4);
 	outFile_fd.write(hhex, 2);
 
 	// Add Command code
-	outFile_fd.write(WRITE_TO_MEM, 2);
+	sprintf(hhex, "%02X", WRITE_TO_MEM);
+	outFile_fd.write(hhex, 2);
 
 	// Add addr
 	char ahex[8] = {};
@@ -85,17 +88,15 @@ void fwConvertPic16F1xxx(char* inFilename, char* outFilename){
   	switch (lineType){
   		case 4:
   			highAddr = stol (lineData, nullptr, 16);
-  			printf("highAddr %i \n", highAddr);
+  			//printf("highAddr %i \n", highAddr);
   			newLine = true;
   			break;
   		case 0:
   			if (highAddr == 0){
  				if ( ((linePointer > 127) | (summaryAddr*2 + linePointer/2 != lineAddr)) & (!newLine) ) {
-
 					swapBytesInLine(summaryLine, linePointer);
 					WriteLineToFile(outFile, linePointer, summaryAddr, summaryLine);
-
- 					printf("=====case 4= Write %i %i %s\n",linePointer/2, summaryAddr, summaryLine);
+ 					//printf("=====case 4= Write %i %i %s\n",linePointer/2, summaryAddr, summaryLine);
   					linePointer = 0;
   					summaryAddr = lineAddr/2;
   					memset (summaryLine, 0, sizeof(summaryLine));
@@ -108,9 +109,7 @@ void fwConvertPic16F1xxx(char* inFilename, char* outFilename){
   		case 1:
 			swapBytesInLine(summaryLine, linePointer);
 			WriteLineToFile(outFile, linePointer, summaryAddr, summaryLine);
-
-		
-			printf("=====case 1= Write %i %i %s\n",linePointer/2, summaryAddr, summaryLine);
+			//printf("=====case 1= Write %i %i %s\n",linePointer/2, summaryAddr, summaryLine);
   			break;
   		default:
   			break;
