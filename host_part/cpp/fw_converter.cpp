@@ -55,11 +55,11 @@ void fwConvertPic16F1xxx(char* inFilename, char* outFilename){
 	ofstream outFile;
 
 	realpath(inFilename, inFilenameAbsolutePath);
-	printf("Path in %s\n", inFilenameAbsolutePath);
+//	printf("Path in %s\n", inFilenameAbsolutePath);
 	inputFile.open(inFilenameAbsolutePath);
 
 	realpath(outFilename, outFilenameAbsolutePath);
-	printf("Path out %s\n", outFilenameAbsolutePath);
+//	printf("Path out %s\n", outFilenameAbsolutePath);
 	outFile.open(outFilenameAbsolutePath, ios_base::trunc);
 
 
@@ -116,8 +116,8 @@ void fwConvertPic16F1xxx(char* inFilename, char* outFilename){
   	}
 
 
-printf("%s \n", hex_buffer);
-printf("     ");
+//printf("%s \n", hex_buffer);
+//printf("     ");
 
 
 
