@@ -5,7 +5,7 @@
 			| FLASH |       OPCODE            |
 			| ADDR  |   (OPERATION CODE)      |
 			+-------+-------------------------+
-			|  0000 |(RV1) Reset vector1      |
+			|  0000 |(MRV) Main Reset Vector  |
 			|  0001 |                         |					+-----------------------------------+
 			|  0002 |  GOTO BL (XXXX)         |--------+		|		REMAPPED RANGES				|
 			|  0003 |                         |        |		+---------------+-------------------+
@@ -49,7 +49,7 @@
 	|		|  .... |	28 regs               |        |
 	|		|  3FFB |       			      |      GOTO RVA
 	|		+-------+-------------------------+        |
-	|		|  3FFC |(RVA) Reset Vector App   |<-------+
+	|		|  3FFC |(ARV) App Reset Vector   |<-------+
 	|		|  3FFD |                         |
 	+-------|  3FFE |  GOTO App(YYYY)         |
 			|  3FFF |                         |
@@ -85,3 +85,7 @@ Serial eeprom structure:
 0x5280 - ...
 0x5300 - ...
 0x5380 - ...
+
+
+XC8 MEMORY MODEL
+default,-0-37FF,-3FE0-3FFF

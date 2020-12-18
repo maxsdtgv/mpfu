@@ -5,15 +5,13 @@
 recv_frame       [0]    [1]                         [66]
 bytes     1       2      3     ...                    n
        +-------+------+------+------+------+------+------+
-       | PREAM | LENG | CMD  | Payload                   |
+       | PREAM | LENG | CMD  | Data                      |
        +-------+------+------+------+------+------+------+
        |  val  |             |    <---- Data ------>     |
-       | "55"  |      <------- Payload ------->          |
-       |          <--------- Frame-------->              |
+       | "55"  |      <------- Frame ------->            |
                
-       Frame max = 67
-       Payload max = 64
-       Data max (LENG) = 65
+       Frame max = 66
+       Data max (LENG) = 64
 
        PREAM - Preambula: 
                 from HOST -> MCU always equal 55h;
@@ -41,21 +39,19 @@ bytes     1       2      3     ...                   67    68
        +-------+------+------+------+------+------+------+----+
        | PREAM | LENG | CMD  | Data                      | \n |
        +-------+------+------+------+------+------+------+----+
-       |  val  |             |    <---- Data ------>     |    |
-       | "AA"  |      <------- Payload ------->          |    |
-       |          <--------- Frame-------->              |    |
+       |  val  |             |    <---- Data ------>     |
+       | "AA"  |      <------- Frame ------->                 |
 
 
        Frame max = 67
        Data max = 64
-       Payload max (LENG) = 65
 
        CMD  - Acceptable list of command are following:
                 Response codes
                 ------------------
                  0xFF - Indicate error.
                  0xEE - No error.
-                 0xYY - Return command code from request frame + Data (depend on command).
+                 0xYY - Return command code from request frame + Data (depends on command).
 
 
 

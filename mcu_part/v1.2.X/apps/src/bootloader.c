@@ -3,9 +3,8 @@
 bool KeyBLRequired(void){
 	if (IO_RB0_GetValue() == 1) { 
 		return true;
-	} else {
+	} 
 		return false;
-	}
 }
 
 void ClearArray(uint8_t *array, uint8_t len){
@@ -70,7 +69,7 @@ bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
 	result = FLASH_Write(recv_frame);
 	if (result) {
 	send_frame[0] = 0x02;	// Length of array
-	send_frame[1] = WRITE_TO_MEM;			
+	send_frame[1] = SUCCESS_CODE;			
 	}
 	return result;
 }
@@ -78,8 +77,9 @@ bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
 void StartApp(void){
     IO_RE0_SetLow();
     IO_RE1_SetLow();
-    asm ("pagesel " str(RESET_VECTOR_APP));
-    asm ("goto " str(RESET_VECTOR_APP));
+    asm ("pagesel " str(APP_RESET_VECTOR));
+    asm ("goto " str(APP_RESET_VECTOR));
+
 }
 
 void ExtUpgrade(void){
