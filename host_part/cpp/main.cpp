@@ -92,24 +92,24 @@ UART_Recv(serial_port, read_buf, sizeof(read_buf)/sizeof(*read_buf));   // Clear
 
 printf("Trying to found device ...\n");
 //======= Ping to device =====================================================================================
-    memset (send_buf, 0, sizeof(send_buf));
-    send_buf[0] = 0x04;    // Length of data in frame, include this byte also
-    send_buf[1] = READ_FROM_MEM;
-    send_buf[2] = 0x80;
-    send_buf[3] = 0x00;
-    UART_Send(serial_port, send_buf, send_buf[0]);
-    received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);
-    if (received_bytes == -1) {
-        printf("     ERROR Device not found!\n");
-        exit(6);
-    } else {
-            if (read_buf[1] == 0x04 && read_buf[2] == READ_FROM_MEM){
-                printf("Device ID: %hhX.%hhX\n", read_buf[3], read_buf[4]);
-            }else{
-                printf("Device respose with wrong code!\n");
-                exit(6);
-            }
-            }
+//    memset (send_buf, 0, sizeof(send_buf));
+//    send_buf[0] = 0x04;    // Length of data in frame, include this byte also
+//    send_buf[1] = READ_FROM_MEM;
+//    send_buf[2] = 0x80;
+//    send_buf[3] = 0x00;
+//    UART_Send(serial_port, send_buf, send_buf[0]);
+//    received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);
+//    if (received_bytes == -1) {
+//        printf("     ERROR Device not found!\n");
+//        exit(6);
+//    } else {
+//            if (read_buf[1] == 0x04 && read_buf[2] == READ_FROM_MEM){
+//                printf("Device ID: %hhX.%hhX\n", read_buf[3], read_buf[4]);
+//            }else{
+//                printf("Device respose with wrong code!\n");
+//                exit(6);
+//           }
+//            }
 
 realpath(outFilename, outFilenameAbsolutePath);
 convertedFwFileFd.open(outFilenameAbsolutePath);
@@ -254,10 +254,10 @@ for (int s=0; s < (int)sizeof(send_buf); s+=2){
                 printf("[READ] Read block from addr=0x%02hhX%02hhX...", send_buf[2], send_buf[3]);
                 UART_Send(serial_port, send_buf, send_buf[0]);
                 received_bytes = UART_Recv(serial_port, read_buf, MAX_BYTES_TO_RECV);            
-                if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                    printf("\n[READ] ERROR Wrong number of bytes was received!\n");
-                    exit(6);
-                    }
+                    if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
+                        printf("\n[READ] ERROR Wrong number of bytes was received!\n");
+                        exit(6);
+                        }
                 printf(" SUCCESS.\n");
 
             //for (int s=0; s < (int)sizeof(read_buf)+1; s+=2){
