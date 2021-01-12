@@ -12,6 +12,8 @@ int UART_Baud(int baud)
         return B9600;
     case 19200:
         return B19200;
+    case 115200:
+        return B115200;
     default: 
         return 0;
     }
@@ -47,18 +49,41 @@ int UART_Init(char serial_name[32], char serial_speed[6]){
     //tty.c_cflag |= CRTSCTS;  // Enable RTS/CTS hardware flow control
     tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines (CLOCAL = 1)
     tty.c_lflag &= ~ICANON; //Disabling Canonical Mode
+
     tty.c_lflag &= ~ECHO; // Disable echo
     //tty.c_lflag &= ~ECHOE; // Disable erasure
     //tty.c_lflag &= ~ECHONL; // Disable new-line echo
     tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
+    //tty.c_oflag |= OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
+
     tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
+    //tty.c_oflag |= ONLCR; // Prevent conversion of newline to carriage return/line feed
+
+
     // tty.c_oflag &= ~OXTABS; // Prevent conversion of tabs to spaces (NOT PRESENT IN LINUX)
     // tty.c_oflag &= ~ONOEOT; // Prevent removal of C-d chars (0x004) in output (NOT PRESENT IN LINUX)
-    tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
-    tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
+    tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL|IEXTEN); // Disable any special handling of received bytes
+    //tty.c_iflag |= (IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
+
+    //tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
     //tty.c_iflag |= IXON ; // Turn on s/w flow ctrl
-    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-    tty.c_cc[VMIN] = 0;
+        tty.c_cc[VTIME]    = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+        tty.c_cc[VINTR]    = 0;     /* Ctrl-c, ETX, 0x03*/ 
+        tty.c_cc[VQUIT]    = 0;     /* Ctrl-\ */
+        tty.c_cc[VERASE]   = 0;     /* del */
+        tty.c_cc[VKILL]    = 0;     /* @ */
+        tty.c_cc[VEOF]     = 0;     /* Ctrl-d */
+        tty.c_cc[VMIN]     = 0;     /* blocking read until 1 character arrives */
+        tty.c_cc[VSWTC]    = 0;     /* '\0' */
+        tty.c_cc[VSTART]   = 0;     /* Ctrl-q */ 
+        tty.c_cc[VSTOP]    = 0;     /* Ctrl-s */
+        tty.c_cc[VSUSP]    = 0;     /* Ctrl-z */
+        tty.c_cc[VEOL]     = 0;     /* '\0' */
+        tty.c_cc[VREPRINT] = 0;     /* Ctrl-r */
+        tty.c_cc[VDISCARD] = 0;     /* Ctrl-u */
+        tty.c_cc[VWERASE]  = 0;     /* Ctrl-w */
+        tty.c_cc[VLNEXT]   = 0;     /* Ctrl-v */
+        tty.c_cc[VEOL2]    = 0;     /* '\0' */
     // Set in/out baud rate to be 9600
     cfsetispeed(&tty, UART_Baud(atoi(serial_speed)));
     cfsetospeed(&tty, UART_Baud(atoi(serial_speed)));
@@ -83,7 +108,7 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
         {
             if (bytes_count < size_buf){
                 read_buf[bytes_count] = ch;
-                //printf("Index %i  Char = %hhX \n", bytes_count, (unsigned)ch);
+                //printf("Index %i  Char = %hhX \n", bytes_count, ch);
                 bytes_count++;
             } else {
                 break;
@@ -92,6 +117,7 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
     if (read_buf[0] != (char)PREAM_FROM_DEVICE){
         bytes_count = -1;
     } 
+
     return bytes_count;
 }
 
@@ -99,6 +125,8 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
 void UART_Send(int serial_port, char *data, int arr_size){
     char syn_code[1] = {PREAM_TO_DEVICE};
     write(serial_port, syn_code, 1);
+    usleep(1000);
     write(serial_port, data, arr_size);
-    usleep(300);
+    usleep(1000);
     }
+
