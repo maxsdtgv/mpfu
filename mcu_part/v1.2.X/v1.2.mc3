@@ -935,7 +935,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="EUSART" registerAlias="SPBRGL" settingAlias="SPBRGL"/>
-         <value>160</value>
+         <value>34</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="IOCCP" settingAlias="IOCCP6" alias="disabled"/>
@@ -1051,7 +1051,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="EUSART" name="baudRateComboBox"/>
-         <value>9600</value>
+         <value>115200</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="WDT" registerAlias="WDTCON0" settingAlias="WDTPS" alias="1:262144"/>
@@ -2591,7 +2591,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="EUSART" registerAlias="SPBRGH"/>
-         <value>1</value>
+         <value>0</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="WPUA" settingAlias="WPUA4" alias="clear"/>
@@ -2827,7 +2827,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="EUSART" registerAlias="SPBRGL"/>
-         <value>160</value>
+         <value>34</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="WPUA" settingAlias="WPUA4" alias="set"/>
@@ -3687,7 +3687,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="EUSART" registerAlias="SPBRGH" settingAlias="SPBRGH"/>
-         <value>1</value>
+         <value>0</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="INLVLE" settingAlias="INLVLE0" alias="ST_input"/>
@@ -4843,7 +4843,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="System Module" registerAlias="CONFIG2" settingAlias="PLLEN"/>
-         <value>OFF</value>
+         <value>ON</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="IOCCP" settingAlias="IOCCP1"/>
@@ -5591,7 +5591,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="INTERNAL OSCILLATOR" name="CustomHardwarePll"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="TRISB" settingAlias="TRISB5"/>
@@ -5619,7 +5619,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="EUSART" name="baudRateErrorLabel"/>
-         <value>Error: -0.080 %</value>
+         <value>Error: -0.794 %</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="IOCCF" settingAlias="IOCCF5" alias="enabled"/>
@@ -5691,7 +5691,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="System Module" registerAlias="CONFIG2"/>
-         <value>11811</value>
+         <value>12067</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="customNameUserSet RD0"/>
@@ -6275,7 +6275,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="INTERNAL OSCILLATOR" name="FOSCClockValue"/>
-         <value>16000000</value>
+         <value>32000000</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="IOCBN" settingAlias="IOCBN2" alias="disabled"/>
@@ -6496,47 +6496,47 @@
    </tokenMap>
    <generatedFileHashHistoryMap class="java.util.HashMap">
       <entry>
-         <file>mcc_generated_files/device_config.h</file>
+         <file>mcc_generated_files\mcc.h</file>
+         <hash>388dc710acb30bffcd15bb6f90aa55e733c5d265fd296092f08c71414b673812</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\device_config.h</file>
          <hash>8bcc51fb7c38763b89c267cd5da7eda4865df4ee7d4fe2fc359e217300412c83</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/pin_manager.h</file>
-         <hash>8576f366412a2b65fb496adb2f0bec3d4e15af7024fcaa631db4d513b53fa471</hash>
+         <file>mcc_generated_files\spi.c</file>
+         <hash>dd2624d07ea9a5161559833fdffbd7b33b9e5b6913fea56df300e16f02b7e0da</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/eusart.c</file>
-         <hash>ca8fc9b6e9aff14aa2589447d351ce8d2f5f45dab25856ce0c3578e18d847b0d</hash>
+         <file>mcc_generated_files\eusart.h</file>
+         <hash>5b75c2dba306e2e126bbea84b716474df4fbc217508153cbaf8c91d6a432ef3b</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\spi.h</file>
+         <hash>04794b631e8d532c4ce0eaa59f3b1eb3cbd8be935e7e018d303b79dd917adbb8</hash>
       </entry>
       <entry>
          <file>main.c</file>
          <hash>b8a8beb156842e085e732500ae54791f9c5c684872c8e4d400b509372627a28b</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/spi.c</file>
-         <hash>dd2624d07ea9a5161559833fdffbd7b33b9e5b6913fea56df300e16f02b7e0da</hash>
+         <file>mcc_generated_files\device_config.c</file>
+         <hash>6f99515d27dae59c7f4c5ae3b4db82097d2cfd7a2f22ba443a279626a17f3900</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/mcc.h</file>
-         <hash>388dc710acb30bffcd15bb6f90aa55e733c5d265fd296092f08c71414b673812</hash>
+         <file>mcc_generated_files\pin_manager.h</file>
+         <hash>8576f366412a2b65fb496adb2f0bec3d4e15af7024fcaa631db4d513b53fa471</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/device_config.c</file>
-         <hash>3113cb3c1069efabaf8983c37acd51bc3916b44c6c3fae9f4a2b1a04eb4c2e97</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files/eusart.h</file>
-         <hash>5b75c2dba306e2e126bbea84b716474df4fbc217508153cbaf8c91d6a432ef3b</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files/spi.h</file>
-         <hash>04794b631e8d532c4ce0eaa59f3b1eb3cbd8be935e7e018d303b79dd917adbb8</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files/mcc.c</file>
+         <file>mcc_generated_files\mcc.c</file>
          <hash>a530ceea0a59a8a5ae56e79e59a791d26dbbc0d5c2a122073891afb455780355</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/pin_manager.c</file>
+         <file>mcc_generated_files\eusart.c</file>
+         <hash>b42d2c84919664fa651a717aa048e346fa944c03daf66e830dd13908cd68cb85</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\pin_manager.c</file>
          <hash>df80f981f0767c387f03071698b57bd56d29f53bb69c4e0dc38897788fc88857</hash>
       </entry>
    </generatedFileHashHistoryMap>

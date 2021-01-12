@@ -61,7 +61,7 @@
 // CONFIG2
 #pragma config WRT = OFF    // Flash Memory Self-Write Protection->Write protection off
 #pragma config VCAPEN = OFF    // Voltage Regulator Capacitor Enable bit->Vcap functionality is disabled on RA6.
-#pragma config PLLEN = OFF    // PLL Enable->4x PLL disabled
+#pragma config PLLEN = ON    // PLL Enable->4x PLL enabled
 #pragma config STVREN = ON    // Stack Overflow/Underflow Reset Enable->Stack Overflow or Underflow will cause a Reset
 #pragma config BORV = LO    // Brown-out Reset Voltage Selection->Brown-out Reset Voltage (Vbor), low trip point selected.
 #pragma config LPBOR = OFF    // Low Power Brown-Out Reset Enable Bit->Low power brown-out is disabled
