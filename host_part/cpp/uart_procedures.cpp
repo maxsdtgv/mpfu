@@ -116,7 +116,7 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
     delay_read = 1000000/(atoi(speed)/10);
 
     do {
-            usleep(delay_read);
+            usleep(delay_read*10);
             timeout++;
             read(serial_port, &ch, 1);
 
