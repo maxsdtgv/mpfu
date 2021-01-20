@@ -245,7 +245,7 @@ for (int s=0; s < (int)sizeof(send_buf); s+=2){
                 }
             //printf("Read buf %s \n", read_buf); 
             memset (send_buf, 0, sizeof(send_buf));
-            printf("[FW] Preparing string with modified App Reset Vector (ARV).\n");
+            printf("[FW] Preparing flags with modified App Reset Vector (ARV).\n");
 
             send_buf[0] = 0x44;    // Length of data in frame, include this byte also
             send_buf[1] = WRITE_TO_MEM;            
@@ -463,7 +463,8 @@ for (int p = 0x0; p < 0x3FFF; p += 0x20){
                 UART_Send(serialPort_fd, send_buf, send_buf[0]);
                 received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);
                     if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                        printf("\n[UART][READ] ERROR Wrong number of bytes or corrupted frame was received! (%i)\n" , received_bytes);
+                        printf("[UART][READ] ERROR read addr > %02hhX%02hhX\n", ((p & 0xFF00)>>8), (p & 0x00FF));
+                        printf("[UART][READ] ERROR Wrong number of bytes or corrupted frame was received! (%i)\n" , received_bytes);
                         exit(6);
                     }
             //for (int s=2; s < (int)sizeof(read_buf); s+=2){
@@ -483,7 +484,7 @@ for (int p = 0x0; p < 0x3FFF; p += 0x20){
 
             saveFwFilenameFd.flush();
 }
-            printf("\n[FW] Reading done\n");
+            printf("[FW] Reading done\n");
 
 
 }

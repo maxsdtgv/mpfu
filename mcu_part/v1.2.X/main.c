@@ -70,20 +70,6 @@ void main(void)
     //LATA = 0xFF;    
     //LATE = 0x00;
 
-
-/**
-    send_frame[0] = 0x02;           // Number of bytes to send in response
-    send_frame[1] = ERROR_CODE;     // Error code
-    while (1)
-    {
-            LATE = 0x00;
-    UART_dataWrite(send_frame, 0x02); // Will send empty line, just PREAM + LF  
-    __delay_ms(500);
-            LATE = 0xFF;
-                __delay_ms(500);
-    }
-**/
-
     ReadBootloaderFlags();
 
     if (BLFlags.IsExtUpgrade){

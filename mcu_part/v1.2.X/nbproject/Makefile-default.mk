@@ -94,7 +94,7 @@ MP_PROCESSOR_OPTION=16F1789
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/mcc_generated_files/eusart.p1: mcc_generated_files/eusart.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/eusart.p1: mcc_generated_files/eusart.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/eusart.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/eusart.p1 
@@ -102,7 +102,7 @@ ${OBJECTDIR}/mcc_generated_files/eusart.p1: mcc_generated_files/eusart.c  nbproj
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/eusart.d ${OBJECTDIR}/mcc_generated_files/eusart.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/eusart.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/mcc_generated_files/mcc.p1: mcc_generated_files/mcc.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/mcc.p1: mcc_generated_files/mcc.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/mcc.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/mcc.p1 
@@ -110,7 +110,7 @@ ${OBJECTDIR}/mcc_generated_files/mcc.p1: mcc_generated_files/mcc.c  nbproject/Ma
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/mcc.d ${OBJECTDIR}/mcc_generated_files/mcc.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/mcc.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/mcc_generated_files/device_config.p1: mcc_generated_files/device_config.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/device_config.p1: mcc_generated_files/device_config.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/device_config.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/device_config.p1 
@@ -118,7 +118,7 @@ ${OBJECTDIR}/mcc_generated_files/device_config.p1: mcc_generated_files/device_co
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/device_config.d ${OBJECTDIR}/mcc_generated_files/device_config.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/device_config.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/mcc_generated_files/pin_manager.p1: mcc_generated_files/pin_manager.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/pin_manager.p1: mcc_generated_files/pin_manager.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 
@@ -126,7 +126,7 @@ ${OBJECTDIR}/mcc_generated_files/pin_manager.p1: mcc_generated_files/pin_manager
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/pin_manager.d ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/mcc_generated_files/spi.p1: mcc_generated_files/spi.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/spi.p1: mcc_generated_files/spi.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/spi.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/spi.p1 
@@ -134,7 +134,7 @@ ${OBJECTDIR}/mcc_generated_files/spi.p1: mcc_generated_files/spi.c  nbproject/Ma
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/spi.d ${OBJECTDIR}/mcc_generated_files/spi.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/spi.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.p1.d 
 	@${RM} ${OBJECTDIR}/main.p1 
@@ -142,7 +142,7 @@ ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/main.d ${OBJECTDIR}/main.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/bootloader.p1: bootloader.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/bootloader.p1: bootloader.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/bootloader.p1.d 
 	@${RM} ${OBJECTDIR}/bootloader.p1 
@@ -150,7 +150,7 @@ ${OBJECTDIR}/bootloader.p1: bootloader.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/bootloader.d ${OBJECTDIR}/bootloader.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/bootloader.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/eeprom_25lc512.p1: eeprom_25lc512.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/eeprom_25lc512.p1: eeprom_25lc512.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/eeprom_25lc512.p1.d 
 	@${RM} ${OBJECTDIR}/eeprom_25lc512.p1 
@@ -158,7 +158,7 @@ ${OBJECTDIR}/eeprom_25lc512.p1: eeprom_25lc512.c  nbproject/Makefile-${CND_CONF}
 	@-${MV} ${OBJECTDIR}/eeprom_25lc512.d ${OBJECTDIR}/eeprom_25lc512.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/eeprom_25lc512.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/internal_flash.p1: internal_flash.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/internal_flash.p1: internal_flash.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/internal_flash.p1.d 
 	@${RM} ${OBJECTDIR}/internal_flash.p1 
@@ -166,7 +166,7 @@ ${OBJECTDIR}/internal_flash.p1: internal_flash.c  nbproject/Makefile-${CND_CONF}
 	@-${MV} ${OBJECTDIR}/internal_flash.d ${OBJECTDIR}/internal_flash.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/serial.p1: serial.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/serial.p1: serial.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/serial.p1.d 
 	@${RM} ${OBJECTDIR}/serial.p1 
@@ -175,7 +175,7 @@ ${OBJECTDIR}/serial.p1: serial.c  nbproject/Makefile-${CND_CONF}.mk
 	@${FIXDEPS} ${OBJECTDIR}/serial.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 else
-${OBJECTDIR}/mcc_generated_files/eusart.p1: mcc_generated_files/eusart.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/eusart.p1: mcc_generated_files/eusart.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/eusart.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/eusart.p1 
@@ -183,7 +183,7 @@ ${OBJECTDIR}/mcc_generated_files/eusart.p1: mcc_generated_files/eusart.c  nbproj
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/eusart.d ${OBJECTDIR}/mcc_generated_files/eusart.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/eusart.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/mcc_generated_files/mcc.p1: mcc_generated_files/mcc.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/mcc.p1: mcc_generated_files/mcc.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/mcc.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/mcc.p1 
@@ -191,7 +191,7 @@ ${OBJECTDIR}/mcc_generated_files/mcc.p1: mcc_generated_files/mcc.c  nbproject/Ma
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/mcc.d ${OBJECTDIR}/mcc_generated_files/mcc.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/mcc.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/mcc_generated_files/device_config.p1: mcc_generated_files/device_config.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/device_config.p1: mcc_generated_files/device_config.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/device_config.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/device_config.p1 
@@ -199,7 +199,7 @@ ${OBJECTDIR}/mcc_generated_files/device_config.p1: mcc_generated_files/device_co
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/device_config.d ${OBJECTDIR}/mcc_generated_files/device_config.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/device_config.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/mcc_generated_files/pin_manager.p1: mcc_generated_files/pin_manager.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/pin_manager.p1: mcc_generated_files/pin_manager.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 
@@ -207,7 +207,7 @@ ${OBJECTDIR}/mcc_generated_files/pin_manager.p1: mcc_generated_files/pin_manager
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/pin_manager.d ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/mcc_generated_files/spi.p1: mcc_generated_files/spi.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/mcc_generated_files/spi.p1: mcc_generated_files/spi.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/spi.p1.d 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/spi.p1 
@@ -215,7 +215,7 @@ ${OBJECTDIR}/mcc_generated_files/spi.p1: mcc_generated_files/spi.c  nbproject/Ma
 	@-${MV} ${OBJECTDIR}/mcc_generated_files/spi.d ${OBJECTDIR}/mcc_generated_files/spi.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/mcc_generated_files/spi.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.p1.d 
 	@${RM} ${OBJECTDIR}/main.p1 
@@ -223,7 +223,7 @@ ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/main.d ${OBJECTDIR}/main.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/bootloader.p1: bootloader.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/bootloader.p1: bootloader.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/bootloader.p1.d 
 	@${RM} ${OBJECTDIR}/bootloader.p1 
@@ -231,7 +231,7 @@ ${OBJECTDIR}/bootloader.p1: bootloader.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/bootloader.d ${OBJECTDIR}/bootloader.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/bootloader.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/eeprom_25lc512.p1: eeprom_25lc512.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/eeprom_25lc512.p1: eeprom_25lc512.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/eeprom_25lc512.p1.d 
 	@${RM} ${OBJECTDIR}/eeprom_25lc512.p1 
@@ -239,7 +239,7 @@ ${OBJECTDIR}/eeprom_25lc512.p1: eeprom_25lc512.c  nbproject/Makefile-${CND_CONF}
 	@-${MV} ${OBJECTDIR}/eeprom_25lc512.d ${OBJECTDIR}/eeprom_25lc512.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/eeprom_25lc512.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/internal_flash.p1: internal_flash.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/internal_flash.p1: internal_flash.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/internal_flash.p1.d 
 	@${RM} ${OBJECTDIR}/internal_flash.p1 
@@ -247,7 +247,7 @@ ${OBJECTDIR}/internal_flash.p1: internal_flash.c  nbproject/Makefile-${CND_CONF}
 	@-${MV} ${OBJECTDIR}/internal_flash.d ${OBJECTDIR}/internal_flash.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/internal_flash.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/serial.p1: serial.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/serial.p1: serial.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/serial.p1.d 
 	@${RM} ${OBJECTDIR}/serial.p1 
