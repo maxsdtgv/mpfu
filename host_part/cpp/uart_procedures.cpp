@@ -113,10 +113,14 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
     int timeout = 0;
     int delay_read = 0;
 
-    delay_read = 1000000/(atoi(speed)/10);
+    usleep(50000);
+
+    delay_read = 1000000/(atoi(speed)/10); // delay between read each symbol
+                                           // for 115200 delay will be = int(86.80) = 86 us
+                                           // for 9600 will be =  1041 us
 
     do {
-            usleep(delay_read*10);
+            usleep(delay_read*3);         // multiplicator to wait for symbol exm. *3, 
             timeout++;
             read(serial_port, &ch, 1);
 
@@ -127,6 +131,7 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
                 bytes_count++;
                 if (bytes_count == 1){
                     size_buf = (int)(ch);
+                    //printf("INFO! Will be waiting for %i bytes.\n", size_buf);
                 }
             }
 
@@ -134,7 +139,10 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
                 start_frame_found = true;
             }           
 
-            if (timeout == delay_read*size_buf) {break;}
+            if (timeout == delay_read*size_buf) {
+                printf("\n[UART][READ] ERROR! Timeout to read from serial is expired.\n");
+                break;
+            }
 
 
 
@@ -142,25 +150,8 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
 
     if (start_frame_found != true){
         bytes_count = -1;
+        //printf("[UART][READ] ERROR! Preambula is fot found.\n");
     } 
-
-
-//    do {
-//            usleep(100);
-//            ret = read(serial_port, &ch, 1);
-//
-//            if (bytes_count < size_buf){
-//                read_buf[bytes_count] = ch;
-//                //printf("Index %i  Char = %hhX \n", bytes_count, ch);
-//                bytes_count++;
-//            } else {
-//                break;
-//            }
-//    } while (ret > 0);
-//
-//    if (read_buf[0] != (char)PREAM_FROM_DEVICE){
-//        bytes_count = -1;
-//    } 
 
     return bytes_count;
 }
@@ -174,3 +165,23 @@ void UART_Send(int serial_port, char *data, int arr_size){
     usleep(10000);
     }
 
+void ProgressBar(char *string_before, int start, int stop, int current){
+    int delta = 0;
+    int step = 0;
+    int step_count = 0;
+    delta = stop - start;
+    step = delta / 50;
+
+    printf("\r%s [",string_before);
+    for (int i = 1; i < 50; i++){
+        if (current > step_count){
+            printf("#");
+        } else {
+            printf(".");
+        }
+        step_count += step;
+        
+
+    }
+    printf("] %i %%",(int((current*100)/delta))+1);
+}
