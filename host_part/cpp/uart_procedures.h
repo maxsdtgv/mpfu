@@ -27,3 +27,4 @@ int UART_Baud(int);
 int UART_Init(char[32], char[6]);
 int UART_Recv(int, char*, int);
 void UART_Send(int, char*, int);
+void ProgressBar(char*, int, int, int);

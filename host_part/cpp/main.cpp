@@ -440,7 +440,7 @@ printf("[FW] Flasing done.\n");
 
 if (read_app == 1){
 
-printf("[FW] Saving firmware to %s\n\n", saveFwFilename);
+printf("\n[FW] Saving firmware to %s\n", saveFwFilename);
 realpath(saveFwFilename, saveFwFilenameAbsolutePath);
 saveFwFilenameFd.open(saveFwFilenameAbsolutePath);
 
@@ -454,8 +454,9 @@ memset (send_buf, 0, sizeof(send_buf));
 send_buf[0] = 0x04;    // Length of data in frame, include this byte also
 send_buf[1] = READ_FROM_MEM;
 
+char strr[] = "[UART][READ]";
 for (int p = 0x0; p < 0x3FFF; p += 0x20){
-            
+            ProgressBar(strr, 0x0, 0x3FFF, p);
             //printf("\r[UART][READ] Reading addr > %02hhX%02hhX", ((p & 0xFF00)>>8), (p & 0x00FF));
 
                 send_buf[2] = ((p & 0xFF00)>>8);
@@ -463,8 +464,8 @@ for (int p = 0x0; p < 0x3FFF; p += 0x20){
                 UART_Send(serialPort_fd, send_buf, send_buf[0]);
                 received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);
                     if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                        printf("[UART][READ] ERROR read addr > %02hhX%02hhX\n", ((p & 0xFF00)>>8), (p & 0x00FF));
-                        printf("[UART][READ] ERROR Wrong number of bytes or corrupted frame was received! (%i)\n" , received_bytes);
+                        printf("\n[UART][READ] ERROR read addr > %02hhX%02hhX\n", ((p & 0xFF00)>>8), (p & 0x00FF));
+                        printf("\n[UART][READ] ERROR Wrong number of bytes or corrupted frame was received! (%i)\n" , received_bytes);
                         exit(6);
                     }
             //for (int s=2; s < (int)sizeof(read_buf); s+=2){
@@ -484,7 +485,7 @@ for (int p = 0x0; p < 0x3FFF; p += 0x20){
 
             saveFwFilenameFd.flush();
 }
-            printf("[FW] Reading done\n");
+            printf("\n[FW] Reading done\n");
 
 
 }
