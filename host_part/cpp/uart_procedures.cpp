@@ -185,3 +185,21 @@ void ProgressBar(char *string_before, int start, int stop, int current){
     }
     printf("] %i %%",(int((current*100)/delta))+1);
 }
+
+void UART_Clear(int serial_port){
+    char ch;
+    int chars_to_read = 128;
+
+    int delay_read = 0;
+
+    delay_read = 1000000/(atoi(speed)/10); // delay between read each symbol
+                                           // for 115200 delay will be = int(86.80) = 86 us
+                                           // for 9600 will be =  1041 us
+
+    do {
+            usleep(delay_read*3);         // multiplicator to wait for symbol exm. *3, 
+            read(serial_port, &ch, 1);
+            chars_to_read--;
+    } while (chars_to_read != 0);
+
+}
