@@ -146,7 +146,7 @@ if (param_count < 3) {
 
 printf("Connecting to %s, %s\n", serial_name, serial_speed);
 serialPort_fd = UART_Init(serial_name, serial_speed);
-UART_Recv(serialPort_fd, read_buf, sizeof(read_buf)/sizeof(*read_buf));   // Clear UART before send
+UART_Clear(serialPort_fd);
 
 isDeviceFound = FoundDevice();
 
@@ -497,7 +497,6 @@ memset (send_buf, 0, sizeof(send_buf));
 send_buf[0] = 0x02;    // Length of data in frame, include this byte also
 send_buf[1] = START_APPLICATION;
 UART_Send(serialPort_fd, send_buf, send_buf[0]);
-received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);     
 
 }
 
