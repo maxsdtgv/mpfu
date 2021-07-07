@@ -252,7 +252,7 @@ for (int s=0; s < (int)sizeof(send_buf); s+=2){
             send_buf[2] = 0x3F; // Read BL flags block
             send_buf[3] = 0xE0;
             for (int u = 0; u < MAX_BYTES_TO_SEND - 8; u++){
-                send_buf[u+4] = read_buf[u+3];
+                send_buf[u+4] = read_buf[u+2];
             }
             tmp = 0;
             for (int u = MAX_BYTES_TO_SEND - 8; u < MAX_BYTES_TO_SEND-4; u++){
@@ -313,7 +313,7 @@ for (int s=0; s < (int)sizeof(send_buf); s+=2){
             //}
                 printf("[FW] Preparing full line...\n");
                 send_buf[0] = 0x44;    // Length of data in frame, include this byte also
-                send_buf[1] = WRITE_TO_MEM;            
+                send_buf[1] = WRITE_TO_MEM;
 
                 tmp = 0;
                 for (int u = 0; u < lineBytesNum-4; u++){
@@ -324,8 +324,11 @@ for (int s=0; s < (int)sizeof(send_buf); s+=2){
                     }
 
                 for (int u = lineBytesNum - 4; u < MAX_BYTES_TO_SEND; u++){
-                    send_buf[u + 4] = read_buf[u + 3];
-                    }    
+                    send_buf[u + 4] = read_buf[u + 2];
+                    } 
+
+
+
             //for (int s=0; s < (int)sizeof(send_buf); s+=2){
             //    printf("%i Send buf %02hhX%02hhX \n", s/2, send_buf[s], send_buf[s+1]);
             //}
@@ -343,7 +346,7 @@ for (int s=0; s < (int)sizeof(send_buf); s+=2){
 
 
 //======================================================================================
-printf("\n============= Data to 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum);
+printf("\n============= Write to 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum);
             for (int s=0; s < (int)sizeof(send_buf); s+=2){
                  printf("%02hhX%02hhX ", send_buf[s], send_buf[s+1]);
             }

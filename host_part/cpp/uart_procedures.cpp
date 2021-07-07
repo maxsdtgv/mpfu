@@ -115,12 +115,11 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
 
     usleep(50000);
 
-    delay_read = 1000000/(atoi(speed)/10); // delay between read each symbol
-                                           // for 115200 delay will be = int(86.80) = 86 us
-                                           // for 9600 will be =  1041 us
-
+    delay_read = 1000000/(atoi(speed)/8); // time to transfer each symbol, uses as delay
+                                           // for 115200 delay will be = 69 us
+                                           // for 9600 will be =  833 us
     do {
-            usleep(delay_read*3);         // multiplicator to wait for symbol exm. *3, 
+            usleep(delay_read*5);         // multiplicator to wait for symbol exm. *3, 
             timeout++;
             read(serial_port, &ch, 1);
 
