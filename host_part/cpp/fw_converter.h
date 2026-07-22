@@ -7,4 +7,3 @@
 #include "uart_procedures.h"
 
 void fwConvertPic16F1xxx(char*, char*);
-void WriteLineToFile(std::ofstream&, int, int, char*, bool);

@@ -1,137 +1,112 @@
 #include "fw_converter.h"
+#include <map>
+#include <limits.h>
 using namespace std;
 
-void swapBytesInLine(char *LineToProceed, int LineSize){
-  	char tmpByte[2] = {};
-  			for (int i = 0; i < LineSize; i += 4){
-  				strncpy(tmpByte, LineToProceed + i, 2);
-  				strncpy(LineToProceed + i, LineToProceed + i + 2, 2);
-  				strncpy(LineToProceed + i + 2, tmpByte, 2);
-  			}
+// ---------------------------------------------------------------------------
+// Intel HEX -> uniform aligned blocks for the MPFU bootloader.
+//
+// The bootloader/MCU can only erase+write whole flash ROWS of 32 words aligned
+// to a 0x20 word boundary. To make the host logic trivial and safe, this
+// converter emits ONLY full, 32-word, 0x20-aligned blocks. Any row that
+// contains at least one programmed word is emitted in full; gaps are padded
+// with the blank value 0x3FFF.
+//
+// Output line format (ASCII hex, consumed by main.cpp), unchanged:
+//     LL CC AAAA DDDD...
+//   LL   = frame length byte = 4 + 64 = 0x44
+//   CC   = WRITE_TO_MEM
+//   AAAA = word address (row base, multiple of 0x20)
+//   DD.. = 64 data bytes = 32 words, big-endian (H,L per word)
+// ---------------------------------------------------------------------------
+
+#define ROW_WORDS   32
+#define BLANK_WORD  0x3FFF
+
+// Parse one Intel HEX record line. Returns false if not a data/EOF/ext record
+// we handle. Updates the word map `mem` (word address -> 14-bit word).
+static void parseIntelHexFile(const char *path, map<int,int> &mem)
+{
+    char abspath[PATH_MAX] = {};
+    realpath(path, abspath);
+    ifstream in(abspath);
+    string str;
+    int extBase = 0;              // from type-04 extended linear address (bytes)
+
+    while (getline(in, str)) {
+        if (str.empty() || str[0] != ':') continue;
+        const char *h = str.c_str();
+
+        auto hx = [&](int off, int n) -> long {
+            char t[9] = {};
+            strncpy(t, h + off, n);
+            return strtol(t, nullptr, 16);
+        };
+
+        int nbytes = (int)hx(1, 2);
+        int addr   = (int)hx(3, 4);       // byte address (low 16 bits)
+        int rtype  = (int)hx(7, 2);
+
+        if (rtype == 0x04) {              // extended linear address
+            extBase = (int)hx(9, 4) << 16;
+            continue;
+        }
+        if (rtype == 0x01) break;         // EOF
+        if (rtype != 0x00) continue;      // ignore others
+
+        int byteAddr = extBase | addr;
+        // PIC16 program memory lives in the low 16-bit space here; config space
+        // (byteAddr >= 0x10000) is not flashed by the bootloader — skip it.
+        if (byteAddr >= 0x10000) continue;
+
+        // Intel HEX data is little-endian byte pairs -> 14-bit words.
+        for (int i = 0; i < nbytes; i += 2) {
+            int lo = (int)hx(9 + i*2,     2);
+            int hi = (int)hx(9 + i*2 + 2, 2);
+            int word = ((hi << 8) | lo) & 0x3FFF;
+            int waddr = (byteAddr + i) / 2;
+            mem[waddr] = word;
+        }
+    }
 }
 
-void WriteLineToFile(ofstream &outFile_fd, int lineSize, int Addr, char *LineToProceed, bool extra){
-	char hhex[4] = {};
+void fwConvertPic16F1xxx(char* inFilename, char* outFilename)
+{
+    map<int,int> mem;
+    parseIntelHexFile(inFilename, mem);
 
-	// Add pream to send to MCU
-//	sprintf(hhex, "%02X", PREAM_TO_DEVICE);
-//	outFile_fd.write(hhex, 2);
+    char outAbs[PATH_MAX] = {};
+    realpath(outFilename, outAbs);
+    ofstream out(outAbs, ios_base::trunc);
+    if (mem.empty()) { out.close(); return; }
 
-	if (extra == true){
-	// Add length of data + 4
-	sprintf(hhex, "%02X", lineSize/2 + 4);
-	outFile_fd.write(hhex, 2);
+    // Collect the set of rows (0x20-aligned) that contain any programmed word.
+    // std::map keeps addresses sorted, so we can walk rows in order.
+    int lastWord = mem.rbegin()->first;
+    int firstWord = mem.begin()->first;
+    int firstRow = firstWord & ~(ROW_WORDS - 1);
+    int lastRow  = lastWord  & ~(ROW_WORDS - 1);
 
-	// Add Command code
-	sprintf(hhex, "%02X", WRITE_TO_MEM);
-	outFile_fd.write(hhex, 2);
+    for (int row = firstRow; row <= lastRow; row += ROW_WORDS) {
+        // Does this row contain any programmed word?
+        bool anyData = false;
+        for (int w = 0; w < ROW_WORDS; w++) {
+            if (mem.count(row + w)) { anyData = true; break; }
+        }
+        if (!anyData) continue;
+
+        // Emit one full aligned block: LL CC AAAA + 64 data bytes.
+        char hdr[16] = {};
+        sprintf(hdr, "%02X%02X%04X", 4 + ROW_WORDS*2, WRITE_TO_MEM, row);
+        out.write(hdr, 8);
+
+        for (int w = 0; w < ROW_WORDS; w++) {
+            int word = mem.count(row + w) ? mem[row + w] : BLANK_WORD;
+            char wh[8] = {};
+            sprintf(wh, "%02X%02X", (word >> 8) & 0xFF, word & 0xFF); // big-endian H,L
+            out.write(wh, 4);
+        }
+        out.write("\n", 1);
+    }
+    out.close();
 }
-	// Add addr
-	char ahex[8] = {};
-	sprintf(ahex, "%04X", Addr);
-	outFile_fd.write(ahex, 4);
-	
-	// Add data	
-	strcpy(LineToProceed + lineSize, "\n");
-	outFile_fd.write(LineToProceed, lineSize + 1);
-}
-
-void fwConvertPic16F1xxx(char* inFilename, char* outFilename){
-	char inFilenameAbsolutePath[64] = {};
-	char outFilenameAbsolutePath[64] = {};
-	string str;
-	char hex_buffer[43] = {};
-	char tmp_buffer[4+1] = {};
-	int lineBytesNum = 0;
-	int lineType = 0;
-	int lineAddr = 0;
-	int highAddr = 0;
-	int linePointer = 0;
-	char lineData[32] = {};		
-
-	int summaryAddr = 0;
-	char summaryLine[127+2] = {};
-
-	ifstream inputFile;
-	ofstream outFile;
-
-	realpath(inFilename, inFilenameAbsolutePath);
-//	printf("Path in %s\n", inFilenameAbsolutePath);
-	inputFile.open(inFilenameAbsolutePath);
-
-	realpath(outFilename, outFilenameAbsolutePath);
-//	printf("Path out %s\n", outFilenameAbsolutePath);
-	outFile.open(outFilenameAbsolutePath, ios_base::trunc);
-
-
-
-  	bool newLine = false;
-
-  while (getline(inputFile, str)) {
-	memset (hex_buffer, 0, sizeof(hex_buffer));
- 	strcpy(hex_buffer, str.c_str()); //char * strcpy( char * destptr, const char * srcptr );
-
-	memset (tmp_buffer, 0, sizeof(tmp_buffer));
-  	strncpy(tmp_buffer, hex_buffer + 1, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-	lineBytesNum = stoi (tmp_buffer, nullptr, 16); //int stoi( const std::string& str, std::size_t* pos = 0, int base = 10 );
-
-	memset (tmp_buffer, 0, sizeof(tmp_buffer));
-  	strncpy(tmp_buffer, hex_buffer + 3, 4); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-	lineAddr = stol (tmp_buffer, nullptr, 16); 
-
-	memset (tmp_buffer, 0, sizeof(tmp_buffer));
-  	strncpy(tmp_buffer, hex_buffer + 7, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-	lineType = stoi (tmp_buffer, nullptr, 16); //int stoi( const std::string& str, std::size_t* pos = 0, int base = 10 );
-
-	memset (lineData, 0, sizeof(lineData));
-  	strncpy(lineData, hex_buffer + 9, lineBytesNum*2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-
-  	switch (lineType){
-  		case 4:
-  			highAddr = stol (lineData, nullptr, 16);
-  			//printf("highAddr %i \n", highAddr);
-  			newLine = true;
-  			break;
-  		case 0:
-  			if (highAddr == 0){
- 				if ( ((linePointer > 127) | (summaryAddr*2 + linePointer/2 != lineAddr)) & (!newLine) ) {
-					swapBytesInLine(summaryLine, linePointer);
-					WriteLineToFile(outFile, linePointer, summaryAddr, summaryLine, true);
- 					//printf("=====case 4= Write %i %i %s\n",linePointer/2, summaryAddr, summaryLine);
-  					linePointer = 0;
-  					summaryAddr = lineAddr/2;
-  					memset (summaryLine, 0, sizeof(summaryLine));
- 				}
-	 				strncpy(summaryLine + linePointer, lineData, lineBytesNum*2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-	 				linePointer += lineBytesNum*2;
-	 				newLine = false;
-  			}
-  			break;
-  		case 1:
-			swapBytesInLine(summaryLine, linePointer);
-			WriteLineToFile(outFile, linePointer, summaryAddr, summaryLine, true);
-			//printf("=====case 1= Write %i %i %s\n",linePointer/2, summaryAddr, summaryLine);
-  			break;
-  		default:
-  			break;
-  	}
-
-
-//printf("%s \n", hex_buffer);
-//printf("     ");
-
-
-
-//    printf("Num %i ", lineBytesNum);     
-//    printf("Addr %i ", lineAddr);
-//    printf("Type %i ", lineType);
-//    printf("Data %s \n", lineData);
-
-
-
-
-  }
-inputFile.close();
-outFile.close();
-}
-

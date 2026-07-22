@@ -36,8 +36,12 @@ using namespace std;
 // Flash memory layout (see agent-notes / docs/BL_memory.txt)
 #define ADDR_RESET          0x0000 // reset vector row (words 0x0000-0x0003 = BL jump)
 #define ADDR_FLAGS          0x3FE0 // bootloader flags row (0x3FE0-0x3FFF)
+#define ADDR_APP_VECTOR     0x3FFC // app reset vector is relocated here (in flags row)
 #define RESET_VECTOR_WORDS  4      // words 0x0000-0x0003 reserved for GOTO bootloader
 #define RESET_VECTOR_BYTES  8      // 4 words * 2 bytes
+// byte offset of the app-vector words within the flags-row data (0x3FFC-0x3FE0=28 words)
+#define APP_VECTOR_BYTE_OFFSET ((ADDR_APP_VECTOR - ADDR_FLAGS) * 2)
+
 
 
 char serial_name[32] = {};
@@ -88,6 +92,21 @@ int TransactExpectFull(char *frame, const char *ctx){
     return n;
 }
 
+// Send a WRITE frame and require the MCU to answer with SUCCESS_CODE.
+// Aborts on comms error or a non-success reply. Returns true on success.
+bool TransactWriteExpectAck(char *frame, const char *ctx){
+    int n = Transact(frame);
+    if (n == -1) {
+        printf("\n[UART][RECEIVE] ERROR (%s) no/broken response.\n", ctx);
+        exit(6);
+    }
+    if (read_buf[1] != (char)SUCCESS_CODE) {
+        printf("\n[UART][RECEIVE] ERROR (%s) device reported unsuccessful code 0x%02hhX.\n", ctx, read_buf[1]);
+        exit(6);
+    }
+    return true;
+}
+
 // Build a 4-byte READ_FROM_MEM request for the given 16-bit address.
 void MakeReadRequest(char *frame, int addr){
     memset(frame, 0, MAX_BYTES_TO_SEND);
@@ -109,6 +128,14 @@ int HexAddrOf(const char *hex_line){
     char tmp[5] = {};
     strncpy(tmp, hex_line + HEX_OFF_ADDR, 4);
     return (int)strtol(tmp, nullptr, 16);
+}
+
+// Fill a full WRITE_TO_MEM frame (len,cmd,addr + 64 data bytes) from a converter
+// line. The converter guarantees every line is a full 0x20-aligned 32-word block,
+// so this is a straight copy of all 68 bytes.
+void BuildWriteFrameFromLine(char *frame, const char *hex_line){
+    for (int b = 0; b < MAX_BYTES_TO_SEND; b++)
+        frame[b] = (char)HexByteAt(hex_line, b * 2);
 }
 
 
@@ -249,172 +276,62 @@ while (getline(convertedFwFileFd, str)) {
 
 
     switch (lineAddr){
-        case 0:
-                printf("[FW] String with addr=0x0000 found.\n");            
-            if (lineBytesNum > 12){
-                printf("[FW] Will write data with offset 0x0004 Data %s \n", hex_buffer+24);
-                printf("[UART][READ] Read flags block from device.\n");
-                send_buf[0] = 0x04;    // Length of data in frame, include this byte also
-                send_buf[1] = READ_FROM_MEM;
-                send_buf[2] = 0x00; // Try to read from 0x0000
-                send_buf[3] = 0x00; 
-                UART_Send(serialPort_fd, send_buf, send_buf[0]);
-                received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);
-                    if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                        printf("[UART][READ] ERROR Wrong number of bytes or corrupted frame was received!\n");
-                        exit(6);
-                    }
-                //printf("Read buf %s \n", read_buf);
-                memset (send_buf, 0, sizeof(send_buf));
-                printf("[FW] Preparing string with data.\n");
-                send_buf[0] = 0x44;    // Length of data in frame, include this byte also
-                send_buf[1] = WRITE_TO_MEM;            
-                send_buf[2] = 0x00; // Read BL flags block
-                send_buf[3] = 0x00;
-                for (int u = 0; u < MAX_BYTES_TO_SEND - 4; u++){
-                    send_buf[u+4] = read_buf[u+3];
-                }
-                tmp = 0;
-                for (int u = 12; u < lineBytesNum; u++){
-                    memset (tmp_buffer, 0, sizeof(tmp_buffer));
-                    strncpy(tmp_buffer, hex_buffer + 24 + tmp, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-                    send_buf[u] = stoi (tmp_buffer, nullptr, 16);
-                    tmp += 2;
-                }      
-                printf("[UART][SEND] Write block with modified data, addr=0x%hhX%hhX ... ", send_buf[2], send_buf[3]);
-                UART_Send(serialPort_fd, send_buf, send_buf[0]);
-                received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);            
-                    if ((received_bytes == -1)) {
-                        printf("\n[UART][RECEIVE] ERROR Wrong number of bytes or corrupted frame was received!\n");
-                        exit(6);
-                    }
-                if ((read_buf[1] != (char)SUCCESS_CODE)) {
-                    printf("\n[UART][RECEIVE] ERROR Device reported unsuccessful code!\n");
-                    exit(6);
-                }        
-                printf(" SUCCESS.\n");
+        case ADDR_RESET: {
+            // Row 0 (0x0000-0x001F). The converter gives us a full aligned block
+            // whose words 0-3 are the APPLICATION's reset vector. We must NOT let
+            // that overwrite the "GOTO bootloader" jump already programmed at
+            // 0x0000-0x0003. So:
+            //   1. read the current words 0x0000-0x0003 from the chip (the BL jump),
+            //   2. build row 0 = [BL jump] + [app data 0x0004-0x001F],
+            //   3. save the app's own reset vector (from the hex) into the flags
+            //      row at ADDR_APP_VECTOR (0x3FFC), so the BL can start the app.
+            printf("[FW] Row 0: preserving bootloader jump, relocating app reset vector.\n");
 
-for (int s=0; s < (int)sizeof(send_buf); s+=2){
-    printf("%i Send buf %02hhX%02hhX \n", s/2, send_buf[s], send_buf[s+1]);
-}
+            // Keep the app's reset vector words (hex data bytes 0..7) for step 3.
+            char app_reset[RESET_VECTOR_BYTES] = {};
+            for (int b = 0; b < RESET_VECTOR_BYTES; b++)
+                app_reset[b] = (char)HexByteAt(hex_buffer, HEX_OFF_DATA + b * 2);
 
-            }
+            // Step 1: read current row 0 from the chip (BL jump lives in words 0-3).
+            MakeReadRequest(send_buf, ADDR_RESET);
+            TransactExpectFull(send_buf, "read row 0 (BL jump)");
+            char bl_jump[RESET_VECTOR_BYTES] = {};
+            for (int b = 0; b < RESET_VECTOR_BYTES; b++)
+                bl_jump[b] = read_buf[READ_DATA_OFFSET + b];
 
+            // Step 2: build row-0 write frame = app block, but words 0-3 = BL jump.
+            BuildWriteFrameFromLine(send_buf, hex_buffer);
+            for (int b = 0; b < RESET_VECTOR_BYTES; b++)
+                send_buf[FRAME_HDR_BYTES + b] = bl_jump[b];
 
+            printf("[UART][SEND] Write row 0 (BL jump + app 0x0004+) ... ");
+            if (TransactWriteExpectAck(send_buf, "write row 0")) printf(" SUCCESS.\n");
 
-            printf("[FW] String with Main Reset Vector (MRV) found. Data %s \n", hex_buffer+8);
-            printf("[UART][RECEIVE] Read flags block from device.\n");
-            send_buf[0] = 0x04;    // Length of data in frame, include this byte also
-            send_buf[1] = READ_FROM_MEM;
-            send_buf[2] = 0x3F; // Read BL flags block
-            send_buf[3] = 0xE0;
-            UART_Send(serialPort_fd, send_buf, send_buf[0]);
-            received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);            
-                if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                    printf("[UART][RECEIVE] ERROR Wrong number of bytes or corrupted frame was received!\n");
-                    exit(6);
-                }
-            //printf("Read buf %s \n", read_buf); 
-            memset (send_buf, 0, sizeof(send_buf));
-            printf("[FW] Preparing flags with modified App Reset Vector (ARV).\n");
+            // Step 3: relocate the app reset vector into the flags row at 0x3FFC.
+            printf("[FW] Storing app reset vector at 0x%04X (flags row).\n", ADDR_APP_VECTOR);
+            MakeReadRequest(send_buf, ADDR_FLAGS);
+            TransactExpectFull(send_buf, "read flags row");
 
-            send_buf[0] = 0x44;    // Length of data in frame, include this byte also
-            send_buf[1] = WRITE_TO_MEM;            
-            send_buf[2] = 0x3F; // Read BL flags block
-            send_buf[3] = 0xE0;
-            for (int u = 0; u < MAX_BYTES_TO_SEND - 8; u++){
-                send_buf[u+4] = read_buf[u+2];
-            }
-            tmp = 0;
-            for (int u = MAX_BYTES_TO_SEND - 8; u < MAX_BYTES_TO_SEND-4; u++){
-                memset (tmp_buffer, 0, sizeof(tmp_buffer));
-                strncpy(tmp_buffer, hex_buffer + 16 + tmp, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-                send_buf[u] = stoi (tmp_buffer, nullptr, 16);
-                tmp += 2;
-            }         
-            send_buf[64] = 0x3F; // Read BL flags block
-            send_buf[65] = 0xFF;
-            send_buf[66] = 0x3F; // Read BL flags block
-            send_buf[67] = 0xFF;     
-                     
-            printf("[UART][SEND] Write flags block with ARV, addr=0x%hhX%hhX ... ", send_buf[2], send_buf[3]);
-            UART_Send(serialPort_fd, send_buf, send_buf[0]);
-            received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);            
-                if ((received_bytes == -1)) {
-                    printf("\n[UART][RECEIVE] ERROR Wrong number of bytes or corrupted frame was received!\n");
-                    exit(6);
-                }
-            if ((read_buf[1] != (char)SUCCESS_CODE)) {
-                printf("\n[UART][RECEIVE] ERROR Device reported unsuccessful code!\n");
-                exit(6);
-            }        
-            printf(" SUCCESS.\n");
-//for (int s=0; s < (int)sizeof(send_buf); s+=2){
-//    printf("%i Send buf %02hhX%02hhX \n", s/2, send_buf[s], send_buf[s+1]);
-//}
+            // Rebuild the flags row: keep existing contents, overwrite the last 4
+            // words (0x3FFC-0x3FFF) with the app's saved reset vector.
+            char flags_frame[MAX_BYTES_TO_SEND] = {};
+            flags_frame[0] = FRAME_FULL_LEN;
+            flags_frame[1] = WRITE_TO_MEM;
+            flags_frame[2] = (char)((ADDR_FLAGS >> 8) & 0xFF);
+            flags_frame[3] = (char)(ADDR_FLAGS & 0xFF);
+            for (int b = 0; b < BLOCK_DATA_BYTES; b++)
+                flags_frame[FRAME_HDR_BYTES + b] = read_buf[READ_DATA_OFFSET + b];
+            for (int b = 0; b < RESET_VECTOR_BYTES; b++)
+                flags_frame[FRAME_HDR_BYTES + APP_VECTOR_BYTE_OFFSET + b] = app_reset[b];
+
+            printf("[UART][SEND] Write flags row with app reset vector ... ");
+            if (TransactWriteExpectAck(flags_frame, "write flags row")) printf(" SUCCESS.\n");
             break;
+        }
         default:
-            if (lineBytesNum != 0x44){
-                printf("[FW] Block is not full\n");
-
-                memset (send_buf, 0, sizeof(send_buf));
-
-                send_buf[0] = 0x04;    // Length of data in frame, include this byte also
-                send_buf[1] = READ_FROM_MEM;
-
-                memset (tmp_buffer, 0, sizeof(tmp_buffer));
-                strncpy(tmp_buffer, hex_buffer + 4, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-                send_buf[2] = stoi (tmp_buffer, nullptr, 16);
-
-                memset (tmp_buffer, 0, sizeof(tmp_buffer));
-                strncpy(tmp_buffer, hex_buffer + 6, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-                send_buf[3] = stoi (tmp_buffer, nullptr, 16);
-
-                printf("[UART][RECEIVE] Read block from addr=0x%02hhX%02hhX...", send_buf[2], send_buf[3]);
-                UART_Send(serialPort_fd, send_buf, send_buf[0]);
-                received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);            
-                    if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                        printf("\n[UART][RECEIVE] ERROR Wrong number of bytes or corrupted frame was received!\n");
-                        exit(6);
-                        }
-                printf(" SUCCESS.\n");
-
-            //for (int s=0; s < (int)sizeof(read_buf)+1; s+=2){
-            //    printf("%i Read buf %02hhX%02hhX \n", s/2, read_buf[s], read_buf[s+1]);
-            //}
-                printf("[FW] Preparing full line...\n");
-                send_buf[0] = 0x44;    // Length of data in frame, include this byte also
-                send_buf[1] = WRITE_TO_MEM;
-
-                tmp = 0;
-                for (int u = 0; u < lineBytesNum-4; u++){
-                    memset (tmp_buffer, 0, sizeof(tmp_buffer));
-                    strncpy(tmp_buffer, hex_buffer + 8 + tmp, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-                    send_buf[u + 4] = stoi (tmp_buffer, NULL, 16);
-                    tmp += 2;
-                    }
-
-                for (int u = lineBytesNum - 4; u < MAX_BYTES_TO_SEND; u++){
-                    send_buf[u + 4] = read_buf[u + 2];
-                    } 
-
-
-
-            //for (int s=0; s < (int)sizeof(send_buf); s+=2){
-            //    printf("%i Send buf %02hhX%02hhX \n", s/2, send_buf[s], send_buf[s+1]);
-            //}
-
-
-            } else {
-                tmp = 0;
-                for (int u = 0; u < MAX_BYTES_TO_SEND; u++){
-                    memset (tmp_buffer, 0, sizeof(tmp_buffer));
-                    strncpy(tmp_buffer, hex_buffer + tmp, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-                    send_buf[u] = stoi (tmp_buffer, nullptr, 16);
-                    tmp += 2;
-                    }
-            }  
-
+            // Every converter line is a full 0x20-aligned 32-word block, so just
+            // copy it straight into the write frame.
+            BuildWriteFrameFromLine(send_buf, hex_buffer);
 
 //======================================================================================
 printf("\n============= Write to 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum);
