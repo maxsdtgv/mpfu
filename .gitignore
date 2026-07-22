@@ -1,2 +1,37 @@
-/mcu_part/v1.2.X/build/
-/mcu_part/v1.2.X/dist/
+# === MPLAB X / XC8 build output ===
+**/build/
+**/dist/
+**/nbproject/private/
+*.p1
+*.p1.d
+*.i
+*.o
+*.d
+*.elf
+*.cmf
+*.hxl
+*.hum
+*.mum
+*.rlf
+*.sdb
+*.sym
+*.map
+*.lst
+memoryfile.xml
+
+# === Host-side C++ build output ===
+host_part/cpp/mpfu
+host_part/cpp/*.o
+
+# === Host-side runtime / scratch dumps ===
+host_part/cpp/last_fw.cof
+host_part/cpp/save.txt
+host_part/cpp/save_*.txt
+host_part/cpp/saved*.txt
+
+# === Editor / OS noise ===
+*.swp
+*~
+.DS_Store
+Thumbs.db
+__pycache__/

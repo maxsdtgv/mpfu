@@ -79,7 +79,19 @@ bool FLASH_Write(uint8_t *buffer){
 
     INTCONbits.GIE = 0; // Disable interrupts
 
-    writeAddr = (((buffer[2] << 8) & 0xFF00) | (buffer[3] & 0x00FF));
+    // NOTE (flash row behaviour / alignment requirement):
+    // On PIC16F1 the program-memory write engine latches a whole row of
+    // 32 words. The row is selected by EEADRH:EEADRL[13:5]; only the low
+    // 5 bits EEADRL[4:0] pick one of the 32 write latches inside that row.
+    // During the latch-loading loop below the address is incremented, but
+    // if a block does NOT start on a 32-word boundary (0x20) the low bits
+    // wrap around inside the SAME row instead of advancing to the next one
+    // (looks like the address "does not roll over" / "jumps to +1").
+    // Workaround: the host always sends blocks of 32 words aligned to 0x20
+    // (see fw_converter.cpp and docs/BL_protocol.txt "aligned to x32").
+    // The XC8 memory model reserves the BL area accordingly:
+    //   default,-0-37FF,-3FE0-3FFF
+    writeAddr = (uint16_t)(((buffer[2] << 8) & 0xFF00) | (buffer[3] & 0x00FF));
         EEADRH = (uint8_t)((writeAddr & 0xFF00)>>8);
         EEADRL = (uint8_t)(writeAddr & 0x00FF);
 

@@ -35,6 +35,36 @@ int lineBytesNum = 0;
 int tmp = 0;
 
 
+// Send one frame and read the response back into read_buf.
+// Returns the number of received bytes (>=0), or -1 on timeout/no preamble.
+// Centralises the send+recv pattern that was duplicated across main().
+int Transact(char *frame){
+    UART_Send(serialPort_fd, frame, frame[0]);
+    return UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);
+}
+
+// Like Transact(), but aborts the process if a full frame was not received.
+// Mirrors the original inline "(received_bytes == -1) | (< MAX_BYTES_TO_RECV)"
+// checks that ended in exit(6).
+int TransactExpectFull(char *frame, const char *ctx){
+    int n = Transact(frame);
+    if (n == -1 || n < MAX_BYTES_TO_RECV) {
+        printf("\n[UART][RECEIVE] ERROR (%s) Wrong number of bytes or corrupted frame was received! (%i)\n", ctx, n);
+        exit(6);
+    }
+    return n;
+}
+
+// Build a 4-byte READ_FROM_MEM request for the given 16-bit address.
+void MakeReadRequest(char *frame, int addr){
+    memset(frame, 0, MAX_BYTES_TO_SEND);
+    frame[0] = 0x04;                 // frame length (incl. this byte)
+    frame[1] = READ_FROM_MEM;
+    frame[2] = (char)((addr >> 8) & 0xFF);
+    frame[3] = (char)(addr & 0xFF);
+}
+
+
 bool FoundDevice(){
 
 printf("[UART][SEND] Trying to found device ... \n");
@@ -396,16 +426,8 @@ printf("\n============= Read from 0x%04X ...              ", lineAddr);
 printf("\n============= Read from 0x0000\n");
 
 
-            send_buf[0] = 0x04;    // Length of data in frame, include this byte also
-            send_buf[1] = READ_FROM_MEM;
-            send_buf[2] = 0x00; // Read BL flags block
-            send_buf[3] = 0x00;
-            UART_Send(serialPort_fd, send_buf, send_buf[0]);
-            received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);            
-                if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                    printf("[UART][RECEIVE] ERROR Wrong number of bytes or corrupted frame was received!\n");
-                    exit(6);
-                }
+            MakeReadRequest(send_buf, 0x0000);
+            received_bytes = TransactExpectFull(send_buf, "dump 0x0000");
  
             for (int s=2; s < (int)sizeof(read_buf); s+=2){
                  printf("%02hhX%02hhX ", read_buf[s], read_buf[s+1]);
@@ -415,16 +437,8 @@ printf("\n============= Read from 0x0000\n");
 printf("\n============= Read from 0x3FE0\n");
 
 
-            send_buf[0] = 0x04;    // Length of data in frame, include this byte also
-            send_buf[1] = READ_FROM_MEM;
-            send_buf[2] = 0x3F; // Read BL flags block
-            send_buf[3] = 0xE0;
-            UART_Send(serialPort_fd, send_buf, send_buf[0]);
-            received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);            
-                if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                    printf("[UART][RECEIVE] ERROR Wrong number of bytes or corrupted frame was received!\n");
-                    exit(6);
-                }
+            MakeReadRequest(send_buf, 0x3FE0);
+            received_bytes = TransactExpectFull(send_buf, "dump 0x3FE0");
  
             for (int s=2; s < (int)sizeof(read_buf); s+=2){
                  printf("%02hhX%02hhX ", read_buf[s], read_buf[s+1]);
@@ -462,15 +476,8 @@ for (int p = 0x0; p < 0x3FFF; p += 0x20){
             ProgressBar(strr, 0x0, 0x3FFF, p);
             //printf("\r[UART][READ] Reading addr > %02hhX%02hhX", ((p & 0xFF00)>>8), (p & 0x00FF));
 
-                send_buf[2] = ((p & 0xFF00)>>8);
-                send_buf[3] = (p & 0x00FF);
-                UART_Send(serialPort_fd, send_buf, send_buf[0]);
-                received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);
-                    if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                        printf("\n[UART][READ] ERROR read addr > %02hhX%02hhX\n", ((p & 0xFF00)>>8), (p & 0x00FF));
-                        printf("\n[UART][READ] ERROR Wrong number of bytes or corrupted frame was received! (%i)\n" , received_bytes);
-                        exit(6);
-                    }
+                MakeReadRequest(send_buf, p);
+                received_bytes = TransactExpectFull(send_buf, "read loop");
             //for (int s=2; s < (int)sizeof(read_buf); s+=2){
             //     printf("%02hhX%02hhX ", read_buf[s], read_buf[s+1]);
             //}
