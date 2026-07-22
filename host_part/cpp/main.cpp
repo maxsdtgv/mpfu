@@ -7,6 +7,39 @@ using namespace std;
 #define MAX_BYTES_TO_SEND   68
 #define MAX_BYTES_TO_RECV   66
 
+// ---------------------------------------------------------------------------
+// Frame / protocol layout constants (replaces magic numbers throughout main).
+//
+// Converter output line (fwConvertPic16F1xxx), all ASCII-hex, no ':' :
+//     LL CC AAAA DDDD...
+//   char offset 0  : LL   frame length byte      (2 hex chars)
+//   char offset 2  : CC   command byte           (2 hex chars)
+//   char offset 4  : AAAA word address           (4 hex chars)
+//   char offset 8  : data bytes begin            (2 hex chars per byte)
+//
+// A frame sent to the MCU is: send_buf[0]=len, [1]=cmd, [2]=addrH, [3]=addrL,
+// then up to 64 data bytes at send_buf[4..67] (32 words, big-endian).
+// A read response is: read_buf[0]=len, [1]=cmd, then 64 data bytes at [2..65].
+// ---------------------------------------------------------------------------
+#define HEX_OFF_LEN         0      // char offset of LL in a converter line
+#define HEX_OFF_CMD         2      // char offset of CC
+#define HEX_OFF_ADDR        4      // char offset of AAAA
+#define HEX_OFF_DATA        8      // char offset of first data byte
+
+#define FRAME_HDR_BYTES     4      // len + cmd + addrH + addrL
+#define FRAME_FULL_LEN      0x44   // length byte value for a full 64-byte block
+#define BLOCK_DATA_BYTES    64     // 32 words per flash row
+#define BLOCK_DATA_WORDS    32
+
+#define READ_DATA_OFFSET    2      // data begins at read_buf[2] (after len,cmd)
+
+// Flash memory layout (see agent-notes / docs/BL_memory.txt)
+#define ADDR_RESET          0x0000 // reset vector row (words 0x0000-0x0003 = BL jump)
+#define ADDR_FLAGS          0x3FE0 // bootloader flags row (0x3FE0-0x3FFF)
+#define RESET_VECTOR_WORDS  4      // words 0x0000-0x0003 reserved for GOTO bootloader
+#define RESET_VECTOR_BYTES  8      // 4 words * 2 bytes
+
+
 char serial_name[32] = {};
 char serial_speed[6] = {};
 char inFilename[64] = {};
@@ -62,6 +95,20 @@ void MakeReadRequest(char *frame, int addr){
     frame[1] = READ_FROM_MEM;
     frame[2] = (char)((addr >> 8) & 0xFF);
     frame[3] = (char)(addr & 0xFF);
+}
+
+// Parse two ASCII-hex chars at hex_line[charOffset] into a byte value.
+int HexByteAt(const char *hex_line, int charOffset){
+    char tmp[3] = {};
+    strncpy(tmp, hex_line + charOffset, 2);
+    return (int)strtol(tmp, nullptr, 16);
+}
+
+// Parse the 4 ASCII-hex chars of the word address (AAAA) into an int.
+int HexAddrOf(const char *hex_line){
+    char tmp[5] = {};
+    strncpy(tmp, hex_line + HEX_OFF_ADDR, 4);
+    return (int)strtol(tmp, nullptr, 16);
 }
 
 
@@ -197,14 +244,8 @@ while (getline(convertedFwFileFd, str)) {
     memset (hex_buffer, 0, sizeof(hex_buffer));
     strcpy(hex_buffer, str.c_str()); //char * strcpy( char * destptr, const char * srcptr );
 
-    memset (tmp_buffer, 0, sizeof(tmp_buffer));
-    strncpy(tmp_buffer, hex_buffer + 4, 4); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-    lineAddr = stoi (tmp_buffer, nullptr, 16); //int stoi( const std::string& str, std::size_t* pos = 0, int base = 10 );
-//    printf("%d \n", lineAddr);
-
-    memset (tmp_buffer, 0, sizeof(tmp_buffer));
-    strncpy(tmp_buffer, hex_buffer, 2); //char * strncpy( char * destptr, const char * srcptr, size_t num );
-    lineBytesNum = stoi (tmp_buffer, nullptr, 16); //int stoi( const std::string& str, std::size_t* pos = 0, int base = 10 );
+    lineAddr     = HexAddrOf(hex_buffer);              // AAAA word address
+    lineBytesNum = HexByteAt(hex_buffer, HEX_OFF_LEN); // LL frame length byte
 
 
     switch (lineAddr){
