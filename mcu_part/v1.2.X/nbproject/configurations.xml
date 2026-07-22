@@ -131,7 +131,7 @@
       <HI-TECH-LINK>
         <property key="additional-options-checksum" value=""/>
         <property key="additional-options-code-offset" value=""/>
-        <property key="additional-options-command-line" value=""/>
+        <property key="additional-options-command-line" value="-mrom=default,-0-37FF,-3FE0-3FFF"/>
         <property key="additional-options-errata" value=""/>
         <property key="additional-options-extend-address" value="false"/>
         <property key="additional-options-trace-type" value=""/>

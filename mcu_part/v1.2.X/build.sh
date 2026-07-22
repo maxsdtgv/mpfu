@@ -12,6 +12,12 @@ MCPU=16f1789
 # -O1 is available in XC8 Free mode and saves ~107 words vs -O0.
 # -O2/-Os require a Pro/eval license.
 OPT="${OPT:--O1}"
+# Place the bootloader at the END of flash and reserve the flags/app-vector row:
+#   -0-37FF   : give 0x0000-0x37FF to the application
+#   -3FE0-3FFF: reserve the flags row (0x3FE0-0x3FFF), holds BL flags + app reset
+# The bootloader code then lands in 0x3800-0x3FDF. The reset vector at 0x0000 is
+# still emitted by XC8 automatically (GOTO bootloader entry). See docs/BL_memory.txt.
+ROM="${ROM:-default,-0-37FF,-3FE0-3FFF}"
 SRC_DIR="$(cd "$(dirname "$0")" && pwd)"
 OUT_DIR="${OUT_DIR:-/tmp/mpfu_build}"
 
@@ -31,5 +37,5 @@ SOURCES=(
 )
 
 cd "$SRC_DIR"
-"$CC" -mcpu="$MCPU" "$OPT" -o "$OUT_DIR/mpfu.elf" "${SOURCES[@]}" \
+"$CC" -mcpu="$MCPU" "$OPT" -mrom="$ROM" -o "$OUT_DIR/mpfu.elf" "${SOURCES[@]}" \
     -Imcc_generated_files -I.
