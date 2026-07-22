@@ -386,6 +386,15 @@ printf("\n============= Write to 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum)
 
 
                 printf("\n[UART][SEND] Write to addr 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum);
+
+                // Snapshot the 64 data bytes we are about to write, so we can
+                // verify them after read-back. send_buf[4..67] holds the data
+                // (send_buf[0..3] = len, cmd, addrH, addrL).
+                char written_data[64] = {};
+                for (int s = 0; s < 64; s++) {
+                    written_data[s] = send_buf[s + 4];
+                }
+
                 UART_Send(serialPort_fd, send_buf, send_buf[0]);
                 received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);            
                 if ((received_bytes == -1)) {
@@ -398,22 +407,36 @@ printf("\n============= Write to 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum)
 
 
 //======================================================================================
-printf("\n============= Read from 0x%04X ...              ", lineAddr);
+printf("\n============= Read/verify at 0x%04X ...              ", lineAddr);
 
+            // Read the block back from the SAME address and compare with what we
+            // wrote (verify). Costs nothing on the MCU side - reuses READ_FROM_MEM.
+            MakeReadRequest(send_buf, lineAddr);
+            received_bytes = TransactExpectFull(send_buf, "verify read-back");
 
-            send_buf[0] = 0x04;    // Length of data in frame, include this byte also
-            send_buf[1] = READ_FROM_MEM;
-            UART_Send(serialPort_fd, send_buf, send_buf[0]);
-            received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);            
-                if ((received_bytes == -1) | (received_bytes < MAX_BYTES_TO_RECV)) {
-                    printf("[UART][RECEIVE] ERROR Wrong number of bytes or corrupted frame was received!\n");
-                    exit(6);
+            {
+                // Flash is 14-bit: the top 2 bits read back as 0, so mask each
+                // word with 0x3FFF before comparing. read_buf[2..65] = 64 bytes.
+                int mismatches = 0;
+                for (int k = 0; k < 32; k++) {
+                    int wrote = (((unsigned char)written_data[k*2] << 8)
+                                 | (unsigned char)written_data[k*2 + 1]) & 0x3FFF;
+                    int got   = (((unsigned char)read_buf[2 + k*2] << 8)
+                                 | (unsigned char)read_buf[3 + k*2]) & 0x3FFF;
+                    if (wrote != got) {
+                        if (mismatches == 0) printf("\n");
+                        printf("[VERIFY] MISMATCH at word 0x%04X: wrote %04X, read %04X\n",
+                               lineAddr + k, wrote, got);
+                        mismatches++;
+                    }
                 }
- 
-            for (int s=0; s < (int)sizeof(read_buf); s+=2){
-                 printf("%02hhX%02hhX ", read_buf[s], read_buf[s+1]);
+                if (mismatches) {
+                    printf("[VERIFY] FAILED at block 0x%04X (%i word(s) differ)\n",
+                           lineAddr, mismatches);
+                    exit(7);
+                }
             }
-            printf("\n SUCCESS.\n");
+            printf(" VERIFIED.\n");
 //=======================================================================================
 
            break;
