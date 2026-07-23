@@ -118,13 +118,23 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
     delay_read = 1000000/(atoi(speed)/8); // time to transfer each symbol, uses as delay
                                            // for 115200 delay will be = 69 us
                                            // for 9600 will be =  833 us
+
+    // Timeout budget (in loop iterations). The baud-derived value is fine for
+    // fast reads, but a flash WRITE response can take a few seconds on the MCU
+    // (per-latch __delay_ms in FLASH_Write). Ensure the budget is at least
+    // ~6 s so we don't give up before the device finishes programming a row.
+    // Each iteration sleeps delay_read*5 us, so iters = 6e6 / (delay_read*5).
+    int timeout_limit = delay_read * size_buf;
+    int min_limit = 6000000 / (delay_read * 5);
+    if (timeout_limit < min_limit) timeout_limit = min_limit;
+
     do {
             usleep(delay_read*5);         // multiplicator to wait for symbol exm. *3, 
             timeout++;
             if (read(serial_port, &ch, 1) != 1) {
                 // No byte available yet (VMIN=0 => non-blocking read). Do NOT
                 // process a stale 'ch'; just keep waiting until timeout.
-                if (timeout >= delay_read*size_buf) {
+                if (timeout >= timeout_limit) {
                     printf("\n[UART][READ] ERROR! Timeout to read from serial is expired.\n");
                     break;
                 }
@@ -146,7 +156,7 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
                 start_frame_found = true;
             }           
 
-            if (timeout >= delay_read*size_buf) {
+            if (timeout >= timeout_limit) {
                 printf("\n[UART][READ] ERROR! Timeout to read from serial is expired.\n");
                 break;
             }
