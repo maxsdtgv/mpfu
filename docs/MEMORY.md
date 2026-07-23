@@ -19,7 +19,7 @@ interrupt vector at `0x0004` (hardware).
                     0x3FE5  ExtUpgrade block count, low
                     0x3FE6  ExtUpgrade status code
                     ....    (unused)
-                    0x3FFC  App reset vector (relocated here by the host)
+                    0x3FFC  App reset vector (relocated here by the bootloader)
                     0x3FFD    "
                     0x3FFE    "
                     0x3FFF    "
@@ -50,24 +50,27 @@ turns an arbitrary Intel HEX file into exactly these blocks.
 ## Vector relocation — how a normal app coexists with the bootloader
 
 Goal: the application is compiled **normally** (reset at `0x0000`, ISR at
-`0x0004`), yet the bootloader must always get control first at power-up. The
-trick is done entirely by the **host** while flashing, so the application needs
-no special build settings.
+`0x0004`), yet the bootloader must always get control first at power-up. This is
+handled **by the bootloader itself** (function `WriteAppBlock`), so it applies
+identically to both update paths — UART and autonomous EEPROM (ExtUpgrade) — and
+the application needs no special build settings.
 
-When flashing an application, for the reset row (`0x0000`) the host:
+When a block targeting the reset row (`0x0000`) is written, the bootloader:
 
-1. Reads the **current** words `0x0000`–`0x0003` from the chip. These already
-   contain the `GOTO bootloader` jump (installed when the bootloader was
-   programmed). The host does **not** hardcode the bootloader address — it just
-   preserves whatever jump is there.
-2. Builds row 0 as `[GOTO bootloader]` (words 0–3, from step 1) followed by the
-   application's own data for words `0x0004`–`0x001F` (taken from its HEX). The
-   application's interrupt handler at `0x0004` is kept intact.
-3. Saves the application's **own** reset vector (the original words
-   `0x0000`–`0x0003` from the HEX) and writes them into the flags row at
-   `0x3FFC`.
+1. Keeps the **current** words `0x0000`–`0x0003` (the `GOTO bootloader` jump that
+   was installed when the bootloader was programmed). It does not hardcode its
+   own address — it just preserves whatever jump is already there.
+2. Writes row 0 as `[GOTO bootloader]` (words 0–3) followed by the application's
+   data for words `0x0004`–`0x001F`. The app's interrupt handler at `0x0004` is
+   kept intact.
+3. Relocates the application's **own** reset vector (the incoming words
+   `0x0000`–`0x0003`) into the flags row at `0x3FFC`.
 
-The rest of the application is flashed as plain aligned blocks.
+For any other block, the bootloader writes it as-is, except it **refuses** any
+write into its own code region `0x3800`–`0x3FDF` (self-protection).
+
+The host therefore just sends every 32-word block verbatim; all the special
+handling lives in one place in the bootloader.
 
 ### Boot sequence
 
@@ -92,4 +95,8 @@ application's interrupts work with no extra jump or latency once it is running.
   so the "stay in bootloader" request is one-shot).
 - `WRT` self-write protection on this 16K part only covers up to `0x1FFF`, so the
   bootloader region near `0x3FFF` cannot be hardware write-protected. Protection
-  is by convention: the host never writes into the bootloader/flags region.
+  is instead enforced in software by `WriteAppBlock` (it rejects writes into
+  `0x3800`–`0x3FDF`).
+- If the optional `USE_FLETCHER` integrity check is enabled, the bootloader grows
+  past `0x3800` and the ROM region must be extended (e.g. `-0-35FF`); see
+  docs/BUILD_AND_FLASH.md.
