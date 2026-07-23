@@ -77,6 +77,8 @@ void ReadBootloaderFlags(void);
 
 bool WriteBootloaderFlags(void);
 
+bool WriteAppResetVector(uint8_t *src);
+
 #ifdef	__cplusplus
 }
 #endif

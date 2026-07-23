@@ -289,63 +289,11 @@ while (getline(convertedFwFileFd, str)) {
     lineAddr     = HexAddrOf(hex_buffer);              // AAAA word address
     lineBytesNum = HexByteAt(hex_buffer, HEX_OFF_LEN); // LL frame length byte
 
-
-    switch (lineAddr){
-        case ADDR_RESET: {
-            // Row 0 (0x0000-0x001F). The converter gives us a full aligned block
-            // whose words 0-3 are the APPLICATION's reset vector. We must NOT let
-            // that overwrite the "GOTO bootloader" jump already programmed at
-            // 0x0000-0x0003. So:
-            //   1. read the current words 0x0000-0x0003 from the chip (the BL jump),
-            //   2. build row 0 = [BL jump] + [app data 0x0004-0x001F],
-            //   3. save the app's own reset vector (from the hex) into the flags
-            //      row at ADDR_APP_VECTOR (0x3FFC), so the BL can start the app.
-            printf("[FW] Row 0: preserving bootloader jump, relocating app reset vector.\n");
-
-            // Keep the app's reset vector words (hex data bytes 0..7) for step 3.
-            char app_reset[RESET_VECTOR_BYTES] = {};
-            for (int b = 0; b < RESET_VECTOR_BYTES; b++)
-                app_reset[b] = (char)HexByteAt(hex_buffer, HEX_OFF_DATA + b * 2);
-
-            // Step 1: read current row 0 from the chip (BL jump lives in words 0-3).
-            MakeReadRequest(send_buf, ADDR_RESET);
-            TransactExpectFull(send_buf, "read row 0 (BL jump)");
-            char bl_jump[RESET_VECTOR_BYTES] = {};
-            for (int b = 0; b < RESET_VECTOR_BYTES; b++)
-                bl_jump[b] = read_buf[READ_DATA_OFFSET + b];
-
-            // Step 2: build row-0 write frame = app block, but words 0-3 = BL jump.
-            BuildWriteFrameFromLine(send_buf, hex_buffer);
-            for (int b = 0; b < RESET_VECTOR_BYTES; b++)
-                send_buf[FRAME_HDR_BYTES + b] = bl_jump[b];
-
-            printf("[UART][SEND] Write row 0 (BL jump + app 0x0004+) ... ");
-            if (TransactWriteExpectAck(send_buf, "write row 0")) printf(" SUCCESS.\n");
-
-            // Step 3: relocate the app reset vector into the flags row at 0x3FFC.
-            printf("[FW] Storing app reset vector at 0x%04X (flags row).\n", ADDR_APP_VECTOR);
-            MakeReadRequest(send_buf, ADDR_FLAGS);
-            TransactExpectFull(send_buf, "read flags row");
-
-            // Rebuild the flags row: keep existing contents, overwrite the last 4
-            // words (0x3FFC-0x3FFF) with the app's saved reset vector.
-            char flags_frame[MAX_BYTES_TO_SEND] = {};
-            flags_frame[0] = FRAME_FULL_LEN;
-            flags_frame[1] = WRITE_TO_MEM;
-            flags_frame[2] = (char)((ADDR_FLAGS >> 8) & 0xFF);
-            flags_frame[3] = (char)(ADDR_FLAGS & 0xFF);
-            for (int b = 0; b < BLOCK_DATA_BYTES; b++)
-                flags_frame[FRAME_HDR_BYTES + b] = read_buf[READ_DATA_OFFSET + b];
-            for (int b = 0; b < RESET_VECTOR_BYTES; b++)
-                flags_frame[FRAME_HDR_BYTES + APP_VECTOR_BYTE_OFFSET + b] = app_reset[b];
-
-            printf("[UART][SEND] Write flags row with app reset vector ... ");
-            if (TransactWriteExpectAck(flags_frame, "write flags row")) printf(" SUCCESS.\n");
-            break;
-        }
-        default:
-            // Every converter line is a full 0x20-aligned 32-word block, so just
-            // copy it straight into the write frame.
+            // Every converter line is a full 0x20-aligned 32-word block. The
+            // bootloader now owns all the special handling (preserving the reset
+            // jump at 0x0000-0x0003, relocating the app reset vector to 0x3FFC,
+            // and protecting its own code region), so the host just sends every
+            // block verbatim — including row 0.
             BuildWriteFrameFromLine(send_buf, hex_buffer);
 
 //======================================================================================
@@ -390,8 +338,12 @@ printf("\n============= Read/verify at 0x%04X ...              ", lineAddr);
             {
                 // Flash is 14-bit: the top 2 bits read back as 0, so mask each
                 // word with 0x3FFF before comparing. read_buf[2..65] = 64 bytes.
+                // For row 0 the bootloader intentionally replaces words 0-3 with
+                // its own "GOTO bootloader" jump (and relocates the app reset
+                // vector to 0x3FFC), so we do NOT verify those 4 words here.
+                int first_word = (lineAddr == ADDR_RESET) ? RESET_VECTOR_WORDS : 0;
                 int mismatches = 0;
-                for (int k = 0; k < 32; k++) {
+                for (int k = first_word; k < 32; k++) {
                     int wrote = (((unsigned char)written_data[k*2] << 8)
                                  | (unsigned char)written_data[k*2 + 1]) & 0x3FFF;
                     int got   = (((unsigned char)read_buf[2 + k*2] << 8)
@@ -412,11 +364,7 @@ printf("\n============= Read/verify at 0x%04X ...              ", lineAddr);
             printf(" VERIFIED.\n");
 //=======================================================================================
 
-           break;
-    }
-
-
-}
+    }   // end while(getline) — next converter block
 
 
 printf("\n============= Read from 0x0000\n");

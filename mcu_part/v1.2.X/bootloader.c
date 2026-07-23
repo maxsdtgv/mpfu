@@ -66,12 +66,74 @@ bool ReadFromMem(uint8_t *recv_frame, uint8_t *send_frame){
 
 bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
 	bool result;
-	result = FLASH_Write(recv_frame);
+	uint16_t flash_addr;
+
+	// Config-space writes (addrH==0x80) go straight through; they are not app
+	// blocks and must not pass through the reset/vector relocation logic.
+	if (recv_frame[2] == 0x80){
+		result = FLASH_Write(recv_frame);
+	} else {
+		flash_addr = (uint16_t)(((recv_frame[2] << 8) & 0xFF00) | (recv_frame[3] & 0x00FF));
+		result = WriteAppBlock(flash_addr, &recv_frame[4]);
+	}
+
 	if (result) {
-	send_frame[0] = 0x02;	// Length of array
-	send_frame[1] = SUCCESS_CODE;			
+		send_frame[0] = 0x02;	// Length of array
+		send_frame[1] = SUCCESS_CODE;
 	}
 	return result;
+}
+
+// Write one 32-word application block, applying the bootloader's memory rules.
+// This is the single place where the reset/vector relocation and self-protection
+// live, shared by both flashing paths (UART WriteToMem and autonomous ExtUpgrade).
+//
+//   flash_addr : destination WORD address (must be 32-word aligned)
+//   data64     : 64 bytes = 32 words, big-endian (H,L per word)
+//
+// Rules:
+//   * reset row (0x0000): keep the existing "GOTO bootloader" in words 0-3,
+//     take the app data for words 0x0004-0x001F from data64, and relocate the
+//     app's own reset vector (data64 words 0-3) into the flags row at 0x3FFC.
+//   * bootloader code (0x3800-0x3FDF): refuse (self-protection).
+//   * anything else: write data64 as-is.
+// Returns true on success, false if the block was rejected/failed.
+bool WriteAppBlock(uint16_t flash_addr, uint8_t *data64){
+	uint8_t frame[MAX_BLOCK_BYTES_SIZE + 4];
+	uint8_t i = 0;
+	uint16_t w = 0;
+
+	// Protect the bootloader's own code region.
+	if (flash_addr >= BL_CODE_START && flash_addr <= BL_CODE_END){
+		return false;
+	}
+
+	frame[2] = (uint8_t)((flash_addr & 0xFF00) >> 8);
+	frame[3] = (uint8_t)(flash_addr & 0x00FF);
+
+	if (flash_addr == RESET_ROW_ADDR){
+		// Words 0-3: keep the current "GOTO bootloader" that is already in flash.
+		for (i = 0; i < RESET_VECTOR_NWORDS; i++){
+			w = FLASH_Read(RESET_ROW_ADDR + i);
+			frame[4 + i*2]     = (uint8_t)((w & 0xFF00) >> 8);
+			frame[4 + i*2 + 1] = (uint8_t)(w & 0x00FF);
+		}
+		// Words 4..31: application data from the incoming block.
+		for (i = RESET_VECTOR_NWORDS*2; i < MAX_BLOCK_BYTES_SIZE; i++){
+			frame[4 + i] = data64[i];
+		}
+		if (!FLASH_Write(frame)) return false;
+
+		// Relocate the app's own reset vector (data64 words 0-3) to 0x3FFC,
+		// inside the flags row (read-modify-write to keep the flags intact).
+		return WriteAppResetVector(data64);
+	}
+
+	// Ordinary application block: write as-is.
+	for (i = 0; i < MAX_BLOCK_BYTES_SIZE; i++){
+		frame[4 + i] = data64[i];
+	}
+	return FLASH_Write(frame);
 }
 
 void StartApp(void){

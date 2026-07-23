@@ -34,6 +34,15 @@ extern "C" {
 #define WRITE_TO_SERIAL_EEPROM		0x14
 #define APP_RESET_VECTOR	0x3FFC // Should be 0x3FFC
 
+// Memory-protection / layout limits used by WriteAppBlock():
+//   - the reset row 0x0000-0x0003 holds "GOTO bootloader" and is preserved
+//   - the bootloader CODE 0x3800-0x3FDF must never be overwritten by an app
+//   - the flags row 0x3FE0-0x3FFF is writable (holds flags + app reset vector)
+#define RESET_ROW_ADDR      0x0000
+#define RESET_VECTOR_NWORDS 4        // words 0x0000-0x0003
+#define BL_CODE_START       0x3800
+#define BL_CODE_END         0x3FDF
+
 #define START_APPLICATION	0x0F
 //====================================================
 
@@ -49,6 +58,7 @@ bool DefineError(uint8_t*);
 //bool EraseRowMem(uint8_t*, uint8_t*);
 bool ReadFromMem(uint8_t*, uint8_t*);
 bool WriteToMem(uint8_t*, uint8_t*);
+bool WriteAppBlock(uint16_t flash_addr, uint8_t *data64);
 void StartApp(void);
 void ExtUpgrade(void);
 
