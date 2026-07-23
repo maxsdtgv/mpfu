@@ -19,6 +19,8 @@
 //#define PING_REQUEST		0x01
 #define READ_FROM_MEM		0x02
 #define WRITE_TO_MEM		0x04
+#define READ_FROM_SERIAL_EEPROM		0x12
+#define WRITE_TO_SERIAL_EEPROM		0x14
 #define START_APPLICATION	0x0F
 //====================================================
 

@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <limits.h>
 #include "fw_converter.h"
 #include "uart_procedures.h"
 
@@ -49,11 +50,13 @@ char serial_speed[6] = {};
 char inFilename[64] = {};
 char outFilename[64] = {};
 char saveFwFilename[64] = {};
+char eepromFilename[64] = {};
 int param_count = 0;
 short verbose = 0;
 short start_app = 0;
 short read_app = 0;
 short flashup_app = 0;
+short eeprom_write = 0;
 bool isDeviceFound = false;
 
 int serialPort_fd = 0;
@@ -184,6 +187,7 @@ printf("Microchip firmware uploader v1.1\n");
         		printf("     -f     Path to HEX file with firmware\n");     
                 printf("     -s     Start new application after upgrade\n");
                 printf("     -r     Just read fw from MCU\n");        		
+                printf("     -e     Write a raw binary dump into the external EEPROM\n");
         		printf("     -v     Verbose mode\n");  
         		return 1;
         	}
@@ -238,6 +242,17 @@ printf("Microchip firmware uploader v1.1\n");
                 return 1;
             }
         }   
+
+         if (strcmp(argv[i], "-e") == 0) {
+            eeprom_write = 1;
+            if (argv[i+1]) {
+                strcpy(eepromFilename, argv[i+1]);
+                ++param_count;
+            } else {
+                printf("Define path to the binary file to write into EEPROM.\n");
+                return 1;
+            }
+        }
     }
 
 
@@ -478,6 +493,74 @@ for (int p = 0x0; p < 0x3FFF; p += 0x20){
 }
             printf("\n[FW] Reading done\n");
 
+
+}
+
+
+if (eeprom_write == 1){
+
+printf("\n[EEPROM] Writing raw dump from %s\n", eepromFilename);
+
+char eepromAbsPath[PATH_MAX] = {};
+realpath(eepromFilename, eepromAbsPath);
+FILE *ef = fopen(eepromAbsPath, "rb");
+if (!ef) {
+    printf("[EEPROM] ERROR: cannot open %s\n", eepromFilename);
+    return 1;
+}
+
+// The external 25LC512 is byte-addressed, 64 KiB (0x0000-0xFFFF). We write it
+// in BLOCK_DATA_BYTES (64-byte) chunks — the same block size the MCU write
+// command expects. Blocks are placed on 64-byte boundaries; two 64-byte blocks
+// share a 128-byte EEPROM page but do not clobber each other (Page Erase was
+// removed from the firmware, so the page "refresh" preserves the neighbour).
+unsigned char filebuf[BLOCK_DATA_BYTES];
+int eeAddr = 0;
+size_t nread = 0;
+int blocks = 0;
+
+while ((nread = fread(filebuf, 1, BLOCK_DATA_BYTES, ef)) > 0) {
+    if (eeAddr + (int)nread > 0x10000) {
+        printf("[EEPROM] ERROR: data exceeds 64 KiB EEPROM capacity at 0x%04X\n", eeAddr);
+        fclose(ef); return 1;
+    }
+    // Pad a short final block with 0xFF (erased value).
+    for (size_t k = nread; k < BLOCK_DATA_BYTES; k++) filebuf[k] = 0xFF;
+
+    // Build WRITE_TO_SERIAL_EEPROM frame: len, cmd, addrH, addrL + 64 data.
+    memset(send_buf, 0, sizeof(send_buf));
+    send_buf[0] = FRAME_FULL_LEN;                 // 0x44
+    send_buf[1] = WRITE_TO_SERIAL_EEPROM;
+    send_buf[2] = (char)((eeAddr >> 8) & 0xFF);
+    send_buf[3] = (char)(eeAddr & 0xFF);
+    for (int b = 0; b < BLOCK_DATA_BYTES; b++)
+        send_buf[FRAME_HDR_BYTES + b] = (char)filebuf[b];
+
+    printf("[EEPROM][SEND] Write 0x%04X ... ", eeAddr);
+    TransactWriteExpectAck(send_buf, "eeprom write");
+
+    // Verify: read the block back (0x12) and compare.
+    memset(send_buf, 0, sizeof(send_buf));
+    send_buf[0] = 0x04;
+    send_buf[1] = READ_FROM_SERIAL_EEPROM;
+    send_buf[2] = (char)((eeAddr >> 8) & 0xFF);
+    send_buf[3] = (char)(eeAddr & 0xFF);
+    TransactExpectFull(send_buf, "eeprom verify");
+    int mism = 0;
+    for (int b = 0; b < BLOCK_DATA_BYTES; b++)
+        if ((unsigned char)read_buf[READ_DATA_OFFSET + b] != filebuf[b]) mism++;
+    if (mism) {
+        printf("\n[EEPROM] VERIFY FAILED at 0x%04X (%d byte(s) differ)\n", eeAddr, mism);
+        fclose(ef); return 1;
+    }
+    printf("VERIFIED.\n");
+
+    eeAddr += BLOCK_DATA_BYTES;
+    blocks++;
+}
+fclose(ef);
+printf("[EEPROM] Done: %d block(s), %d bytes written & verified.\n",
+       blocks, blocks * BLOCK_DATA_BYTES);
 
 }
 
