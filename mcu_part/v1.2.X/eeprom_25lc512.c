@@ -71,7 +71,7 @@ bool WriteToSerialEEPROM(uint8_t *recv_frame, uint8_t *send_frame){
 
 	SPI_Close();
 	send_frame[0] = 0x02;
-	send_frame[1] = WRITE_TO_SERIAL_EEPROM;
+	send_frame[1] = SUCCESS_CODE;   // uniform ACK, like WriteToMem (flash)
 	return true;
 }
 
