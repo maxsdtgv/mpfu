@@ -40,21 +40,13 @@ bool WriteToSerialEEPROM(uint8_t *recv_frame, uint8_t *send_frame){
 
     SPI_Open(SPI1);
 
-    buffer[0] = SPI_COMMAND_WREN;		// Send command to ext eeprom device
-    Enable_serial_eeprom();
-    SPI_WriteBlock(buffer, 0x01);    	// Send block
-      Disable_serial_eeprom();
-    __delay_ms(DELAY_TO_PROCEED_COMMAND);
-
-    buffer[0] = SPI_COMMAND_PE;			// Send command to ext eeprom device
-    buffer[1] = recv_frame[2];			// Send address, H part
-    buffer[2] = recv_frame[3];			// Send address, L part
-    Enable_serial_eeprom();
-    SPI_WriteBlock(buffer, 0x03);		// Send block
-      Disable_serial_eeprom();
-    __delay_ms(DELAY_TO_PROCEED_COMMAND);
-
-    buffer[0] = SPI_COMMAND_WREN;		// Send command to ext eeprom device
+    // NOTE: no explicit Page Erase is needed. Per the 25LC512 datasheet, "A
+    // write sequence includes an automatic, self-timed erase cycle. It is not
+    // required to erase any portion of the memory prior to a WRITE." The old
+    // first-implementation SPI_COMMAND_PE step was removed: it also caused a
+    // bug where writing two 64-byte blocks into the same 128-byte page erased
+    // the first block. A WREN must immediately precede the WRITE.
+    buffer[0] = SPI_COMMAND_WREN;		// Set write-enable latch
     Enable_serial_eeprom();
     SPI_WriteBlock(buffer, 0x01);		// Send block
       Disable_serial_eeprom();
