@@ -34,8 +34,28 @@
 
 
 
-void UnlockFlashWrite(){
-    EECON2 = 0x55;      // Start of required sequence to initiate erase
+// Perform the EECON2 unlock sequence and set WR. Two variants:
+//
+//  LoadLatch()       - used while LWLO=1 (loading write latches). Per the
+//                      datasheet (sec 12.3): "The processor does not stall when
+//                      LWLO = 1, loading the write latches." So NO delay is
+//                      needed here. Previously this waited DELAY_WRITE_FLASH ms
+//                      on every one of the 32 latches, making a row write ~3 s.
+//
+//  CommitFlashWrite()- used for the actual write cycles (row erase, and the
+//                      final word with LWLO=0). Here the CPU halts for ~2 ms
+//                      while the write/erase happens, so we keep the delay.
+static void LoadLatch(void){
+    EECON2 = 0x55;
+    EECON2 = 0xAA;
+    EECON1bits.WR = 1;  // load latch (does not start a write while LWLO=1)
+    NOP();
+    NOP();
+    return;
+}
+
+void UnlockFlashWrite(void){   // "commit" variant: real write/erase, needs delay
+    EECON2 = 0x55;      // Start of required sequence to initiate write/erase
     EECON2 = 0xAA;
     EECON1bits.WR = 1;  // Set WR bit to begin write
     NOP();
@@ -121,7 +141,7 @@ bool FLASH_Write(uint8_t *buffer){
             EEDATH = buffer[i+4];
             EEDATL = buffer[i+5];
 
-            UnlockFlashWrite();
+            LoadLatch();      // load latch only (LWLO=1): no write yet, no delay
 
             writeAddr++;
 
@@ -130,7 +150,7 @@ bool FLASH_Write(uint8_t *buffer){
     
     }
 
-    UnlockFlashWrite();
+    UnlockFlashWrite();     // final commit (LWLO=0): actual write, ~2ms delay
 
     EECON1bits.WREN = 0;        // Disable writes
     EECON1bits.EEPGD = 0;       // DeSelect Program Memory
