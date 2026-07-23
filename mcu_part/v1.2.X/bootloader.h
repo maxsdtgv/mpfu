@@ -43,6 +43,28 @@ extern "C" {
 #define BL_CODE_START       0x3800
 #define BL_CODE_END         0x3FDF
 
+// --- EEPROM firmware-image format (see host_part/cpp/eeimage.h) --------------
+// Header (64 bytes) then dense data. All multi-byte fields big-endian.
+#define EEIMG_HEADER_SIZE     64
+#define EEIMG_OFF_MAGIC       0   // 'M','P','F','U'
+#define EEIMG_OFF_VERSION     4
+#define EEIMG_OFF_FLASH_ADDR  5   // destination flash WORD address (2 bytes)
+#define EEIMG_OFF_DATA_LEN    7   // number of data bytes (2 bytes, multiple of 64)
+#define EEIMG_OFF_CRC         9   // fletcher16 over data (2 bytes)
+
+// ExtUpgrade status codes written to BLFlags.StatusCodeExtUpgrade (0x3FE6):
+#define EXTUP_STATUS_OK        0x00
+#define EXTUP_STATUS_BAD_MAGIC 0x01
+#define EXTUP_STATUS_BAD_CRC   0x02
+
+// Optional Fletcher-16 integrity check of the EEPROM image before flashing.
+// DISABLED by default on the PIC16F1789 to save flash: enabling it adds ~130
+// words and requires extending the bootloader ROM region below 0x3800 (e.g.
+// -mrom=default,-0-35FF,-3FE0-3FFF). On this part, a Wi-Fi-delivered image can
+// instead be verified by reading the EEPROM back over the same link on the host.
+// Enable on parts with more flash (and extend the BL region accordingly).
+//#define USE_FLETCHER
+
 #define START_APPLICATION	0x0F
 //====================================================
 

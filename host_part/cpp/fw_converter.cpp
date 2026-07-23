@@ -1,4 +1,5 @@
 #include "fw_converter.h"
+#include "eeimage.h"
 #include <map>
 #include <limits.h>
 using namespace std;
@@ -109,4 +110,65 @@ void fwConvertPic16F1xxx(char* inFilename, char* outFilename)
         out.write("\n", 1);
     }
     out.close();
+}
+
+// Build an EEPROM firmware image (see eeimage.h) from an Intel HEX file.
+// Layout: 64-byte header (magic, version, flash_addr, data_len, fletcher16) then
+// a dense big-endian word image from firstRow..lastRow, gaps padded with 0x3FFF.
+// The image is meant to be written verbatim into the external EEPROM and later
+// programmed into flash by the bootloader's ExtUpgrade.
+// Returns 0 on success, non-zero on error.
+int buildEepromImage(const char* inFilename, const char* outFilename)
+{
+    map<int,int> mem;
+    parseIntelHexFile(inFilename, mem);
+    if (mem.empty()) return 1;
+
+    int firstWord = mem.begin()->first;
+    int lastWord  = mem.rbegin()->first;
+    int firstRow  = firstWord & ~(ROW_WORDS - 1);
+    int lastRow   = lastWord  & ~(ROW_WORDS - 1);
+    int nrows     = (lastRow - firstRow) / ROW_WORDS + 1;
+
+    // Dense data: nrows * 32 words * 2 bytes, big-endian, gaps = 0x3FFF.
+    int data_len = nrows * ROW_WORDS * 2;
+    unsigned char *data = new unsigned char[data_len];
+    int p = 0;
+    for (int row = firstRow; row <= lastRow; row += ROW_WORDS) {
+        for (int w = 0; w < ROW_WORDS; w++) {
+            int word = mem.count(row + w) ? mem[row + w] : BLANK_WORD;
+            data[p++] = (unsigned char)((word >> 8) & 0xFF);
+            data[p++] = (unsigned char)(word & 0xFF);
+        }
+    }
+
+    unsigned short crc = fletcher16(data, (unsigned int)data_len);
+
+    // Header
+    unsigned char hdr[EEIMG_HEADER_SIZE];
+    memset(hdr, 0xFF, sizeof(hdr));
+    hdr[EEIMG_OFF_MAGIC + 0] = EEIMG_MAGIC0;
+    hdr[EEIMG_OFF_MAGIC + 1] = EEIMG_MAGIC1;
+    hdr[EEIMG_OFF_MAGIC + 2] = EEIMG_MAGIC2;
+    hdr[EEIMG_OFF_MAGIC + 3] = EEIMG_MAGIC3;
+    hdr[EEIMG_OFF_VERSION]     = EEIMG_VERSION;
+    hdr[EEIMG_OFF_FLASH_ADDR]  = (unsigned char)((firstRow >> 8) & 0xFF);
+    hdr[EEIMG_OFF_FLASH_ADDR+1]= (unsigned char)(firstRow & 0xFF);
+    hdr[EEIMG_OFF_DATA_LEN]    = (unsigned char)((data_len >> 8) & 0xFF);
+    hdr[EEIMG_OFF_DATA_LEN+1]  = (unsigned char)(data_len & 0xFF);
+    hdr[EEIMG_OFF_CRC]         = (unsigned char)((crc >> 8) & 0xFF);
+    hdr[EEIMG_OFF_CRC+1]       = (unsigned char)(crc & 0xFF);
+
+    char outAbs[PATH_MAX] = {};
+    realpath(outFilename, outAbs);
+    FILE *of = fopen(outAbs[0] ? outAbs : outFilename, "wb");
+    if (!of) { delete[] data; return 2; }
+    fwrite(hdr, 1, EEIMG_HEADER_SIZE, of);
+    fwrite(data, 1, data_len, of);
+    fclose(of);
+
+    printf("[EEIMG] flash_addr=0x%04X, data=%d bytes (%d rows), fletcher16=0x%04X\n",
+           firstRow, data_len, nrows, crc);
+    delete[] data;
+    return 0;
 }

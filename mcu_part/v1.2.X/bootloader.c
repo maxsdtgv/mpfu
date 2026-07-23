@@ -144,43 +144,92 @@ void StartApp(void){
 
 }
 
+// Fletcher-16 over a byte buffer (table-free; matches host eeimage.h).
+// Uses conditional subtraction instead of "% 255" — mathematically identical
+// (s1,s2 stay < 2*255 per step) but avoids the expensive software division on
+// the PIC.
+//
+// NOTE: guarded by USE_FLETCHER (see bootloader.h). It is DISABLED by default
+// on the PIC16F1789 to save flash (the bootloader already uses ~13% and the
+// Fletcher path costs ~130 words + needs the BL region extended below 0x3800).
+// Integrity of a Wi-Fi-delivered image can instead be checked by reading the
+// EEPROM back over the same link and verifying on the host. Enable USE_FLETCHER
+// on parts with more flash (and extend the BL ROM region accordingly).
+#ifdef USE_FLETCHER
+static uint16_t fletcher16_update(uint16_t state, uint8_t *data, uint8_t len){
+	uint16_t s1 = (uint16_t)(state & 0xFF);
+	uint16_t s2 = (uint16_t)(state >> 8);
+	uint8_t i;
+	for (i = 0; i < len; i++){
+		s1 += data[i];
+		if (s1 >= 255) s1 -= 255;
+		s2 += s1;
+		if (s2 >= 255) s2 -= 255;
+	}
+	return (uint16_t)((s2 << 8) | s1);
+}
+#endif
+
+// Read 64 bytes from the external EEPROM at byte address ee_addr into dst[64].
+static void ExtReadBlock(uint16_t ee_addr, uint8_t *dst){
+	uint8_t req[4];
+	uint8_t resp[MAX_BLOCK_BYTES_SIZE + 2];
+	uint8_t i;
+	req[2] = (uint8_t)((ee_addr & 0xFF00) >> 8);
+	req[3] = (uint8_t)(ee_addr & 0x00FF);
+	ReadFromSerialEEPROM(req, resp);     // resp[2..65] = 64 data bytes
+	for (i = 0; i < MAX_BLOCK_BYTES_SIZE; i++){
+		dst[i] = resp[i + 2];
+	}
+}
+
+// Autonomous firmware upgrade from the external EEPROM.
+// The EEPROM holds an image: [64-byte header][dense data]. The header carries
+// magic 'MPFU', the destination flash word address, the data length and a
+// Fletcher-16 over the data. We verify magic + CRC BEFORE writing any flash,
+// then stream the data in 64-byte blocks through WriteAppBlock (which applies
+// the reset/vector relocation and self-protection). Result is recorded in
+// BLFlags.StatusCodeExtUpgrade.
 void ExtUpgrade(void){
-	uint16_t i = 0, k = 0, addr = BLFlags.StartAddrExtUpgrade;
-	uint8_t addr_to_read_serial_mem[4];
-	uint8_t buf_from_serial_mem[MAX_BLOCK_BYTES_SIZE + 2];
-    uint8_t data_to_flash[MAX_BLOCK_BYTES_SIZE + 4];
+	uint16_t ee_base = BLFlags.StartAddrExtUpgrade;
+	uint8_t  header[MAX_BLOCK_BYTES_SIZE];
+	uint8_t  block[MAX_BLOCK_BYTES_SIZE];
+	uint16_t flash_addr, data_len;
+	uint16_t off;
+#ifdef USE_FLETCHER
+	uint16_t crc_stored, crc_calc;
+#endif
 
-    ClearArray(data_to_flash, MAX_BLOCK_BYTES_SIZE + 4);
-    
-	for (i = 0; i != BLFlags.NumBlocksExtUpgrade; i++){
+	// 1. Header
+	ExtReadBlock(ee_base, header);
+	if (header[EEIMG_OFF_MAGIC+0] != 'M' || header[EEIMG_OFF_MAGIC+1] != 'P' ||
+	    header[EEIMG_OFF_MAGIC+2] != 'F' || header[EEIMG_OFF_MAGIC+3] != 'U'){
+		BLFlags.StatusCodeExtUpgrade = EXTUP_STATUS_BAD_MAGIC;
+		return;
+	}
+	flash_addr = (uint16_t)((header[EEIMG_OFF_FLASH_ADDR] << 8) | header[EEIMG_OFF_FLASH_ADDR+1]);
+	data_len   = (uint16_t)((header[EEIMG_OFF_DATA_LEN]   << 8) | header[EEIMG_OFF_DATA_LEN+1]);
 
-		addr_to_read_serial_mem[2] = (uint8_t)((addr & 0xFF00) >> 8);
-		addr_to_read_serial_mem[3] = (uint8_t)((addr & 0x00FF));
+#ifdef USE_FLETCHER
+	// 2. Verify Fletcher-16 over the data BEFORE touching flash.
+	crc_stored = (uint16_t)((header[EEIMG_OFF_CRC] << 8) | header[EEIMG_OFF_CRC+1]);
+	crc_calc = 0;
+	for (off = 0; off < data_len; off += MAX_BLOCK_BYTES_SIZE){
+		ExtReadBlock(ee_base + EEIMG_HEADER_SIZE + off, block);
+		crc_calc = fletcher16_update(crc_calc, block, MAX_BLOCK_BYTES_SIZE);
+	}
+	if (crc_calc != crc_stored){
+		BLFlags.StatusCodeExtUpgrade = EXTUP_STATUS_BAD_CRC;
+		return;   // flash untouched
+	}
+#endif
 
-
-		ReadFromSerialEEPROM(addr_to_read_serial_mem, buf_from_serial_mem);
-
-		data_to_flash[2] = buf_from_serial_mem[2];
-		data_to_flash[3] = buf_from_serial_mem[3];
-
-		// To read second time with shift for 1 byte, to append in format > addr+data
-		addr_to_read_serial_mem[2] = (uint8_t)((addr+2 & 0xFF00) >> 8);
-		addr_to_read_serial_mem[3] = (uint8_t)((addr+2 & 0x00FF));
-
-		ReadFromSerialEEPROM(addr_to_read_serial_mem, buf_from_serial_mem);
-
-		for (k = 0; k != MAX_BLOCK_BYTES_SIZE; k++){
-			data_to_flash[k + 4] = buf_from_serial_mem[k + 2]; // Start from2 to cut system info
-		}
-
-		//UART_dataWrite(data_to_flash, MAX_BLOCK_BYTES_SIZE + 4);
-		FLASH_Write(data_to_flash);
-
-		addr += EEPROM_25LC512_BLOCK_SIZE_BYTES;
-
-
+	// 3. Program flash, block by block, via the shared WriteAppBlock().
+	for (off = 0; off < data_len; off += MAX_BLOCK_BYTES_SIZE){
+		ExtReadBlock(ee_base + EEIMG_HEADER_SIZE + off, block);
+		WriteAppBlock((uint16_t)(flash_addr + (off / 2)), block);  // off bytes -> off/2 words
 	}
 
+	BLFlags.StatusCodeExtUpgrade = EXTUP_STATUS_OK;
 	return;
-
 }

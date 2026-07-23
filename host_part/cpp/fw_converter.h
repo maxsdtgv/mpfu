@@ -7,3 +7,4 @@
 #include "uart_procedures.h"
 
 void fwConvertPic16F1xxx(char*, char*);
+int  buildEepromImage(const char* inFilename, const char* outFilename);

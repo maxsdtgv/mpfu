@@ -51,12 +51,15 @@ char inFilename[64] = {};
 char outFilename[64] = {};
 char saveFwFilename[64] = {};
 char eepromFilename[64] = {};
+char genImageIn[64] = {};
+char genImageOut[64] = {};
 int param_count = 0;
 short verbose = 0;
 short start_app = 0;
 short read_app = 0;
 short flashup_app = 0;
 short eeprom_write = 0;
+short gen_image = 0;
 bool isDeviceFound = false;
 
 int serialPort_fd = 0;
@@ -188,6 +191,7 @@ printf("Microchip firmware uploader v1.1\n");
                 printf("     -s     Start new application after upgrade\n");
                 printf("     -r     Just read fw from MCU\n");        		
                 printf("     -e     Write a raw binary dump into the external EEPROM\n");
+                printf("     -g in.hex out.img   Generate an EEPROM firmware image (offline)\n");
         		printf("     -v     Verbose mode\n");  
         		return 1;
         	}
@@ -253,8 +257,27 @@ printf("Microchip firmware uploader v1.1\n");
                 return 1;
             }
         }
+
+         if (strcmp(argv[i], "-g") == 0) {
+            gen_image = 1;
+            if (argv[i+1] && argv[i+2]) {
+                strcpy(genImageIn,  argv[i+1]);
+                strcpy(genImageOut, argv[i+2]);
+            } else {
+                printf("Usage: -g <in.hex> <out.img>\n");
+                return 1;
+            }
+        }
     }
 
+// -g is an offline operation (no device): generate an EEPROM image and exit.
+if (gen_image == 1) {
+    printf("Generating EEPROM image: %s -> %s\n", genImageIn, genImageOut);
+    int rc = buildEepromImage(genImageIn, genImageOut);
+    if (rc != 0) { printf("ERROR: image generation failed (%d)\n", rc); return 1; }
+    printf("Done.\n");
+    return 0;
+}
 
 
 if (param_count < 3) {
