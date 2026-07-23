@@ -175,12 +175,14 @@ void ReadBootloaderFlags(void){
             def_addr++;
         }
 
-    if ((uint8_t)(buf[0] & 0x00FF) == 0x00){ BLFlags.IsBLStart = true;}
-    if ((uint8_t)(buf[1] & 0x00FF) == 0x00){ BLFlags.IsExtUpgrade = true;}
+    // buf[] is indexed by WORD offset from FLAGS_VECTOR. Only the low byte of
+    // each flag word is significant (FLAG_SET_BYTE == set).
+    if ((uint8_t)(buf[FLAG_OFF_IS_BL_START]    & 0x00FF) == FLAG_SET_BYTE){ BLFlags.IsBLStart = true;}
+    if ((uint8_t)(buf[FLAG_OFF_IS_EXT_UPGRADE] & 0x00FF) == FLAG_SET_BYTE){ BLFlags.IsExtUpgrade = true;}
 
-    BLFlags.StartAddrExtUpgrade = (uint16_t)(((buf[2] << 8) & 0xFF00) | (buf[3] & 0x00FF));
-    BLFlags.NumBlocksExtUpgrade = (uint16_t)(((buf[4] << 8) & 0xFF00) | (buf[5] & 0x00FF));
-    BLFlags.StatusCodeExtUpgrade = (uint8_t)(buf[6] & 0x00FF);
+    BLFlags.StartAddrExtUpgrade = (uint16_t)(((buf[FLAG_OFF_EXT_ADDR_H]    << 8) & 0xFF00) | (buf[FLAG_OFF_EXT_ADDR_L]    & 0x00FF));
+    BLFlags.NumBlocksExtUpgrade = (uint16_t)(((buf[FLAG_OFF_EXT_NBLOCKS_H] << 8) & 0xFF00) | (buf[FLAG_OFF_EXT_NBLOCKS_L] & 0x00FF));
+    BLFlags.StatusCodeExtUpgrade = (uint8_t)(buf[FLAG_OFF_EXT_STATUS] & 0x00FF);
     return;
 }
 
@@ -191,29 +193,26 @@ bool WriteBootloaderFlags(void){
     uint16_t def_addr = FLAGS_VECTOR;
     bool res = false;
 
+    // Read-modify-write the whole flags row: first read the current 32 words
+    // into the FLASH_Write frame buffer (data starts at FRAME_DATA_OFFSET),
+    // preserving everything (incl. the app reset vector at 0x3FFC).
         for (i = 0; i != MAX_BLOCK_BYTES_SIZE; i += 2){
             dbyte = FLASH_Read(def_addr);   
-            buf[i+4] = (uint8_t)((dbyte & 0xFF00) >> 8);
-            buf[i+5] = (uint8_t)(dbyte & 0x00FF);
+            buf[FRAME_DATA_OFFSET + i]     = (uint8_t)((dbyte & 0xFF00) >> 8);
+            buf[FRAME_DATA_OFFSET + i + 1] = (uint8_t)(dbyte & 0x00FF);
             def_addr++;
         }
 
-        buf[2] = (uint8_t)((FLAGS_VECTOR & 0xFF00) >> 8);
-        buf[3] = (uint8_t)(FLAGS_VECTOR & 0x00FF);
+    // Frame header: address of the row to write (len/cmd are set by convention
+    // elsewhere; FLASH_Write only uses buf[2..3] as the target address).
+    buf[2] = (uint8_t)((FLAGS_VECTOR & 0xFF00) >> 8);
+    buf[3] = (uint8_t)(FLAGS_VECTOR & 0x00FF);
 
-    if (BLFlags.IsBLStart == true){
-        buf[5] = 0x00;
-    } else {
-        buf[5] = 0xFF;
-    }
+    // Overwrite only the flag low-bytes we own; everything else stays as read.
+    buf[WORD_LO_BYTE(FLAG_OFF_IS_BL_START)]    = BLFlags.IsBLStart    ? FLAG_SET_BYTE : FLAG_CLEAR_BYTE;
+    buf[WORD_LO_BYTE(FLAG_OFF_IS_EXT_UPGRADE)] = BLFlags.IsExtUpgrade ? FLAG_SET_BYTE : FLAG_CLEAR_BYTE;
+    buf[WORD_LO_BYTE(FLAG_OFF_EXT_STATUS)]     = BLFlags.StatusCodeExtUpgrade;
 
-    if (BLFlags.IsExtUpgrade == true){
-        buf[7] = 0x00;
-    } else {
-        buf[7] = 0xFF;
-    }
-
-    buf[17] = BLFlags.StatusCodeExtUpgrade;
     res = FLASH_Write(buf);
   
     return res;

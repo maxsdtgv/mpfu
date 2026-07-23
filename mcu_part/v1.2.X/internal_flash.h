@@ -21,6 +21,28 @@ extern "C" {
 #define DELAY_WRITE_FLASH   0x000A   // means 10 ms
 #define FLAGS_VECTOR        0x3FE0  
 
+// --- Bootloader flags row layout ---------------------------------------------
+// The flags live in the 32-word row starting at FLAGS_VECTOR (0x3FE0). Each
+// field below is a WORD OFFSET from FLAGS_VECTOR. Only the low byte of each
+// flag word is used (0x00 = set/true, anything else = clear/false).
+#define FLAG_OFF_IS_BL_START     0   // 0x3FE0
+#define FLAG_OFF_IS_EXT_UPGRADE  1   // 0x3FE1
+#define FLAG_OFF_EXT_ADDR_H      2   // 0x3FE2
+#define FLAG_OFF_EXT_ADDR_L      3   // 0x3FE3
+#define FLAG_OFF_EXT_NBLOCKS_H   4   // 0x3FE4
+#define FLAG_OFF_EXT_NBLOCKS_L   5   // 0x3FE5
+#define FLAG_OFF_EXT_STATUS      6   // 0x3FE6
+
+#define FLAG_SET_BYTE            0x00   // low byte value meaning "flag is set"
+#define FLAG_CLEAR_BYTE         0xFF   // low byte value meaning "flag is clear"
+
+// FLASH_Write() expects a buffer laid out as a WRITE frame:
+//   buf[0]=len, buf[1]=cmd, buf[2]=addrH, buf[3]=addrL, then data bytes at buf[4]+.
+// So a given word offset in the row maps to these byte indices in that buffer:
+#define FRAME_DATA_OFFSET        4
+#define WORD_HI_BYTE(word_off)  (FRAME_DATA_OFFSET + (word_off)*2)
+#define WORD_LO_BYTE(word_off)  (FRAME_DATA_OFFSET + (word_off)*2 + 1)
+
 struct {
     bool IsBLStart;
     bool IsExtUpgrade;
