@@ -121,7 +121,15 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
     do {
             usleep(delay_read*5);         // multiplicator to wait for symbol exm. *3, 
             timeout++;
-            read(serial_port, &ch, 1);
+            if (read(serial_port, &ch, 1) != 1) {
+                // No byte available yet (VMIN=0 => non-blocking read). Do NOT
+                // process a stale 'ch'; just keep waiting until timeout.
+                if (timeout >= delay_read*size_buf) {
+                    printf("\n[UART][READ] ERROR! Timeout to read from serial is expired.\n");
+                    break;
+                }
+                continue;
+            }
 
 
             if (start_frame_found == true){
@@ -138,7 +146,7 @@ int UART_Recv(int serial_port, char *read_buf, int size_buf){
                 start_frame_found = true;
             }           
 
-            if (timeout == delay_read*size_buf) {
+            if (timeout >= delay_read*size_buf) {
                 printf("\n[UART][READ] ERROR! Timeout to read from serial is expired.\n");
                 break;
             }
