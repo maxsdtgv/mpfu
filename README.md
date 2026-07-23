@@ -24,8 +24,11 @@ host_part/cpp/     Linux host uploader "mpfu" (C++), + local test harness
 test/blink_irq/    Example application (Timer0 ISR blinker) used as a fixture
 test/led_blink.X/  Older sample app (kept for reference)
 sim/               Proteus simulation project
-docs/              Documentation (this folder) + silicon errata PDF
+docs/              Documentation (this folder)
 ```
+
+> The PIC16(L)F1788/9 silicon errata (Microchip DS80000575) is a useful
+> reference but is not bundled here — download it from microchip.com if needed.
 
 ## Documentation
 
