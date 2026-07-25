@@ -19,19 +19,19 @@ extern "C" {
 #define MAX_BLOCK_BYTES_SIZE    0x0040    
 //#define MAX_MEM_COUNT 	0x4000
 #define DELAY_WRITE_FLASH   0x000A   // means 10 ms
-#define FLAGS_VECTOR        0x3FE0  
+#define FLAGS_VECTOR        0x3FC0  
 
 // --- Bootloader flags row layout ---------------------------------------------
-// The flags live in the 32-word row starting at FLAGS_VECTOR (0x3FE0). Each
+// The flags live in the 32-word row starting at FLAGS_VECTOR (0x3FC0). Each
 // field below is a WORD OFFSET from FLAGS_VECTOR. Only the low byte of each
 // flag word is used (0x00 = set/true, anything else = clear/false).
-#define FLAG_OFF_IS_BL_START     0   // 0x3FE0
-#define FLAG_OFF_IS_EXT_UPGRADE  1   // 0x3FE1
-#define FLAG_OFF_EXT_ADDR_H      2   // 0x3FE2
-#define FLAG_OFF_EXT_ADDR_L      3   // 0x3FE3
-#define FLAG_OFF_EXT_NBLOCKS_H   4   // 0x3FE4
-#define FLAG_OFF_EXT_NBLOCKS_L   5   // 0x3FE5
-#define FLAG_OFF_EXT_STATUS      6   // 0x3FE6
+// (The block_count for ExtUpgrade now lives in the image header, not here, so
+// the old EXT_NBLOCKS fields were removed.)
+#define FLAG_OFF_IS_BL_START     0   // 0x3FC0
+#define FLAG_OFF_IS_EXT_UPGRADE  1   // 0x3FC1
+#define FLAG_OFF_EXT_ADDR_H      2   // 0x3FC2
+#define FLAG_OFF_EXT_ADDR_L      3   // 0x3FC3
+#define FLAG_OFF_EXT_STATUS      4   // 0x3FC4
 
 #define FLAG_SET_BYTE            0x00   // low byte value meaning "flag is set"
 #define FLAG_CLEAR_BYTE         0xFF   // low byte value meaning "flag is clear"
@@ -47,9 +47,8 @@ struct {
     bool IsBLStart;
     bool IsExtUpgrade;
     uint16_t StartAddrExtUpgrade;
-    uint16_t NumBlocksExtUpgrade;
     uint8_t StatusCodeExtUpgrade;
-} BLFlags = {false, false, 0, 0, 0};
+} BLFlags = {false, false, 0, 0};
 
 
 //bool FLASH_Erase(uint8_t*);
@@ -76,8 +75,6 @@ Example:
 void ReadBootloaderFlags(void);
 
 bool WriteBootloaderFlags(void);
-
-bool WriteAppResetVector(uint8_t *src);
 
 #ifdef	__cplusplus
 }

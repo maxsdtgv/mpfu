@@ -84,27 +84,71 @@ bool WriteToMem(uint8_t *recv_frame, uint8_t *send_frame){
 	return result;
 }
 
+// Arm the autonomous EEPROM->flash upgrade (command SET_EXT_UPGRADE).
+// recv_frame[2..3] = EEPROM byte address of the image. We set IsExtUpgrade and
+// the start address in the flags row (WriteBootloaderFlags is a read-modify-write
+// that preserves the other flags), acknowledge, flush the UART, then reset the
+// MCU. On restart the bootloader sees IsExtUpgrade and runs ExtUpgrade().
+bool SetExtUpgrade(uint8_t *recv_frame, uint8_t *send_frame){
+	uint8_t buf[MAX_BLOCK_BYTES_SIZE + 4];
+	uint8_t i = 0;
+	uint16_t dbyte = 0;
+	uint16_t def_addr = FLAGS_VECTOR;
+
+	// Read-modify-write the flags row directly here so we can also set the
+	// ExtAddr bytes (WriteBootloaderFlags only writes the boolean flags).
+	for (i = 0; i != MAX_BLOCK_BYTES_SIZE; i += 2){
+		dbyte = FLASH_Read(def_addr);
+		buf[FRAME_DATA_OFFSET + i]     = (uint8_t)((dbyte & 0xFF00) >> 8);
+		buf[FRAME_DATA_OFFSET + i + 1] = (uint8_t)(dbyte & 0x00FF);
+		def_addr++;
+	}
+	buf[2] = (uint8_t)((FLAGS_VECTOR & 0xFF00) >> 8);
+	buf[3] = (uint8_t)(FLAGS_VECTOR & 0x00FF);
+
+	buf[WORD_LO_BYTE(FLAG_OFF_IS_EXT_UPGRADE)] = FLAG_SET_BYTE;
+	buf[WORD_LO_BYTE(FLAG_OFF_EXT_ADDR_H)]     = recv_frame[2];
+	buf[WORD_LO_BYTE(FLAG_OFF_EXT_ADDR_L)]     = recv_frame[3];
+
+	if (!FLASH_Write(buf)){
+		return false;   // caller sends an error frame
+	}
+
+	send_frame[0] = 0x02;
+	send_frame[1] = SUCCESS_CODE;
+	UART_dataWrite(send_frame, send_frame[0]);   // ACK now (we won't return)
+	while (!EUSART_is_tx_done()){ }               // let the ACK finish on the wire
+	__delay_ms(5);
+	asm("reset");                                 // restart -> bootloader runs ExtUpgrade
+	return true;                                  // not reached
+}
+
 // Write one 32-word application block, applying the bootloader's memory rules.
-// This is the single place where the reset/vector relocation and self-protection
-// live, shared by both flashing paths (UART WriteToMem and autonomous ExtUpgrade).
+// This is the single place shared by both flashing paths (UART WriteToMem and
+// autonomous ExtUpgrade). All vector RELOCATION is now done by the host: the
+// app-vector row (0x3FE0) arrives as an ordinary block. The bootloader only
+// enforces its own protection here:
 //
 //   flash_addr : destination WORD address (must be 32-word aligned)
 //   data64     : 64 bytes = 32 words, big-endian (H,L per word)
 //
 // Rules:
-//   * reset row (0x0000): keep the existing "GOTO bootloader" in words 0-3,
-//     take the app data for words 0x0004-0x001F from data64, and relocate the
-//     app's own reset vector (data64 words 0-3) into the flags row at 0x3FFC.
-//   * bootloader code (0x3800-0x3FDF): refuse (self-protection).
-//   * anything else: write data64 as-is.
+//   * reset row (0x0000): keep the existing bootloader trampoline in words 0-3,
+//     take the app data for words 0x0004-0x001F from data64.
+//   * bootloader code (0x3800-0x3FBF): refuse (self-protection).
+//   * flags row (0x3FC0): refuse (owned by the bootloader).
+//   * anything else (incl. the app-vector row 0x3FE0): write data64 as-is.
 // Returns true on success, false if the block was rejected/failed.
 bool WriteAppBlock(uint16_t flash_addr, uint8_t *data64){
 	uint8_t frame[MAX_BLOCK_BYTES_SIZE + 4];
 	uint8_t i = 0;
 	uint16_t w = 0;
 
-	// Protect the bootloader's own code region.
+	// Protect the bootloader's own code region and its flags row.
 	if (flash_addr >= BL_CODE_START && flash_addr <= BL_CODE_END){
+		return false;
+	}
+	if (flash_addr == FLAGS_VECTOR){
 		return false;
 	}
 
@@ -112,7 +156,8 @@ bool WriteAppBlock(uint16_t flash_addr, uint8_t *data64){
 	frame[3] = (uint8_t)(flash_addr & 0x00FF);
 
 	if (flash_addr == RESET_ROW_ADDR){
-		// Words 0-3: keep the current "GOTO bootloader" that is already in flash.
+		// Words 0-3: keep the bootloader's own reset trampoline that is already
+		// in flash (it may be a two-step MOVLP;GOTO through 0x0002).
 		for (i = 0; i < RESET_VECTOR_NWORDS; i++){
 			w = FLASH_Read(RESET_ROW_ADDR + i);
 			frame[4 + i*2]     = (uint8_t)((w & 0xFF00) >> 8);
@@ -122,14 +167,10 @@ bool WriteAppBlock(uint16_t flash_addr, uint8_t *data64){
 		for (i = RESET_VECTOR_NWORDS*2; i < MAX_BLOCK_BYTES_SIZE; i++){
 			frame[4 + i] = data64[i];
 		}
-		if (!FLASH_Write(frame)) return false;
-
-		// Relocate the app's own reset vector (data64 words 0-3) to 0x3FFC,
-		// inside the flags row (read-modify-write to keep the flags intact).
-		return WriteAppResetVector(data64);
+		return FLASH_Write(frame);
 	}
 
-	// Ordinary application block: write as-is.
+	// Ordinary block (application data, or the host-built app-vector row): as-is.
 	for (i = 0; i < MAX_BLOCK_BYTES_SIZE; i++){
 		frame[4 + i] = data64[i];
 	}
@@ -144,7 +185,7 @@ void StartApp(void){
 
 }
 
-// Fletcher-16 over a byte buffer (table-free; matches host eeimage.h).
+// Fletcher-16 over a byte buffer (table-free; matches host imagev2.h).
 // Uses conditional subtraction instead of "% 255" — mathematically identical
 // (s1,s2 stay < 2*255 per step) but avoids the expensive software division on
 // the PIC.
@@ -183,40 +224,60 @@ static void ExtReadBlock(uint16_t ee_addr, uint8_t *dst){
 	}
 }
 
-// Autonomous firmware upgrade from the external EEPROM.
-// The EEPROM holds an image: [64-byte header][dense data]. The header carries
-// magic 'MPFU', the destination flash word address, the data length and a
-// Fletcher-16 over the data. We verify magic + CRC BEFORE writing any flash,
-// then stream the data in 64-byte blocks through WriteAppBlock (which applies
-// the reset/vector relocation and self-protection). Result is recorded in
-// BLFlags.StatusCodeExtUpgrade.
+// Autonomous firmware upgrade from the external EEPROM (unified image v2).
+// The EEPROM holds: [64-byte header][block_count x {addr(2), data(64)}].
+// The header carries magic 'MPFU', format_version, device_id, block_count and a
+// Fletcher-16 over the blocks area. Each block is programmed to its own address
+// through the shared WriteAppBlock() (which enforces protection). The result is
+// recorded in BLFlags.StatusCodeExtUpgrade. Optional identity/integrity checks
+// are compiled in only when their feature flags are enabled.
 void ExtUpgrade(void){
 	uint16_t ee_base = BLFlags.StartAddrExtUpgrade;
 	uint8_t  header[MAX_BLOCK_BYTES_SIZE];
+	uint8_t  tmp[MAX_BLOCK_BYTES_SIZE];
 	uint8_t  block[MAX_BLOCK_BYTES_SIZE];
-	uint16_t flash_addr, data_len;
-	uint16_t off;
+	uint16_t block_count, blk;
+	uint16_t block_off, flash_addr;
 #ifdef USE_FLETCHER
-	uint16_t crc_stored, crc_calc;
+	uint16_t crc_stored, crc_calc, total, off;
 #endif
 
 	// 1. Header
 	ExtReadBlock(ee_base, header);
-	if (header[EEIMG_OFF_MAGIC+0] != 'M' || header[EEIMG_OFF_MAGIC+1] != 'P' ||
-	    header[EEIMG_OFF_MAGIC+2] != 'F' || header[EEIMG_OFF_MAGIC+3] != 'U'){
+	if (header[IMGV2_OFF_MAGIC+0] != 'M' || header[IMGV2_OFF_MAGIC+1] != 'P' ||
+	    header[IMGV2_OFF_MAGIC+2] != 'F' || header[IMGV2_OFF_MAGIC+3] != 'U'){
 		BLFlags.StatusCodeExtUpgrade = EXTUP_STATUS_BAD_MAGIC;
 		return;
 	}
-	flash_addr = (uint16_t)((header[EEIMG_OFF_FLASH_ADDR] << 8) | header[EEIMG_OFF_FLASH_ADDR+1]);
-	data_len   = (uint16_t)((header[EEIMG_OFF_DATA_LEN]   << 8) | header[EEIMG_OFF_DATA_LEN+1]);
+
+#ifdef USE_VERSION_CHECK
+	if (header[IMGV2_OFF_VERSION] != IMGV2_FORMAT_VERSION){
+		BLFlags.StatusCodeExtUpgrade = EXTUP_STATUS_BAD_VERSION;
+		return;
+	}
+#endif
+
+#ifdef USE_DEVICE_ID_CHECK
+	{
+		uint16_t img_dev = (uint16_t)((header[IMGV2_OFF_DEVICE_ID] << 8) | header[IMGV2_OFF_DEVICE_ID+1]);
+		if (img_dev != IMGV2_DEVICE_ANY && img_dev != FLASH_Read(DEVID_ADDR)){
+			BLFlags.StatusCodeExtUpgrade = EXTUP_STATUS_BAD_DEVICE;
+			return;
+		}
+	}
+#endif
+
+	block_count = (uint16_t)((header[IMGV2_OFF_BLOCK_COUNT] << 8) | header[IMGV2_OFF_BLOCK_COUNT+1]);
 
 #ifdef USE_FLETCHER
-	// 2. Verify Fletcher-16 over the data BEFORE touching flash.
-	crc_stored = (uint16_t)((header[EEIMG_OFF_CRC] << 8) | header[EEIMG_OFF_CRC+1]);
+	// Verify Fletcher-16 over the whole blocks area BEFORE touching flash.
+	crc_stored = (uint16_t)((header[IMGV2_OFF_CRC] << 8) | header[IMGV2_OFF_CRC+1]);
+	total = (uint16_t)(block_count * IMGV2_BLOCK_SIZE);
 	crc_calc = 0;
-	for (off = 0; off < data_len; off += MAX_BLOCK_BYTES_SIZE){
-		ExtReadBlock(ee_base + EEIMG_HEADER_SIZE + off, block);
-		crc_calc = fletcher16_update(crc_calc, block, MAX_BLOCK_BYTES_SIZE);
+	for (off = 0; off < total; off += MAX_BLOCK_BYTES_SIZE){
+		uint8_t chunk = (uint8_t)((total - off) < MAX_BLOCK_BYTES_SIZE ? (total - off) : MAX_BLOCK_BYTES_SIZE);
+		ExtReadBlock(ee_base + IMGV2_HEADER_SIZE + off, tmp);
+		crc_calc = fletcher16_update(crc_calc, tmp, chunk);
 	}
 	if (crc_calc != crc_stored){
 		BLFlags.StatusCodeExtUpgrade = EXTUP_STATUS_BAD_CRC;
@@ -224,10 +285,16 @@ void ExtUpgrade(void){
 	}
 #endif
 
-	// 3. Program flash, block by block, via the shared WriteAppBlock().
-	for (off = 0; off < data_len; off += MAX_BLOCK_BYTES_SIZE){
-		ExtReadBlock(ee_base + EEIMG_HEADER_SIZE + off, block);
-		WriteAppBlock((uint16_t)(flash_addr + (off / 2)), block);  // off bytes -> off/2 words
+	// 2. Program each block to its own address via the shared WriteAppBlock().
+	//    Block entry i lives at header + i*66: [addr(2)][data(64)]. We read the
+	//    2 address bytes and the 64 data bytes (they straddle a 64-byte boundary,
+	//    so two EEPROM reads per block).
+	for (blk = 0; blk < block_count; blk++){
+		block_off = (uint16_t)(IMGV2_HEADER_SIZE + blk * IMGV2_BLOCK_SIZE);
+		ExtReadBlock(ee_base + block_off, tmp);              // tmp[0..1] = addr
+		flash_addr = (uint16_t)((tmp[0] << 8) | tmp[1]);
+		ExtReadBlock(ee_base + block_off + IMGV2_BLOCK_ADDR_BYTES, block); // 64 data
+		WriteAppBlock(flash_addr, block);
 	}
 
 	BLFlags.StatusCodeExtUpgrade = EXTUP_STATUS_OK;

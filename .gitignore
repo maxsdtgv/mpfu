@@ -17,6 +17,7 @@
 *.sym
 *.map
 *.lst
+*.s
 memoryfile.xml
 
 # === Host-side C++ build output ===
@@ -25,6 +26,9 @@ host_part/cpp/*.o
 
 # === Host-side runtime / scratch dumps ===
 host_part/cpp/last_fw.cof
+last_fw.cof
+**/last_fw.cof
+*.cof
 host_part/cpp/save.txt
 host_part/cpp/save_*.txt
 host_part/cpp/saved*.txt

@@ -21,6 +21,7 @@
 #define WRITE_TO_MEM		0x04
 #define READ_FROM_SERIAL_EEPROM		0x12
 #define WRITE_TO_SERIAL_EEPROM		0x14
+#define SET_EXT_UPGRADE			0x16
 #define START_APPLICATION	0x0F
 //====================================================
 

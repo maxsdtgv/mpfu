@@ -7,47 +7,56 @@ has been installed once.
 
 ## Highlights
 
-- Bootloader lives at the **end** of flash (`0x3800`–`0x3FDF` by default); the
+- Bootloader lives at the **end** of flash (`0x3800`–`0x3FBF` by default); the
   application gets the low region `0x0000`–`0x37FF`.
 - **Applications are compiled completely normally** (reset at `0x0000`,
-  interrupt vector at `0x0004`). All the relocation work is done by the
-  bootloader itself — no `__at()` tricks or custom linker offsets in the app.
+  interrupt vector at `0x0004`). No `__at()` tricks or custom linker offsets.
+- The **host** resolves the application's real entry point (following the XC8
+  reset-vector jump chain) and builds a firmware image; the **bootloader is a
+  small, chip-specific writer** that just programs blocks and protects itself.
+  Platform knowledge lives in host-side **device profiles** (`-c 16f1789`).
 - Application interrupts run with **zero added latency** (the ISR stays on the
   hardware interrupt vector `0x0004`).
 - Each flashed block is **verified** by read-back.
-- **Two update paths:**
+- **Two update paths, one image format:**
   - **UART** — host `mpfu` streams an application over the serial link.
   - **Autonomous (ExtUpgrade)** — a firmware image staged in an external SPI
-    EEPROM (25LC512) is programmed into flash on the next reset when the
-    `IsExtUpgrade` flag is set. This is the basis for over-the-air updates
-    (e.g. a Wi-Fi module writes the image to EEPROM, sets the flag, resets).
-- **Self-protection:** the bootloader keeps its own jump at `0x0000-0x0003`,
-  refuses writes into its code region, and relocates the app reset vector to
-  `0x3FFC` — the same rules apply to both update paths.
+    EEPROM (25LC512) is programmed into flash on the next reset. This is the
+    basis for over-the-air updates (e.g. a Wi-Fi module writes the image to
+    EEPROM, sets the flag, resets). A bad image never runs: the bootloader only
+    launches the app if the upgrade verified.
+- **Self-protection:** the bootloader keeps its own reset trampoline at
+  `0x0000-0x0003`, refuses writes into its code region and its flags row, and
+  the same rules apply to both update paths.
 
 ## Host tool (`mpfu`) options
 
 ```
 -D <port>    serial port (e.g. /dev/ttyUSB0)
 -b <baud>    serial speed (115200)
+-c <name>    device profile (default 16f1789; configs/<name>.conf)
 -f <hex>     flash an application over UART
 -s           start the application after flashing
 -r <file>    read the whole flash back to a file
--e <file>    write a raw binary (or EEPROM image) into the external EEPROM
--g <in.hex> <out.img>   generate an EEPROM firmware image (offline, no device)
+-e <file>    write a firmware image into the external EEPROM
+-g <in.hex> <out.img>   generate a firmware image (offline, no device)
+-E <file> [addr] [nbytes]   read the external EEPROM to a file
+             (addr default 0; nbytes default = auto from the image header)
+-u [addr]    arm the autonomous EEPROM upgrade at EEPROM addr (default 0) and reset
 -v           verbose
 ```
 
 ## Repository layout
 
 ```
-mcu_part/          Bootloader firmware (XC8 C)
-host_part/cpp/     Linux host uploader "mpfu" (C++) + eeimage format + tests
-test/blink_irq/    Example application (Timer0 ISR blinker) used as a fixture
-test/led_blink.X/  Older sample app (kept for reference)
-sim/               Proteus simulation project
-docs/              Documentation
-releases/          Pre-built, versioned release artifacts
+mcu_part/           Bootloader firmware (XC8 C)
+host_part/cpp/      Linux host uploader "mpfu" (C++): image v2, device profiles, tests
+host_part/cpp/configs/   Per-device profiles (e.g. 16f1789.conf)
+test/blink_irq/     Example app WITH a Timer0 ISR (fixture)
+test/blink_noirq/   Example app with NO interrupts (fixture)
+sim/                Proteus simulation project
+docs/               Documentation
+releases/           Pre-built, versioned release artifacts
 ```
 
 > The PIC16(L)F1788/9 silicon errata (Microchip DS80000575) is a useful
@@ -73,5 +82,5 @@ mcu_part/flash.sh
 make -C host_part/cpp
 
 # 3. Flash an application over UART through the bootloader
-host_part/cpp/mpfu -D /dev/ttyUSB0 -b 115200 -f test/blink_irq/main.hex -s
+host_part/cpp/mpfu -D /dev/ttyUSB0 -b 115200 -c 16f1789 -f test/blink_irq/main.hex -s
 ```

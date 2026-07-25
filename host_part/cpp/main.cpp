@@ -1,7 +1,10 @@
 #include <unistd.h>
 #include <limits.h>
+#include <vector>
 #include "fw_converter.h"
 #include "uart_procedures.h"
+#include "deviceconfig.h"
+#include "imagev2.h"
 
 using namespace std;
 
@@ -34,25 +37,21 @@ using namespace std;
 
 #define READ_DATA_OFFSET    2      // data begins at read_buf[2] (after len,cmd)
 
-// Flash memory layout (see agent-notes / docs/BL_memory.txt)
-#define ADDR_RESET          0x0000 // reset vector row (words 0x0000-0x0003 = BL jump)
-#define ADDR_FLAGS          0x3FE0 // bootloader flags row (0x3FE0-0x3FFF)
-#define ADDR_APP_VECTOR     0x3FFC // app reset vector is relocated here (in flags row)
-#define RESET_VECTOR_WORDS  4      // words 0x0000-0x0003 reserved for GOTO bootloader
-#define RESET_VECTOR_BYTES  8      // 4 words * 2 bytes
-// byte offset of the app-vector words within the flags-row data (0x3FFC-0x3FE0=28 words)
-#define APP_VECTOR_BYTE_OFFSET ((ADDR_APP_VECTOR - ADDR_FLAGS) * 2)
+// Flash memory layout. The full layout comes from the device profile at
+// runtime (DeviceConfig); only the reset-row address is needed as a literal
+// here (to skip the bootloader's trampoline words during read-back verify).
+#define ADDR_RESET          0x0000 // reset vector row (words 0x0000-0x0003 = BL trampoline)
 
 
 
 char serial_name[32] = {};
 char serial_speed[6] = {};
 char inFilename[64] = {};
-char outFilename[64] = {};
 char saveFwFilename[64] = {};
 char eepromFilename[64] = {};
 char genImageIn[64] = {};
 char genImageOut[64] = {};
+char deviceName[32] = "16f1789";   // default device profile (-c overrides)
 int param_count = 0;
 short verbose = 0;
 short start_app = 0;
@@ -60,22 +59,24 @@ short read_app = 0;
 short flashup_app = 0;
 short eeprom_write = 0;
 short gen_image = 0;
+short arm_extupgrade = 0;
+unsigned int extUpgradeAddr = 0;
+short eeprom_read = 0;
+char eepromReadFile[64] = {};
+unsigned int eeReadAddr = 0;
+long eeReadLen = -1;               // -1 = auto (from image header)
 bool isDeviceFound = false;
+unsigned int foundDeviceId = 0;    // DEVID read from the connected chip
+DeviceConfig devcfg;               // loaded device profile
 
 int serialPort_fd = 0;
 int received_bytes = 0;
 char read_buf[MAX_BYTES_TO_RECV] = {};
 char send_buf[MAX_BYTES_TO_SEND] = {};
-ifstream convertedFwFileFd;
 ofstream saveFwFilenameFd;
 string str;
-char hex_buffer[43] = {};
-char outFilenameAbsolutePath[64] = {};
 char saveFwFilenameAbsolutePath[64] = {};
-char tmp_buffer[4+1] = {};
 int lineAddr = 0;
-int lineBytesNum = 0;
-int tmp = 0;
 
 
 // Send one frame and read the response back into read_buf.
@@ -122,27 +123,6 @@ void MakeReadRequest(char *frame, int addr){
     frame[3] = (char)(addr & 0xFF);
 }
 
-// Parse two ASCII-hex chars at hex_line[charOffset] into a byte value.
-int HexByteAt(const char *hex_line, int charOffset){
-    char tmp[3] = {};
-    strncpy(tmp, hex_line + charOffset, 2);
-    return (int)strtol(tmp, nullptr, 16);
-}
-
-// Parse the 4 ASCII-hex chars of the word address (AAAA) into an int.
-int HexAddrOf(const char *hex_line){
-    char tmp[5] = {};
-    strncpy(tmp, hex_line + HEX_OFF_ADDR, 4);
-    return (int)strtol(tmp, nullptr, 16);
-}
-
-// Fill a full WRITE_TO_MEM frame (len,cmd,addr + 64 data bytes) from a converter
-// line. The converter guarantees every line is a full 0x20-aligned 32-word block,
-// so this is a straight copy of all 68 bytes.
-void BuildWriteFrameFromLine(char *frame, const char *hex_line){
-    for (int b = 0; b < MAX_BYTES_TO_SEND; b++)
-        frame[b] = (char)HexByteAt(hex_line, b * 2);
-}
 
 
 bool FoundDevice(){
@@ -163,6 +143,7 @@ printf("[UART][SEND] Trying to found device ... \n");
         return false;
     } else {
             if (read_buf[0] == 0x04 && read_buf[1] == (char)READ_FROM_MEM){
+                foundDeviceId = (((unsigned char)read_buf[2]) << 8) | (unsigned char)read_buf[3];
                 printf("             Device ID: %hhX.%hhX\n", read_buf[2], read_buf[3]);
                 send_buf[3] = 0x05;
                 UART_Send(serialPort_fd, send_buf, send_buf[0]);
@@ -179,8 +160,7 @@ printf("[UART][SEND] Trying to found device ... \n");
 
 
 int main(int argc, char** argv) {
-printf("Microchip firmware uploader v1.1\n");
-    strcpy(outFilename, "./last_fw.cof");
+printf("Microchip firmware uploader v1.2 (image format v2)\n");
 
 	for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "-h") == 0) {
@@ -190,8 +170,12 @@ printf("Microchip firmware uploader v1.1\n");
         		printf("     -f     Path to HEX file with firmware\n");     
                 printf("     -s     Start new application after upgrade\n");
                 printf("     -r     Just read fw from MCU\n");        		
-                printf("     -e     Write a raw binary dump into the external EEPROM\n");
-                printf("     -g in.hex out.img   Generate an EEPROM firmware image (offline)\n");
+                printf("     -e     Write a firmware image into the external EEPROM\n");
+                printf("     -g in.hex out.img   Generate a firmware image (offline)\n");
+                printf("     -E file [addr] [nbytes]  Read the external EEPROM to a file\n");
+                printf("            (addr default 0; nbytes default = auto from image header)\n");
+                printf("     -u [addr]  Arm autonomous EEPROM upgrade at EEPROM addr (default 0) and reset\n");
+                printf("     -c     Device profile name (default 16f1789)\n");
         		printf("     -v     Verbose mode\n");  
         		return 1;
         	}
@@ -231,6 +215,25 @@ printf("Microchip firmware uploader v1.1\n");
         	verbose = 1;
         }
 
+        if (strcmp(argv[i], "-c") == 0) {
+            if (argv[i+1]) {
+                strcpy(deviceName, argv[i+1]);
+            } else {
+                printf("Define a device profile name (e.g. 16f1789).\n");
+                return 1;
+            }
+        }
+
+        if (strcmp(argv[i], "-u") == 0) {
+            arm_extupgrade = 1;
+            ++param_count;
+            // Optional next arg = EEPROM address (decimal or 0x-hex). If the next
+            // token starts with '-' (another flag) or is absent, default to 0.
+            if (argv[i+1] && argv[i+1][0] != '-') {
+                extUpgradeAddr = (unsigned int)strtoul(argv[i+1], nullptr, 0);
+            }
+        }
+
          if (strcmp(argv[i], "-s") == 0) {
             ++param_count;
             start_app = 1;
@@ -268,12 +271,36 @@ printf("Microchip firmware uploader v1.1\n");
                 return 1;
             }
         }
+
+         if (strcmp(argv[i], "-E") == 0) {
+            eeprom_read = 1;
+            ++param_count;
+            if (argv[i+1] && argv[i+1][0] != '-') {
+                strcpy(eepromReadFile, argv[i+1]);
+            } else {
+                printf("Usage: -E <file> [addr] [nbytes]\n");
+                return 1;
+            }
+            // Optional addr and nbytes (decimal or 0x-hex), both start non-'-'.
+            if (argv[i+2] && argv[i+2][0] != '-') {
+                eeReadAddr = (unsigned int)strtoul(argv[i+2], nullptr, 0);
+                if (argv[i+3] && argv[i+3][0] != '-')
+                    eeReadLen = (long)strtoul(argv[i+3], nullptr, 0);
+            }
+        }
     }
 
-// -g is an offline operation (no device): generate an EEPROM image and exit.
+// Load the device profile (needed by both offline image generation and flashing).
+if (LoadDeviceConfig(deviceName, &devcfg) != 0) {
+    return 1;
+}
+printf("Device profile: %s (device_id=0x%04X, flash=%u words, row=%u)\n",
+       devcfg.name, devcfg.device_id, devcfg.flash_words, devcfg.row_words);
+
+// -g is an offline operation (no device): generate a firmware image and exit.
 if (gen_image == 1) {
-    printf("Generating EEPROM image: %s -> %s\n", genImageIn, genImageOut);
-    int rc = buildEepromImage(genImageIn, genImageOut);
+    printf("Generating firmware image: %s -> %s\n", genImageIn, genImageOut);
+    int rc = writeImageV2File(genImageIn, genImageOut, &devcfg);
     if (rc != 0) { printf("ERROR: image generation failed (%d)\n", rc); return 1; }
     printf("Done.\n");
     return 0;
@@ -296,47 +323,45 @@ if (!isDeviceFound){
     return 1;
 }
 
+// Guard against flashing the wrong binary: the profile's device_id must match
+// the DEVID read from the connected chip (unless the profile is a wildcard).
+if (devcfg.device_id != IMGV2_DEVICE_ANY && foundDeviceId != devcfg.device_id) {
+    printf("\nERROR: device mismatch — profile '%s' expects 0x%04X but chip reports 0x%04X.\n",
+           devcfg.name, devcfg.device_id, foundDeviceId);
+    printf("Use the correct -c profile (or a wildcard profile) to proceed.\n");
+    return 1;
+}
+
 if (flashup_app == 1){
 
 printf("Firmware %s\n\n", inFilename);
-fwConvertPic16F1xxx(inFilename, outFilename);
-printf("Converted firmware %s\n\n", outFilename);
-realpath(outFilename, outFilenameAbsolutePath);
-convertedFwFileFd.open(outFilenameAbsolutePath);
 
-while (getline(convertedFwFileFd, str)) {
+// Build the unified image blocks for this device (same code path as -g).
+vector<ImageBlock> blocks;
+string err;
+if (buildImageV2Blocks(inFilename, &devcfg, blocks, err) != 0) {
+    printf("ERROR building image: %s\n", err.c_str());
+    return 1;
+}
 
-    memset (hex_buffer, 0, sizeof(hex_buffer));
-    strcpy(hex_buffer, str.c_str()); //char * strcpy( char * destptr, const char * srcptr );
+for (const ImageBlock &blk : blocks) {
+    lineAddr = (int)blk.addr;
 
-    lineAddr     = HexAddrOf(hex_buffer);              // AAAA word address
-    lineBytesNum = HexByteAt(hex_buffer, HEX_OFF_LEN); // LL frame length byte
+    // Assemble the WRITE_TO_MEM frame: len, cmd, addrH, addrL + 64 data bytes.
+    memset(send_buf, 0, MAX_BYTES_TO_SEND);
+    send_buf[0] = FRAME_FULL_LEN;
+    send_buf[1] = WRITE_TO_MEM;
+    send_buf[2] = (char)((blk.addr >> 8) & 0xFF);
+    send_buf[3] = (char)(blk.addr & 0xFF);
+    for (int b = 0; b < BLOCK_DATA_BYTES; b++)
+        send_buf[FRAME_HDR_BYTES + b] = (char)blk.data[b];
 
-            // Every converter line is a full 0x20-aligned 32-word block. The
-            // bootloader now owns all the special handling (preserving the reset
-            // jump at 0x0000-0x0003, relocating the app reset vector to 0x3FFC,
-            // and protecting its own code region), so the host just sends every
-            // block verbatim — including row 0.
-            BuildWriteFrameFromLine(send_buf, hex_buffer);
+                printf("\n[UART][SEND] Write to addr 0x%04X ... ", lineAddr);
 
-//======================================================================================
-printf("\n============= Write to 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum);
-            for (int s=0; s < (int)sizeof(send_buf); s+=2){
-                 printf("%02hhX%02hhX ", send_buf[s], send_buf[s+1]);
-            }
-            
-//======================================================================================
-
-
-
-                printf("\n[UART][SEND] Write to addr 0x%04X, bytes=%i ... ", lineAddr, lineBytesNum);
-
-                // Snapshot the 64 data bytes we are about to write, so we can
-                // verify them after read-back. send_buf[4..67] holds the data
-                // (send_buf[0..3] = len, cmd, addrH, addrL).
+                // Snapshot the 64 data bytes to verify after read-back.
                 char written_data[64] = {};
                 for (int s = 0; s < 64; s++) {
-                    written_data[s] = send_buf[s + 4];
+                    written_data[s] = send_buf[s + FRAME_HDR_BYTES];
                 }
 
                 UART_Send(serialPort_fd, send_buf, send_buf[0]);
@@ -361,10 +386,9 @@ printf("\n============= Read/verify at 0x%04X ...              ", lineAddr);
             {
                 // Flash is 14-bit: the top 2 bits read back as 0, so mask each
                 // word with 0x3FFF before comparing. read_buf[2..65] = 64 bytes.
-                // For row 0 the bootloader intentionally replaces words 0-3 with
-                // its own "GOTO bootloader" jump (and relocates the app reset
-                // vector to 0x3FFC), so we do NOT verify those 4 words here.
-                int first_word = (lineAddr == ADDR_RESET) ? RESET_VECTOR_WORDS : 0;
+                // For row 0 the bootloader intentionally keeps words 0-3 (its own
+                // reset trampoline) instead of our app data, so skip those words.
+                int first_word = (lineAddr == ADDR_RESET) ? (int)devcfg.reset_vector_words : 0;
                 int mismatches = 0;
                 for (int k = first_word; k < 32; k++) {
                     int wrote = (((unsigned char)written_data[k*2] << 8)
@@ -387,7 +411,7 @@ printf("\n============= Read/verify at 0x%04X ...              ", lineAddr);
             printf(" VERIFIED.\n");
 //=======================================================================================
 
-    }   // end while(getline) — next converter block
+    }   // end for(blocks) — next image block
 
 
 printf("\n============= Read from 0x0000\n");
@@ -532,6 +556,80 @@ while ((nread = fread(filebuf, 1, BLOCK_DATA_BYTES, ef)) > 0) {
 fclose(ef);
 printf("[EEPROM] Done: %d block(s), %d bytes written & verified.\n",
        blocks, blocks * BLOCK_DATA_BYTES);
+
+}
+
+
+if (eeprom_read == 1){
+
+// Determine how many bytes to read. If nbytes was not given, auto-detect from
+// the image-v2 header at the start address: read the 64-byte header, and if it
+// carries the MPFU magic, compute the exact length = header + block_count*66.
+long toRead = eeReadLen;
+if (toRead < 0) {
+    memset(send_buf, 0, sizeof(send_buf));
+    send_buf[0] = 0x04;
+    send_buf[1] = READ_FROM_SERIAL_EEPROM;
+    send_buf[2] = (char)((eeReadAddr >> 8) & 0xFF);
+    send_buf[3] = (char)(eeReadAddr & 0xFF);
+    TransactExpectFull(send_buf, "eeprom header read");
+    unsigned char *h = (unsigned char*)&read_buf[READ_DATA_OFFSET];
+    if (h[0]=='M' && h[1]=='P' && h[2]=='F' && h[3]=='U') {
+        unsigned int block_count = (h[7] << 8) | h[8];   // IMGV2_OFF_BLOCK_COUNT
+        toRead = 64 + (long)block_count * 66;            // header + N*66
+        printf("[EEPROM] Auto length from image header: %u block(s) -> %ld bytes\n",
+               block_count, toRead);
+    } else {
+        printf("[EEPROM] ERROR: no MPFU image at 0x%04X and no nbytes given.\n", eeReadAddr);
+        printf("         Specify a length: -E %s 0x%04X <nbytes>\n", eepromReadFile, eeReadAddr);
+        return 1;
+    }
+}
+
+char eeOutAbs[PATH_MAX] = {};
+realpath(eepromReadFile, eeOutAbs);
+FILE *of = fopen(eeOutAbs[0] ? eeOutAbs : eepromReadFile, "wb");
+if (!of) { printf("[EEPROM] ERROR: cannot open %s for writing\n", eepromReadFile); return 1; }
+
+printf("[EEPROM] Reading %ld bytes from 0x%04X into %s ...\n", toRead, eeReadAddr, eepromReadFile);
+long done = 0;
+unsigned int addr = eeReadAddr;
+while (done < toRead) {
+    memset(send_buf, 0, sizeof(send_buf));
+    send_buf[0] = 0x04;
+    send_buf[1] = READ_FROM_SERIAL_EEPROM;
+    send_buf[2] = (char)((addr >> 8) & 0xFF);
+    send_buf[3] = (char)(addr & 0xFF);
+    TransactExpectFull(send_buf, "eeprom read");
+
+    long chunk = toRead - done;
+    if (chunk > BLOCK_DATA_BYTES) chunk = BLOCK_DATA_BYTES;   // 64B blocks
+    fwrite(&read_buf[READ_DATA_OFFSET], 1, (size_t)chunk, of);
+    done += chunk;
+    addr += BLOCK_DATA_BYTES;
+}
+fclose(of);
+printf("[EEPROM] Done: %ld bytes written to %s.\n", done, eepromReadFile);
+
+}
+
+
+if (arm_extupgrade == 1){
+printf("[UART][SEND] Arming ExtUpgrade at EEPROM 0x%04X (device will reset)...\n", extUpgradeAddr);
+memset(send_buf, 0, sizeof(send_buf));
+send_buf[0] = 0x04;
+send_buf[1] = SET_EXT_UPGRADE;
+send_buf[2] = (char)((extUpgradeAddr >> 8) & 0xFF);
+send_buf[3] = (char)(extUpgradeAddr & 0xFF);
+// The MCU ACKs, then resets and runs the upgrade autonomously — so we send and
+// read the single ACK, but tolerate a truncated/absent reply (reset races it).
+UART_Send(serialPort_fd, send_buf, send_buf[0]);
+received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);
+if (received_bytes >= 2 && read_buf[1] == (char)SUCCESS_CODE) {
+    printf("[UART][RECV] ACK — device is upgrading from EEPROM, then starting the app.\n");
+} else {
+    printf("[UART][RECV] no clean ACK (device likely already reset). Check the board.\n");
+}
 
 }
 

@@ -181,7 +181,6 @@ void ReadBootloaderFlags(void){
     if ((uint8_t)(buf[FLAG_OFF_IS_EXT_UPGRADE] & 0x00FF) == FLAG_SET_BYTE){ BLFlags.IsExtUpgrade = true;}
 
     BLFlags.StartAddrExtUpgrade = (uint16_t)(((buf[FLAG_OFF_EXT_ADDR_H]    << 8) & 0xFF00) | (buf[FLAG_OFF_EXT_ADDR_L]    & 0x00FF));
-    BLFlags.NumBlocksExtUpgrade = (uint16_t)(((buf[FLAG_OFF_EXT_NBLOCKS_H] << 8) & 0xFF00) | (buf[FLAG_OFF_EXT_NBLOCKS_L] & 0x00FF));
     BLFlags.StatusCodeExtUpgrade = (uint8_t)(buf[FLAG_OFF_EXT_STATUS] & 0x00FF);
     return;
 }
@@ -195,7 +194,8 @@ bool WriteBootloaderFlags(void){
 
     // Read-modify-write the whole flags row: first read the current 32 words
     // into the FLASH_Write frame buffer (data starts at FRAME_DATA_OFFSET),
-    // preserving everything (incl. the app reset vector at 0x3FFC).
+    // preserving everything. The flags row (0x3FC0) now holds ONLY flags; the
+    // application reset vector lives in its own row (0x3FE0).
         for (i = 0; i != MAX_BLOCK_BYTES_SIZE; i += 2){
             dbyte = FLASH_Read(def_addr);   
             buf[FRAME_DATA_OFFSET + i]     = (uint8_t)((dbyte & 0xFF00) >> 8);
@@ -216,35 +216,4 @@ bool WriteBootloaderFlags(void){
     res = FLASH_Write(buf);
   
     return res;
-}
-
-// Relocate the application's reset vector into the flags row at APP_RESET_VECTOR
-// (0x3FFC). src holds a 64-byte block whose first 4 words (bytes 0..7) are the
-// application's original reset vector (from its 0x0000-0x0003). Everything else
-// in the flags row is preserved (read-modify-write).
-bool WriteAppResetVector(uint8_t *src){
-    uint8_t i = 0;
-    uint8_t buf[MAX_BLOCK_BYTES_SIZE + 4];
-    uint16_t dbyte = 0;
-    uint16_t def_addr = FLAGS_VECTOR;
-    // word offset of 0x3FFC within the flags row
-    uint8_t vec_word_off = (uint8_t)(APP_RESET_VECTOR - FLAGS_VECTOR); // = 28
-
-    for (i = 0; i != MAX_BLOCK_BYTES_SIZE; i += 2){
-        dbyte = FLASH_Read(def_addr);
-        buf[FRAME_DATA_OFFSET + i]     = (uint8_t)((dbyte & 0xFF00) >> 8);
-        buf[FRAME_DATA_OFFSET + i + 1] = (uint8_t)(dbyte & 0x00FF);
-        def_addr++;
-    }
-
-    buf[2] = (uint8_t)((FLAGS_VECTOR & 0xFF00) >> 8);
-    buf[3] = (uint8_t)(FLAGS_VECTOR & 0x00FF);
-
-    // Overwrite the 4 vector words (0x3FFC-0x3FFF) with src words 0..3.
-    for (i = 0; i < RESET_VECTOR_NWORDS; i++){
-        buf[WORD_HI_BYTE(vec_word_off + i)] = src[i*2];
-        buf[WORD_LO_BYTE(vec_word_off + i)] = src[i*2 + 1];
-    }
-
-    return FLASH_Write(buf);
 }

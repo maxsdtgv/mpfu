@@ -17,7 +17,8 @@ mcu_part/build.sh
 ```
 
 This compiles with `-O1` and the memory model
-`-mrom=default,-0-37FF,-3FE0-3FFF`, placing the bootloader at `0x3800`–`0x3FDF`.
+`-mrom=default,-0-37FF,-3FC0-3FFF`, placing the bootloader at `0x3800`–`0x3FBF`
+and reserving the flags row (`0x3FC0`) and app-vector row (`0x3FE0`).
 It prints a memory summary and produces `mpfu.hex` in `/tmp/mpfu_build/`.
 
 Overrides via environment: `XC8=<bin dir>`, `OPT=-O0`, `ROM=...`, `OUT_DIR=...`.
@@ -46,23 +47,28 @@ make -C host_part/cpp        # produces host_part/cpp/mpfu
 
 ## 4. Flash an application over UART (through the bootloader)
 
-Applications are compiled **normally** (reset at `0x0000`). Example fixture:
+Applications are compiled **normally** (reset at `0x0000`). Example fixtures:
 
 ```bash
-test/blink_irq/build.sh      # produces test/blink_irq/main.hex
+test/blink_irq/build.sh      # with a Timer0 ISR   -> test/blink_irq/main.hex
+test/blink_noirq/build.sh    # no interrupts       -> test/blink_noirq/main.hex
 ```
 
 Enter the bootloader (hold **RB0** at reset until **RE0** lights), then:
 
 ```bash
-host_part/cpp/mpfu -D /dev/ttyUSB0 -b 115200 -f test/blink_irq/main.hex -s
+host_part/cpp/mpfu -D /dev/ttyUSB0 -b 115200 -c 16f1789 -f test/blink_irq/main.hex -s
 ```
 
+- `-c <profile>` device profile (default `16f1789`; see `configs/<name>.conf`).
 - `-f <hex>` program an application, `-s` start it afterwards, `-r <file>` read
   the whole flash back to a file, `-v` verbose.
-- The bootloader preserves its jump at `0x0000`, keeps the app ISR at `0x0004`,
-  relocates the app reset vector to `0x3FFC`, protects its own code region, and
-  the host verifies every block by read-back.
+- The host reads the chip's Device ID and refuses to flash if it does not match
+  the profile (unless the profile's `device_id` is the `0xFFFF` wildcard).
+- The host resolves the application's real entry point, builds an image (see
+  §6), and streams the blocks. The bootloader preserves its own trampoline at
+  `0x0000`, keeps the app ISR at `0x0004`, protects its code region and flags
+  row, and the host verifies every block by read-back.
 
 ## 5. Autonomous update from EEPROM (ExtUpgrade)
 
@@ -70,36 +76,55 @@ This path programs flash from an image staged in the external SPI EEPROM, with
 no host attached during programming — the basis for over-the-air updates.
 
 ```bash
-# Build an EEPROM image from a normally-compiled application (offline):
-host_part/cpp/mpfu -g test/blink_irq/main.hex /tmp/app.img
+# Build a firmware image from a normally-compiled application (offline):
+host_part/cpp/mpfu -c 16f1789 -g test/blink_irq/main.hex /tmp/app.img
 
-# Write the image into the EEPROM (through the bootloader over UART):
-host_part/cpp/mpfu -D /dev/ttyUSB0 -b 115200 -e /tmp/app.img
+# Write the image into the EEPROM, then ARM the upgrade and reset — one command:
+host_part/cpp/mpfu -D /dev/ttyUSB0 -b 115200 -c 16f1789 -e /tmp/app.img -u 0
 ```
 
-Then set the bootloader flags and reset the MCU:
-- `IsExtUpgrade` (0x3FE1 low byte = 0x00)
-- `EXT_ADDR` (0x3FE2/3) = the EEPROM byte address of the image
+- `-e <img>` writes the image into the external EEPROM (verified block by block).
+- `-u [addr]` sends `SET_EXT_UPGRADE`: the bootloader sets `IsExtUpgrade` +
+  the image address in the flags row and **resets** (addr defaults to 0).
+- `-E <file> [addr] [nbytes]` reads the external EEPROM back to a file (for
+  debugging). With no `nbytes`, the length is auto-detected from the image
+  header at `addr` (exactly `64 + block_count*66` bytes); give `nbytes` to dump
+  a raw range. The written file is a byte-for-byte copy and can be fed back to
+  `-e`.
 
-On the next reset the bootloader reads the image header (`MPFU` magic,
-flash address, length), programs the data into flash through the same block
-writer used by the UART path, records a status code at `0x3FE6`
-(00 = OK, 01 = bad magic, 02 = bad CRC), clears `IsExtUpgrade`, and starts the
-application.
+On the next reset the bootloader reads the image header (`MPFU` magic, device_id,
+block_count, Fletcher-16), programs each block to its address through the same
+`WriteAppBlock` used by the UART path, records a status code in the flags row
+(`0x3FC4`: 00 = OK, 01 = bad magic, 02 = bad CRC, 03 = bad device, 04 = bad
+version), clears `IsExtUpgrade`, and starts the application **only if the upgrade
+succeeded** (otherwise it stays in the bootloader, so a bad image can't run
+garbage — the unit remains recoverable over UART).
 
-Image format: a 64-byte header (magic, version, flash word-address, data
-length, Fletcher-16) followed by the dense image data. See
-`host_part/cpp/eeimage.h`.
+In a production OTA design the application itself stages the image in EEPROM,
+sets the flag, and resets — no host needed. `-u` is the host/debug equivalent.
 
-### Optional integrity check (USE_FLETCHER)
+## 6. Firmware image format (image v2)
 
-A Fletcher-16 verify of the EEPROM image *before* touching flash is available
-but **disabled by default** on the PIC16F1789 (it costs ~130 words and needs
-the bootloader ROM region extended below `0x3800`, e.g.
-`ROM=default,-0-35FF,-3FE0-3FFF ./build.sh` built with `-DUSE_FLETCHER`).
-On this part, integrity of an over-the-air image can instead be checked by
-reading the EEPROM back over the same link and verifying on the host. Enable
-`USE_FLETCHER` (in `mcu_part/bootloader.h`) on parts with more flash.
+Both `-f` (UART) and `-g`/`-e` (EEPROM) use the same image: a 64-byte header
+(`MPFU` magic, format version, device_id, block_count, Fletcher-16) followed by
+`block_count` entries of `{addr(2), 64 data bytes}`. The host resolves the app
+reset vector and emits all blocks including the app-vector row at `0x3FE0`; the
+bootloader just writes each block. See `host_part/cpp/imagev2.h` and
+docs/MEMORY.md.
+
+### Optional bootloader checks (feature flags)
+
+Three checks in `mcu_part/bootloader.h` are **off by default** to save flash;
+enable per build with `OPT="-O1 -D<FLAG>"`:
+
+- `USE_DEVICE_ID_CHECK` — bootloader verifies the image `device_id` against its
+  own DEVID (`0x8006`) before an EEPROM upgrade.
+- `USE_VERSION_CHECK` — verifies the image `format_version`.
+- `USE_FLETCHER` — verifies the image Fletcher-16 before touching flash.
+
+Measured sizes on 16F1789 (region `0x3800`–`0x3FBF` = 1984 words): base ≈ 1950
+words; with the id/version checks ≈ 1960. If a combination no longer fits, move
+`bl_code_start` down one row in the device profile and adjust `-mrom`.
 
 ## Local testing without hardware
 
@@ -108,9 +133,9 @@ host_part/cpp/mock_mcu.py    # protocol mock + self-test
 host_part/cpp/test_e2e.sh    # socat virtual serial pair + mock MCU + real ./mpfu
 ```
 
-`test_e2e.sh` flashes the `blink_irq` fixture into a mock MCU and checks that the
-bootloader jump at `0x0000` survives, the app data lands from `0x0004`, and the
-read-back verifies.
+`test_e2e.sh` flashes the `blink_noirq` fixture into a mock MCU and checks that
+the bootloader trampoline at `0x0000` survives, the app-vector row `0x3FE0` is
+written, and the read-back verifies.
 
 ## Troubleshooting
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Mock MCU for the MPFU bootloader protocol.
+Mock MCU for the MPFU bootloader protocol (image format v2).
 
-Speaks the same UART frame protocol as mcu_part/v1.2.X so the host tool
+Speaks the same UART frame protocol as mcu_part/ so the host tool
 (host_part/cpp/mpfu) can be tested end-to-end without real PIC hardware.
 
-Frame format (see docs/BL_protocol.txt):
+Frame format:
     Host -> MCU:  0x55 LEN CMD DATA...      (LEN counts from LEN byte)
     MCU  -> Host: 0xAA LEN CMD DATA...
 
@@ -20,6 +20,7 @@ READ_FROM_MEM = 0x02
 WRITE_TO_MEM = 0x04
 READ_FROM_SERIAL_EEPROM = 0x12
 WRITE_TO_SERIAL_EEPROM = 0x14
+SET_EXT_UPGRADE = 0x16
 START_APPLICATION = 0x0F
 
 SUCCESS_CODE = 0xEE
@@ -30,11 +31,20 @@ BLOCK_BYTES = BLOCK_WORDS * 2
 FLASH_WORDS = 0x4000       # PIC16F1789 program memory
 ERASED = 0x3FFF            # blank flash word (14-bit)
 
+# Memory layout (must match the bootloader / device profile).
+DEVID_ADDR   = 0x8006
+DEVICE_ID    = 0x302A      # PIC16F1789
+BL_CODE_START = 0x3800
+BL_CODE_END   = 0x3FBF
+FLAGS_ROW     = 0x3FC0     # flags row (refused to plain WRITE_TO_MEM)
+APP_VECTOR    = 0x3FE0     # app reset vector row (StartApp jumps here)
+RESET_VECTOR_WORDS = 4
+
 
 class MockMCU:
     def __init__(self, log=lambda *a: None):
         self.flash = [ERASED] * FLASH_WORDS
-        self.config = {0x8005: 0x3120, 0x8006: 0x3180}  # rev / device id (arbitrary)
+        self.config = {0x8005: 0x2041, DEVID_ADDR: DEVICE_ID}  # rev / device id
         self.eeprom = bytearray(b"\xFF" * 0x10000)
         self.started = False
         self.log = log
@@ -52,6 +62,20 @@ class MockMCU:
         for i, w in enumerate(words):
             if addr + i < FLASH_WORDS:
                 self.flash[addr + i] = w & 0x3FFF
+
+    # Apply the bootloader's WriteAppBlock protection rules to a 32-word block.
+    # Returns True if written, False if refused.
+    def write_app_block(self, addr, words):
+        if BL_CODE_START <= addr <= BL_CODE_END:
+            return False                     # bootloader code: protected
+        if addr == FLAGS_ROW:
+            return False                     # flags row: only via SET_EXT_UPGRADE
+        if addr == 0x0000:
+            # keep words 0-3 (BL trampoline), take 4-31 from the app block
+            keep = [self.read_word(i) for i in range(RESET_VECTOR_WORDS)]
+            words = keep + list(words[RESET_VECTOR_WORDS:])
+        self.write_block(addr, words)
+        return True
 
     # --- frame handling ---------------------------------------------------
     def handle_frame(self, length, cmd, data):
@@ -78,7 +102,27 @@ class MockMCU:
                 words = []
                 for i in range(0, BLOCK_BYTES, 2):
                     words.append((body[i] << 8) | body[i + 1])
-                self.write_block(addr, words)
+                if not self.write_app_block(addr, words):
+                    return bytes([PREAM_TO_HOST, 0x02, ERROR_CODE])
+            return bytes([PREAM_TO_HOST, 0x02, SUCCESS_CODE])
+
+        if cmd == READ_FROM_SERIAL_EEPROM:
+            addr = (data[0] << 8) | data[1]
+            block = bytes(self.eeprom[addr:addr + BLOCK_BYTES])
+            block = block + b"\xFF" * (BLOCK_BYTES - len(block))
+            resp = bytes([BLOCK_BYTES + 2, READ_FROM_SERIAL_EEPROM]) + block
+            return bytes([PREAM_TO_HOST]) + resp
+
+        if cmd == WRITE_TO_SERIAL_EEPROM:
+            addr = (data[0] << 8) | data[1]
+            payload = data[2:2 + BLOCK_BYTES]
+            self.eeprom[addr:addr + len(payload)] = payload
+            return bytes([PREAM_TO_HOST, 0x02, SUCCESS_CODE])
+
+        if cmd == SET_EXT_UPGRADE:
+            # Just ACK (the real MCU would set the flag and reset). The mock has
+            # no autonomous restart, so we only confirm the command is accepted.
+            self.log("[MOCK] SET_EXT_UPGRADE addr=0x%04X" % ((data[0] << 8) | data[1]))
             return bytes([PREAM_TO_HOST, 0x02, SUCCESS_CODE])
 
         if cmd == START_APPLICATION:
@@ -155,10 +199,28 @@ def _selftest():
     # config read (device id)
     rd = m.handle_frame(0x04, READ_FROM_MEM, bytes([0x80, 0x06]))
     devid = (rd[3] << 8) | rd[4]
-    if devid == 0x3180:
+    if devid == DEVICE_ID:
         print("PASS: config read device id = 0x%04X" % devid)
     else:
         print("FAIL: config read device id = 0x%04X" % devid)
+        ok = False
+
+    # flags row is refused to a plain WRITE_TO_MEM
+    payload = bytes([0x00, 0x00]) * BLOCK_WORDS
+    rd = m.handle_frame(0x44, WRITE_TO_MEM,
+                        bytes([(FLAGS_ROW >> 8) & 0xFF, FLAGS_ROW & 0xFF]) + payload)
+    if rd[2] == ERROR_CODE:
+        print("PASS: flags row 0x%04X refused to WRITE_TO_MEM" % FLAGS_ROW)
+    else:
+        print("FAIL: flags row was writable")
+        ok = False
+
+    # SET_EXT_UPGRADE is acknowledged
+    rd = m.handle_frame(0x04, SET_EXT_UPGRADE, bytes([0x00, 0x00]))
+    if rd[2] == SUCCESS_CODE:
+        print("PASS: SET_EXT_UPGRADE acknowledged")
+    else:
+        print("FAIL: SET_EXT_UPGRADE not acknowledged")
         ok = False
 
     # unknown command -> error

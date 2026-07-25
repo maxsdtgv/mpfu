@@ -9,7 +9,7 @@
  */
 #include <xc.h>
 
-// ---- Configuration bits (mirror the existing led_blink test project) ----
+// ---- Configuration bits (PIC16F1789) ----
 #pragma config FOSC = INTOSC, WDTE = OFF, PWRTE = OFF, MCLRE = ON
 #pragma config CP = OFF, CPD = OFF, BOREN = ON, CLKOUTEN = OFF
 #pragma config IESO = ON, FCMEN = ON

@@ -74,9 +74,16 @@ void main(void)
 
     if (BLFlags.IsExtUpgrade){
         ExtUpgrade();
-        BLFlags.IsExtUpgrade = false;
-        WriteBootloaderFlags();
-        StartApp();
+        BLFlags.IsExtUpgrade = false;       // one-shot: clear the request
+        WriteBootloaderFlags();             // persist cleared flag + status
+        // Only launch the app if the upgrade succeeded. On any bad status
+        // the flash was left untouched, so jumping to the app could run
+        // stale/garbage code. Otherwise fall through into the bootloader
+        // loop (RE0 on) so the unit stays recoverable over UART; the
+        // status code remains in the flags row for diagnosis.
+        if (BLFlags.StatusCodeExtUpgrade == EXTUP_STATUS_OK){
+            StartApp();
+        }
     }
 
     if (!KeyBLRequired() && !BLFlags.IsBLStart){
@@ -131,6 +138,10 @@ CLRWDT();                                   // Clear WDT;
 
                 case WRITE_TO_MEM:              // 0x04 - Write to mem.
                     processing_status = WriteToMem(recv_frame, send_frame); // Send_frame will be filled after execution
+                    break;
+
+                case SET_EXT_UPGRADE:           // 0x16 - Arm ExtUpgrade + reset (does not return)
+                    processing_status = SetExtUpgrade(recv_frame, send_frame);
                     break;
 
                 case READ_FROM_SERIAL_EEPROM:   // 0x12 - Read from external serial eeprom
