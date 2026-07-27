@@ -46,12 +46,12 @@ extern "C" {
 // Memory-protection / layout limits used by WriteAppBlock():
 //   - the reset row 0x0000-0x0003 holds the bootloader's own reset trampoline
 //     (MOVLP;GOTO pair, possibly two-step through 0x0002) and is preserved
-//   - the bootloader CODE 0x3800-0x3FBF must never be overwritten by an app
+//   - the bootloader CODE 0x37C0-0x3FBF must never be overwritten by an app
 //   - the flags row (0x3FC0) is owned by the bootloader and refused to apps
 //   - the app-vector row (0x3FE0) is written by the host like any other block
 #define RESET_ROW_ADDR      0x0000
 #define RESET_VECTOR_NWORDS 4        // words 0x0000-0x0003 (BL trampoline)
-#define BL_CODE_START       0x3800
+#define BL_CODE_START       0x37C0
 #define BL_CODE_END         0x3FBF
 
 // Device ID (DEVID) word in configuration space; read with FLASH_Read().
@@ -103,7 +103,7 @@ extern "C" {
 // the 16F1789 is tight (code region 0x3800-0x3FBF = 1984 words). Enable as flash
 // allows; measure with build.sh. Kept OFF by default.
 //#define USE_FLETCHER          // verify image Fletcher-16 before flashing
-//#define USE_DEVICE_ID_CHECK   // verify image device_id vs chip DEVID (0x8006)
+#define USE_DEVICE_ID_CHECK     // verify image device_id vs chip DEVID (0x8006)
 //#define USE_VERSION_CHECK     // verify image format_version == IMGV2_FORMAT_VERSION
 
 #define START_APPLICATION	0x0F

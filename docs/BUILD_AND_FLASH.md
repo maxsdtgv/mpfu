@@ -17,7 +17,7 @@ mcu_part/build.sh
 ```
 
 This compiles with `-O1` and the memory model
-`-mrom=default,-0-37FF,-3FC0-3FFF`, placing the bootloader at `0x3800`–`0x3FBF`
+`-mrom=default,-0-37BF,-3FC0-3FFF`, placing the bootloader at `0x37C0`–`0x3FBF`
 and reserving the flags row (`0x3FC0`) and app-vector row (`0x3FE0`).
 It prints a memory summary and produces `mpfu.hex` in `/tmp/mpfu_build/`.
 
@@ -145,17 +145,33 @@ docs/MEMORY.md.
 
 ### Optional bootloader checks (feature flags)
 
-Three checks in `mcu_part/bootloader.h` are **off by default** to save flash;
-enable per build with `OPT="-O1 -D<FLAG>"`:
+Three checks live in `mcu_part/bootloader.h`. `USE_DEVICE_ID_CHECK` is **on by
+default**; the other two are off to save flash. Enable per build with
+`EXTRA="-D<FLAG>"`:
 
-- `USE_DEVICE_ID_CHECK` — bootloader verifies the image `device_id` against its
-  own DEVID (`0x8006`) before an EEPROM upgrade.
-- `USE_VERSION_CHECK` — verifies the image `format_version`.
-- `USE_FLETCHER` — verifies the image Fletcher-16 before touching flash.
+- `USE_DEVICE_ID_CHECK` (**default on**) — before an autonomous EEPROM upgrade the
+  bootloader compares the image's `device_id` against its own DEVID (`0x8006`) and
+  refuses a mismatch with status `0x03` (`BAD_DEVICE`), leaving flash untouched.
+  This is what stops an OTA image built for a *different* chip from being written
+  into this one — a real risk once images travel over the air. An image can opt out
+  by carrying `device_id = 0xFFFF` ("any device").
+- `USE_VERSION_CHECK` — verifies the image `format_version` (status `0x04`).
+- `USE_FLETCHER` — verifies the image Fletcher-16 before touching flash
+  (status `0x02`).
 
-Measured sizes on 16F1789 (region `0x3800`–`0x3FBF` = 1984 words): base ≈ 1950
-words; with the id/version checks ≈ 1960. If a combination no longer fits, move
-`bl_code_start` down one row in the device profile and adjust `-mrom`.
+Measured sizes on 16F1789 (region `0x37C0`–`0x3FBF` = 2048 words):
+
+| Build                                   | Words |
+|-----------------------------------------|-------|
+| base (all checks off)                   | 1976  |
+| `USE_DEVICE_ID_CHECK` (**default**)     | 2021  |
+| + `USE_VERSION_CHECK`                   | 2029  |
+| + `USE_FLETCHER`                        | 2247  |
+
+`USE_DEVICE_ID_CHECK` is enabled by default and leaves 27 words free; adding
+`USE_VERSION_CHECK` still fits. `USE_FLETCHER` does **not** — it needs the region
+extended by several more rows (`bl_code_start` in the device profile and `-mrom`
+must be changed together).
 
 ## Local testing without hardware
 

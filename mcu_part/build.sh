@@ -20,11 +20,11 @@ OPT="${OPT:--O1}"
 EXTRA="${EXTRA:-}"
 read -r -a EXTRA_FLAGS <<< "$EXTRA"
 # Place the bootloader at the END of flash and reserve the two top rows:
-#   -0-37FF   : give 0x0000-0x37FF to the application
+#   -0-37BF   : give 0x0000-0x37BF to the application
 #   -3FC0-3FFF: reserve the flags row (0x3FC0) and the app-vector row (0x3FE0)
-# The bootloader code then lands in 0x3800-0x3FBF. The reset vector at 0x0000 is
+# The bootloader code then lands in 0x37C0-0x3FBF (2048 words). The reset vector at 0x0000 is
 # still emitted by XC8 automatically (GOTO bootloader entry). See docs/MEMORY.md.
-ROM="${ROM:-default,-0-37FF,-3FC0-3FFF}"
+ROM="${ROM:-default,-0-37BF,-3FC0-3FFF}"
 SRC_DIR="$(cd "$(dirname "$0")" && pwd)"
 OUT_DIR="${OUT_DIR:-/tmp/mpfu_build}"
 

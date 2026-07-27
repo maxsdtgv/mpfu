@@ -7,8 +7,8 @@ has been installed once.
 
 ## Highlights
 
-- Bootloader lives at the **end** of flash (`0x3800`–`0x3FBF` by default); the
-  application gets the low region `0x0000`–`0x37FF`.
+- Bootloader lives at the **end** of flash (`0x37C0`–`0x3FBF` by default); the
+  application gets the low region `0x0000`–`0x37BF`.
 - **Applications are compiled completely normally** (reset at `0x0000`,
   interrupt vector at `0x0004`). No `__at()` tricks or custom linker offsets.
 - The **host** resolves the application's real entry point (following the XC8
@@ -24,7 +24,8 @@ has been installed once.
     EEPROM (25LC512) is programmed into flash on the next reset. This is the
     basis for over-the-air updates (e.g. a Wi-Fi module writes the image to
     EEPROM, sets the flag, resets). A bad image never runs: the bootloader only
-    launches the app if the upgrade verified.
+    launches the app if the upgrade verified, and it refuses an image whose
+    `device_id` does not match the chip it is running on.
 - **Self-protection:** the bootloader keeps its own reset trampoline at
   `0x0000-0x0003`, refuses writes into its code region and its flags row, and
   the same rules apply to both update paths.

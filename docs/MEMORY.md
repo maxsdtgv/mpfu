@@ -9,8 +9,8 @@ interrupt vector at `0x0004` (hardware).
 ```
 0x0000 - 0x0003   Reset vector -> bootloader's own trampoline (MOVLP;GOTO,
                   possibly two-step through 0x0002). Preserved on every write.
-0x0004 - 0x37FF   APPLICATION (compiled normally from 0x0000; ISR sits at 0x0004)
-0x3800 - 0x3FBF   BOOTLOADER code
+0x0004 - 0x37BF   APPLICATION (compiled normally from 0x0000; ISR sits at 0x0004)
+0x37C0 - 0x3FBF   BOOTLOADER code (2048 words)
 0x3FC0 - 0x3FDF   Bootloader "flags" row (one 32-word flash row):
                     0x3FC0  IsBLStart      (low byte 0x00 = stay in BL)
                     0x3FC1  IsExtUpgrade   (low byte 0x00 = upgrade from ext EEPROM)
@@ -26,7 +26,7 @@ interrupt vector at `0x0004` (hardware).
 The bootloader is built into the top of flash with the XC8 memory model:
 
 ```
--mrom=default,-0-37FF,-3FC0-3FFF
+-mrom=default,-0-37BF,-3FC0-3FFF
 ```
 
 which reserves the low region for the application and the top two rows (flags +
@@ -83,7 +83,7 @@ The bootloader, in `WriteAppBlock`, only enforces protection:
 
 - **reset row (`0x0000`)**: keeps the existing words `0x0000`–`0x0003` (its own
   trampoline) and writes the app's data for words `0x0004`–`0x001F`;
-- **bootloader code (`0x3800`–`0x3FBF`)**: refused;
+- **bootloader code (`0x37C0`–`0x3FBF`)**: refused;
 - **flags row (`0x3FC0`)**: refused (only `SET_EXT_UPGRADE` may touch it);
 - **anything else** (including the app-vector row `0x3FE0`): written as-is.
 
@@ -94,7 +94,7 @@ The exact same rules apply to both update paths — UART and autonomous EEPROM
 
 ```
 Power-up / reset
-   -> 0x0000: jump to bootloader entry (in 0x3800-0x3FBF)
+   -> 0x0000: jump to bootloader entry (in 0x37C0-0x3FBF)
    -> bootloader reads its flags:
         - if IsExtUpgrade set  -> program flash from the external EEPROM;
                                   start the app ONLY if the upgrade succeeded,
@@ -226,6 +226,6 @@ EXTRA="-DWDT_BL_TIMEOUT_CONF=0x1B" mcu_part/build.sh    # ~8 s instead of ~256 s
   bootloader region near `0x3FFF` cannot be hardware write-protected. Protection
   is instead enforced in software by `WriteAppBlock`.
 - If the optional `USE_FLETCHER` integrity check is enabled, the bootloader grows;
-  if it no longer fits `0x3800`–`0x3FBF`, move `bl_code_start` down one row (e.g.
-  `0x3780`) in the device profile and adjust `-mrom` accordingly. See
+  if it no longer fits `0x37C0`–`0x3FBF`, move `bl_code_start` down further in the
+  device profile and adjust `-mrom` accordingly. See
   docs/BUILD_AND_FLASH.md.

@@ -161,7 +161,7 @@ printf("[UART][SEND] Trying to found device ... \n");
 
 
 int main(int argc, char** argv) {
-printf("Microchip firmware uploader v1.3 (image format v2)\n");
+printf("Microchip firmware uploader v1.4 (image format v2)\n");
 
 	for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "-h") == 0) {
