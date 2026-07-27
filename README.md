@@ -28,6 +28,10 @@ has been installed once.
 - **Self-protection:** the bootloader keeps its own reset trampoline at
   `0x0000-0x0003`, refuses writes into its code region and its flags row, and
   the same rules apply to both update paths.
+- **No button required:** a running application can be asked over UART to hand
+  over to the bootloader (`mpfu --goto-bl`), so updates need no physical access
+  to the RB0 pin. And the bootloader can never strand a unit — after ~4.3 min
+  with no host traffic its watchdog resets the MCU back into the application.
 
 ## Host tool (`mpfu`) options
 
@@ -43,6 +47,7 @@ has been installed once.
 -E <file> [addr] [nbytes]   read the external EEPROM to a file
              (addr default 0; nbytes default = auto from the image header)
 -u [addr]    arm the autonomous EEPROM upgrade at EEPROM addr (default 0) and reset
+--goto-bl    ask the RUNNING application to enter the bootloader (no RB0 needed)
 -v           verbose
 ```
 

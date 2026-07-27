@@ -180,6 +180,11 @@ bool WriteAppBlock(uint16_t flash_addr, uint8_t *data64){
 void StartApp(void){
     IO_RE0_SetLow();
     IO_RE1_SetLow();
+    // Hand a clean machine to the application: disable the inactivity dead-man
+    // watchdog the bootloader may have armed (WDTE = SWDTEN, so clearing SWDTEN
+    // turns the WDT off and clears its count). Applications therefore never need
+    // to service a watchdog they did not ask for.
+    WDTCONbits.SWDTEN = 0;
     asm ("pagesel " str(APP_RESET_VECTOR));
     asm ("goto " str(APP_RESET_VECTOR));
 
@@ -275,6 +280,7 @@ void ExtUpgrade(void){
 	total = (uint16_t)(block_count * IMGV2_BLOCK_SIZE);
 	crc_calc = 0;
 	for (off = 0; off < total; off += MAX_BLOCK_BYTES_SIZE){
+		CLRWDT();   // checksumming a large image must not look like a hang
 		uint8_t chunk = (uint8_t)((total - off) < MAX_BLOCK_BYTES_SIZE ? (total - off) : MAX_BLOCK_BYTES_SIZE);
 		ExtReadBlock(ee_base + IMGV2_HEADER_SIZE + off, tmp);
 		crc_calc = fletcher16_update(crc_calc, tmp, chunk);
@@ -290,6 +296,7 @@ void ExtUpgrade(void){
 	//    2 address bytes and the 64 data bytes (they straddle a 64-byte boundary,
 	//    so two EEPROM reads per block).
 	for (blk = 0; blk < block_count; blk++){
+		CLRWDT();   // progress is being made; only a real hang may trip the WDT
 		block_off = (uint16_t)(IMGV2_HEADER_SIZE + blk * IMGV2_BLOCK_SIZE);
 		ExtReadBlock(ee_base + block_off, tmp);              // tmp[0..1] = addr
 		flash_addr = (uint16_t)((tmp[0] << 8) | tmp[1]);

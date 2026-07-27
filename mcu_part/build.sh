@@ -12,6 +12,13 @@ MCPU=16f1789
 # -O1 is available in XC8 Free mode and saves ~107 words vs -O0.
 # -O2/-Os require a Pro/eval license.
 OPT="${OPT:--O1}"
+# Extra compiler flags, e.g. feature switches or a shorter watchdog for testing:
+#   EXTRA="-DUSE_DEVICE_ID_CHECK" ./build.sh
+#   EXTRA="-DWDT_BL_TIMEOUT_CONF=0x1B" ./build.sh     # ~8 s dead-man
+# Keep OPT to a single option; put anything additional in EXTRA (it is split on
+# whitespace, so several flags work).
+EXTRA="${EXTRA:-}"
+read -r -a EXTRA_FLAGS <<< "$EXTRA"
 # Place the bootloader at the END of flash and reserve the two top rows:
 #   -0-37FF   : give 0x0000-0x37FF to the application
 #   -3FC0-3FFF: reserve the flags row (0x3FC0) and the app-vector row (0x3FE0)
@@ -37,5 +44,5 @@ SOURCES=(
 )
 
 cd "$SRC_DIR"
-"$CC" -mcpu="$MCPU" "$OPT" -mrom="$ROM" -o "$OUT_DIR/mpfu.elf" "${SOURCES[@]}" \
+"$CC" -mcpu="$MCPU" "$OPT" ${EXTRA_FLAGS[@]+"${EXTRA_FLAGS[@]}"} -mrom="$ROM" -o "$OUT_DIR/mpfu.elf" "${SOURCES[@]}" \
     -Imcc_generated_files -I.

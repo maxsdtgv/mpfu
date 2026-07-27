@@ -60,6 +60,32 @@ Enter the bootloader (hold **RB0** at reset until **RE0** lights), then:
 host_part/cpp/mpfu -D /dev/ttyUSB0 -b 115200 -c 16f1789 -f test/blink_irq/main.hex -s
 ```
 
+### Without the RB0 button (`--goto-bl`)
+
+If the running application implements the `ENTER_BOOTLOADER` command (both
+fixtures do — see `test/common/app_bootentry.c`), the host can ask it to hand
+over, so no button press is needed:
+
+```bash
+host_part/cpp/mpfu -D /dev/ttyUSB0 -b 115200 -c 16f1789 --goto-bl -f app.hex -s
+```
+
+The application ACKs, sets `IsBLStart` and resets; the bootloader comes up and the
+update proceeds. It also combines with the EEPROM path:
+
+```bash
+host_part/cpp/mpfu -D ... -c 16f1789 --goto-bl -e app.img -u 0
+```
+
+If the device happens to be in the bootloader already, `--goto-bl` is harmless
+(the bootloader answers "unknown command" and the host carries on).
+
+> The bootloader never keeps a unit hostage: after **~4.3 min** without any host
+> traffic its watchdog resets the MCU and the application starts again. See
+> docs/MEMORY.md. Applications need no watchdog handling of their own
+> (`WDTE = SWDTEN`), but they must use the same clock setup as the bootloader
+> (`OSCCON = 0x7A`) — see docs/HARDWARE.md.
+
 - `-c <profile>` device profile (default `16f1789`; see `configs/<name>.conf`).
 - `-f <hex>` program an application, `-s` start it afterwards, `-r <file>` read
   the whole flash back to a file, `-v` verbose.
@@ -97,8 +123,13 @@ block_count, Fletcher-16), programs each block to its address through the same
 `WriteAppBlock` used by the UART path, records a status code in the flags row
 (`0x3FC4`: 00 = OK, 01 = bad magic, 02 = bad CRC, 03 = bad device, 04 = bad
 version), clears `IsExtUpgrade`, and starts the application **only if the upgrade
-succeeded** (otherwise it stays in the bootloader, so a bad image can't run
-garbage — the unit remains recoverable over UART).
+succeeded**.
+
+If the image is rejected the flash is left untouched and the bootloader stays in
+its command loop so a host can intervene; if none does, its watchdog resets the
+unit after ~4.3 min and the **previous application** (still intact) boots. The
+watchdog also covers the upgrade itself, so a stuck SPI transfer cannot hang a
+unit that is updating with no host attached.
 
 In a production OTA design the application itself stages the image in EEPROM,
 sets the flag, and resets — no host needed. `-u` is the host/debug equivalent.

@@ -7,5 +7,5 @@ set -euo pipefail
 XC8_BIN="${XC8:-/opt/microchip/xc8/v2.50/bin}"
 DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$DIR"
-"$XC8_BIN/xc8-cc" -mcpu=16f1789 -O1 -o main.elf main.c
+"$XC8_BIN/xc8-cc" -mcpu=16f1789 -O1 -o main.elf main.c ../common/app_bootentry.c
 echo "Built: $DIR/main.hex"

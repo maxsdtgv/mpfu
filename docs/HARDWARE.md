@@ -8,22 +8,34 @@ These values reflect the actual bootloader configuration (verified on hardware,
 ## Clock
 
 - Internal oscillator (**HFINTOSC**), `FOSC = INTOSC`.
-- Running at **16 MHz** (`OSCCON = 0x7A`: IRCF=1111 → 16 MHz, SCS=internal;
-  `_XTAL_FREQ = 16000000`).
-- Config bit `PLLEN = ON` is set, but the bootloader runs the core at 16 MHz.
+- Running at **16 MHz** (`OSCCON = 0x7A`: IRCF=1111 → 16 MHz, SCS=`1x` internal
+  oscillator block; `_XTAL_FREQ = 16000000`).
+- Config bit `PLLEN = ON` is set, but with `SCS = 1x` the 4x PLL is bypassed, so
+  the core really does run at 16 MHz.
+
+> **Trap for applications.** An application flashed through the bootloader
+> **inherits the bootloader's configuration words**, including `PLLEN = ON`. Per
+> the datasheet (6.2.2.6) the 4x PLL engages only when `SCS = 00`, so an app that
+> sets `OSCCON = 0x78` (SCS=00) ends up on a *different* Fosc than 16 MHz — and
+> every UART baud rate computed for 16 MHz is then wrong. Applications that talk
+> over the UART must use `OSCCON = 0x7A`, exactly like the bootloader. Both test
+> fixtures do.
 
 ## Configuration bits
 
 ```
-FOSC=INTOSC  WDTE=OFF   PWRTE=OFF  MCLRE=ON   CP=OFF    CPD=OFF
+FOSC=INTOSC  WDTE=SWDTEN  PWRTE=OFF  MCLRE=ON   CP=OFF    CPD=OFF
 BOREN=ON     CLKOUTEN=OFF  IESO=ON  FCMEN=ON  WRT=OFF   VCAPEN=OFF
 PLLEN=ON     STVREN=ON  BORV=LO    LPBOR=OFF  LVP=ON
 ```
 
 Notable points:
 
-- **WDTE = OFF** — the watchdog is disabled. (An earlier note claimed a ~135 s
-  WDT; that was wrong.)
+- **WDTE = SWDTEN** — the watchdog is controlled by the `WDTCON.SWDTEN` bit, i.e.
+  it is **off** unless software turns it on. The bootloader enables it only while
+  it waits in its command loop (a ~4.3 min inactivity "dead-man" that returns the
+  unit to the application) and `StartApp()` disables it again. Applications
+  therefore need no `CLRWDT` of their own. See docs/MEMORY.md.
 - **STVREN = ON** — a stack overflow/underflow causes a reset. This is why, with
   an empty application vector, the chip visibly loops through resets: `StartApp`
   jumps to blank flash, runs garbage, and eventually trips a stack reset.

@@ -32,6 +32,22 @@ MCU   -> Host:  0xAA  LEN  CMD  DATA...
 | `0x16` | SET_EXT_UPGRADE          | addrH addrL — arm autonomous EEPROM upgrade at that EEPROM image address, then **reset** |
 | `0x0F` | START_APPLICATION        | none — leave the bootloader and run the app |
 
+### Commands implemented by the APPLICATION
+
+One command is answered by the running application rather than the bootloader, so
+that a host can start an update without the RB0 button:
+
+| Code   | Name              | Handled by  | Payload                              |
+|--------|-------------------|-------------|--------------------------------------|
+| `0x1A` | ENTER_BOOTLOADER  | application | none — ACK, set `IsBLStart`, reset   |
+
+The application ACKs (`0xEE`), sets `IsBLStart` in the flags row with its own
+flash routine and resets; the bootloader then comes up in its command loop.
+`mpfu --goto-bl` sends this (retrying a few times, since a polled application can
+miss a frame). If the device is already in the bootloader it answers `0xFF`
+(unknown command), which the host treats as "already there" and continues.
+See `test/common/app_bootentry.c` for a reference implementation.
+
 ## Response codes (MCU → host)
 
 | Code   | Meaning                                             |

@@ -57,6 +57,27 @@ extern "C" {
 // Device ID (DEVID) word in configuration space; read with FLASH_Read().
 #define DEVID_ADDR          0x8006
 
+// --- Inactivity "dead-man" watchdog -----------------------------------------
+// The part is built with WDTE = SWDTEN, i.e. the watchdog is OFF unless software
+// turns it on. The bootloader enables it ONLY while it sits in its UART command
+// loop and disables it again in StartApp(), so applications are unaffected and
+// need no CLRWDT of their own.
+//
+// WDTCON = WDTPS<4:0> (bits 5..1) | SWDTEN (bit 0).
+// WDTPS = 0b10010 = 1:8388608 of the 31 kHz LFINTOSC ~= 256 s (4.3 min) — the
+// longest period this hardware supports (higher WDTPS values are RESERVED and
+// fall back to the 1 ms minimum, so do not "round up" this value).
+// The loop pets the watchdog ONLY when a frame arrives, so ~256 s of INACTIVITY
+// resets the MCU. On restart IsBLStart is already cleared (it is one-shot), so
+// the application boots normally — a field unit can never be stuck in the
+// bootloader waiting for a host that never connects.
+//
+// Override at build time to test the mechanism quickly, e.g. ~8 s:
+//   OPT="-O1 -DWDT_BL_TIMEOUT_CONF=0x1B" ./build.sh     (WDTPS = 0b01101)
+#ifndef WDT_BL_TIMEOUT_CONF
+#define WDT_BL_TIMEOUT_CONF  0x25   // WDTPS = 1:8388608 (~256 s) + SWDTEN = 1
+#endif
+
 // --- Unified firmware-image format v2 (see host_part/cpp/imagev2.h) ----------
 // Header (64 bytes) then block_count entries of {addr(2), data(64)} = 66 bytes.
 // All multi-byte fields big-endian.

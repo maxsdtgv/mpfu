@@ -100,8 +100,10 @@ Power-up / reset
                                   start the app ONLY if the upgrade succeeded,
                                   otherwise stay in the bootloader (recoverable)
         - if RB0 held OR IsBLStart set -> stay in the bootloader (serve UART), light RE0
+                                          + arm the ~256 s inactivity watchdog:
+                                            no traffic -> reset -> the app boots
         - otherwise             -> StartApp()
-   -> StartApp(): GOTO 0x3FE0
+   -> StartApp(): disable the watchdog, then GOTO 0x3FE0
    -> 0x3FE0: MOVLP;GOTO <app entry> -> application entry point
 ```
 
@@ -145,33 +147,72 @@ application. On any error it stays in the bootloader so the unit is recoverable.
 
 ## Forcing the bootloader from the application (without RB0)
 
-An application can also request to stay in the bootloader on the next start —
-useful for a "start a UART firmware update now" command received over the app's
-own link, without needing physical access to the **RB0** button.
+An application can hand control to the bootloader on the next start — so a
+firmware update needs no physical access to the **RB0** button. There are two
+ways in, and both end up doing the same thing:
 
-1. Set `IsBLStart` in the flags row: write **`0x00`** to the low byte of word
-   **`0x3FC0`** (a read-modify-write of the `0x3FC0` row with the app's own flash
-   routine, leaving the other flag words unchanged).
-2. **Reset** the MCU (`asm("reset")` or let a reset occur).
+- **On request over the app's own link** — the host sends `ENTER_BOOTLOADER`
+  (`0x1A`) and the *application* handles it (`mpfu --goto-bl`). This command is
+  implemented by the application, not the bootloader; see
+  `test/common/app_bootentry.c` for a reference implementation the fixtures use.
+- **On the application's own decision** — e.g. an OTA controller decides it is
+  time to update.
+
+Either way the application must:
+
+1. Set `IsBLStart`: write **`0x00`** to the low byte of word **`0x3FC0`** — a
+   read-modify-write of the `0x3FC0` row using the application's **own** flash
+   routine (the bootloader will not do it for a running app, and `WRITE_TO_MEM`
+   over UART refuses that row).
+2. **Reset** the MCU (`asm("reset")`).
 
 On restart the boot check is `if (!KeyBLRequired() && !IsBLStart) StartApp();`,
 so with `IsBLStart` set the bootloader stays in its command loop (RE0 on) and
 serves UART. `IsBLStart` is **one-shot**: the bootloader clears it immediately
-after entering, so the very next reset (after the update) boots the app normally.
+after entering, so the next reset boots the application normally.
 
-### How long does it wait? (WDT — not yet implemented)
+> An application that talks to the bootloader over the same UART must use the
+> same clock setup as the bootloader (`OSCCON = 0x7A`, SCS = `1x`). Applications
+> flashed through the bootloader **inherit the bootloader's configuration words**,
+> and those have `PLLEN = ON`: with SCS = `00` the 4x PLL engages, Fosc changes
+> and the baud rate is wrong. See docs/HARDWARE.md.
 
-Currently the bootloader waits in its UART loop **indefinitely** — there is no
-timeout that returns to the application. The device's Watchdog Timer is
-configured **OFF** (`WDTE = OFF`), and although the loop calls `CLRWDT()`, those
-calls are no-ops while the WDT is disabled.
+### Inactivity timeout — the bootloader always returns to the application
 
-So if an application forces the bootloader and then no host connects, the unit
-stays in the bootloader until the next reset/power cycle. A **WDT "dead-man"
-timeout** (enable the WDT, and have the bootloader stop petting it after N
-seconds of inactivity so it resets and boots the app) is a planned enhancement,
-not a current feature. Until then, only force the bootloader when you are sure a
-host will connect, or ensure the field device has an independent way to reset.
+The bootloader cannot strand a unit in the field. The watchdog "dead-man" is
+armed in **both** places where the bootloader can be left waiting or working
+without a host:
+
+- **The UART command loop** — timeout **~256 s (4.3 min)**, petted only when a
+  frame actually arrives. After that much silence the MCU resets;
+  `IsBLStart` has already been cleared, so the application boots.
+- **The autonomous EEPROM upgrade (ExtUpgrade)** — armed before the upgrade
+  starts and petted after each block, so steady progress is fine but a genuinely
+  stuck transfer (dead SPI bus, EEPROM not answering) resets the unit instead of
+  hanging forever. This matters because an OTA update runs with no host attached.
+  The `IsExtUpgrade` request is cleared **before** the attempt, so a hang cannot
+  turn into an endless reset-and-retry loop.
+
+If the image is rejected (bad magic/CRC/device/version) the flash is left
+untouched and the bootloader deliberately **stays in its command loop** so a host
+can intervene; the status code remains in the flags row. If no host appears, the
+inactivity timeout resets the unit and the **previous, still intact application**
+boots. A failed OTA therefore never runs garbage and never bricks the device.
+
+This is safe for applications because the part is built with **`WDTE = SWDTEN`**:
+the watchdog is off unless software enables it. The bootloader enables it when it
+enters the command loop and `StartApp()` disables it again, so **applications
+never have to service a watchdog they did not ask for**.
+
+256 s is the hardware maximum: the WDT is clocked from the 31 kHz LFINTOSC and
+`WDTCON.WDTPS<4:0>` is its whole divider, with `10010` = 1:8388608 the longest
+setting (higher values are *reserved* and fall back to the 1 ms minimum). To
+exercise the mechanism quickly, build a shorter timeout:
+
+```bash
+EXTRA="-DWDT_BL_TIMEOUT_CONF=0x1B" mcu_part/build.sh    # ~8 s instead of ~256 s
+```
+
 
 ## Notes
 

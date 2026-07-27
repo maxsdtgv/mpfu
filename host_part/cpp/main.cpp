@@ -65,6 +65,7 @@ short eeprom_read = 0;
 char eepromReadFile[64] = {};
 unsigned int eeReadAddr = 0;
 long eeReadLen = -1;               // -1 = auto (from image header)
+short goto_bl = 0;                 // --goto-bl: ask a running app to enter the BL
 bool isDeviceFound = false;
 unsigned int foundDeviceId = 0;    // DEVID read from the connected chip
 DeviceConfig devcfg;               // loaded device profile
@@ -160,7 +161,7 @@ printf("[UART][SEND] Trying to found device ... \n");
 
 
 int main(int argc, char** argv) {
-printf("Microchip firmware uploader v1.2 (image format v2)\n");
+printf("Microchip firmware uploader v1.3 (image format v2)\n");
 
 	for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "-h") == 0) {
@@ -175,6 +176,7 @@ printf("Microchip firmware uploader v1.2 (image format v2)\n");
                 printf("     -E file [addr] [nbytes]  Read the external EEPROM to a file\n");
                 printf("            (addr default 0; nbytes default = auto from image header)\n");
                 printf("     -u [addr]  Arm autonomous EEPROM upgrade at EEPROM addr (default 0) and reset\n");
+                printf("     --goto-bl  Ask the RUNNING application to enter the bootloader (no RB0 needed)\n");
                 printf("     -c     Device profile name (default 16f1789)\n");
         		printf("     -v     Verbose mode\n");  
         		return 1;
@@ -213,6 +215,11 @@ printf("Microchip firmware uploader v1.2 (image format v2)\n");
 
         if (strcmp(argv[i], "-v") == 0) {
         	verbose = 1;
+        }
+
+        if (strcmp(argv[i], "--goto-bl") == 0) {
+            goto_bl = 1;
+            ++param_count;
         }
 
         if (strcmp(argv[i], "-c") == 0) {
@@ -316,6 +323,53 @@ if (param_count < 3) {
 printf("Connecting to %s, %s\n", serial_name, serial_speed);
 serialPort_fd = UART_Init(serial_name, serial_speed);
 UART_Clear(serialPort_fd);
+
+// --goto-bl: ask the RUNNING application to hand over to the bootloader, so no
+// RB0 button press is needed. The application ACKs, sets IsBLStart and resets;
+// the bootloader then comes up in its command loop. If the device is ALREADY in
+// the bootloader it answers ERROR to this (unknown to it) command — harmless,
+// we just carry on.
+if (goto_bl == 1) {
+    printf("[UART][SEND] Requesting the application to enter the bootloader ...\n");
+
+    // Retry: an application polls its UART in between doing real work, and the
+    // receiver FIFO is only 2 bytes deep, so a single request can be missed.
+    // Several attempts make this reliable without the application needing an
+    // interrupt-driven receiver.
+    const int GOTO_BL_TRIES = 8;
+    int  gotoAck = 0, gotoRefused = 0;
+    for (int attempt = 1; attempt <= GOTO_BL_TRIES; attempt++) {
+        memset(send_buf, 0, sizeof(send_buf));
+        send_buf[0] = 0x02;
+        send_buf[1] = ENTER_BOOTLOADER;
+        UART_Send(serialPort_fd, send_buf, send_buf[0]);
+        received_bytes = UART_Recv(serialPort_fd, read_buf, MAX_BYTES_TO_RECV);
+
+        if (received_bytes >= 2 && read_buf[1] == (char)SUCCESS_CODE) {
+            printf("[UART][RECV] ACK on attempt %d — application is resetting into the bootloader.\n",
+                   attempt);
+            gotoAck = 1;
+            break;
+        }
+        if (received_bytes >= 2 && read_buf[1] == (char)ERROR_CODE) {
+            gotoRefused = 1;
+            break;
+        }
+        UART_Clear(serialPort_fd);      // drop partial/garbage, then retry
+    }
+
+    if (gotoRefused) {
+        printf("[UART][RECV] command refused — the device is most likely already\n");
+        printf("             in the bootloader. Continuing.\n");
+    } else if (!gotoAck) {
+        printf("[UART][RECV] no answer after %d attempts. Either the application does\n", GOTO_BL_TRIES);
+        printf("             not implement ENTER_BOOTLOADER, or it is already in the\n");
+        printf("             bootloader. Continuing (use RB0 + reset if detection fails).\n");
+    }
+
+    usleep(400000);                 // let the MCU reset and the bootloader start
+    UART_Clear(serialPort_fd);      // drop anything left from the reset
+}
 
 isDeviceFound = FoundDevice();
 

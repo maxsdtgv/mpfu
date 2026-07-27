@@ -57,6 +57,7 @@ void main(void)
     uint8_t i = 0;
     uint8_t byte = 0;
     bool    processing_status = false;
+    bool    extUpgradeFailed = false;   // bad EEPROM image -> stay in the BL
 
     ClearArray(recv_frame, BL_MAX_RECV_DATA);
     ClearArray(send_frame, BL_MAX_SEND_DATA);
@@ -73,20 +74,36 @@ void main(void)
     ReadBootloaderFlags();
 
     if (BLFlags.IsExtUpgrade){
+        // Clear the request BEFORE attempting the upgrade, and persist it now.
+        // If the upgrade itself hangs (dead SPI bus, EEPROM not answering) the
+        // watchdog below resets us; with the flag already cleared we come back
+        // as a normal boot instead of retrying the same hang forever.
+        BLFlags.IsExtUpgrade = false;       // one-shot request
+        WriteBootloaderFlags();
+
+        // Arm the watchdog for the upgrade itself, not just for the UART loop:
+        // an autonomous OTA update runs with no host attached, so a stuck
+        // transfer must not be able to strand the unit. ExtUpgrade() pets it
+        // as it goes (per block), so only a real hang trips it.
+        CLRWDT();
+        WDTCON = WDT_BL_TIMEOUT_CONF;
+
         ExtUpgrade();
-        BLFlags.IsExtUpgrade = false;       // one-shot: clear the request
-        WriteBootloaderFlags();             // persist cleared flag + status
-        // Only launch the app if the upgrade succeeded. On any bad status
-        // the flash was left untouched, so jumping to the app could run
-        // stale/garbage code. Otherwise fall through into the bootloader
-        // loop (RE0 on) so the unit stays recoverable over UART; the
-        // status code remains in the flags row for diagnosis.
+        WriteBootloaderFlags();             // persist the resulting status code
+
+        // Launch the app only if the upgrade succeeded. On a bad image the
+        // flash was left untouched, so we deliberately stay in the bootloader
+        // (RE0 on) to let a host intervene; extUpgradeFailed keeps the plain
+        // "no RB0, no IsBLStart -> start the app" check below from firing.
+        // If no host shows up, the inactivity watchdog resets us after ~256 s
+        // and the previous (still intact) application boots.
         if (BLFlags.StatusCodeExtUpgrade == EXTUP_STATUS_OK){
             StartApp();
         }
+        extUpgradeFailed = true;
     }
 
-    if (!KeyBLRequired() && !BLFlags.IsBLStart){
+    if (!extUpgradeFailed && !KeyBLRequired() && !BLFlags.IsBLStart){
         StartApp();
     }
 
@@ -97,11 +114,17 @@ void main(void)
     WriteBootloaderFlags();  
 
     IO_RE0_SetHigh();
+
+    // Arm the inactivity dead-man. From here the watchdog runs and is petted
+    // ONLY when a frame actually arrives (CLRWDT below), so ~256 s without any
+    // host traffic resets the MCU. IsBLStart was already cleared above, so the
+    // application boots on that reset and a field unit can never be stranded
+    // in the bootloader. StartApp() disables the WDT again. See bootloader.h.
+    CLRWDT();                       // start counting from zero
+    WDTCON = WDT_BL_TIMEOUT_CONF;   // WDTPS = 1:8388608 (~256 s), SWDTEN = 1
+
     while (1)
     {
-
-// Temporary solution to clear WDT.
-CLRWDT();                                   // Clear WDT;
 
         if (UART_preamFound())                          // Try to found PREAM_RECV_FROM_HOST in the byte [0] of frame header
             {
