@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="700" viewBox="0 0 1020 700"
+     font-family="'DejaVu Sans', 'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="aBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2980b9"/>
+    </marker>
+    <marker id="aOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d35400"/>
+    </marker>
+    <marker id="aGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1e8449"/>
+    </marker>
+    <marker id="aPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8e44ad"/>
+    </marker>
+    <style>
+      .badge  { fill:#ffffff; stroke-width:2; }
+      .bnum   { font-size:12px; font-weight:bold; text-anchor:middle; }
+      .hdr    { font-size:13px; font-weight:bold; }
+      .body   { font-size:11.5px; fill:#2c3e50; }
+      .dim    { font-size:11px; fill:#7f8c8d; }
+      .addr   { font-size:11px; fill:#7f8c8d; text-anchor:end; }
+    </style>
+  </defs>
+
+  <rect width="1020" height="700" fill="#fbfcfd"/>
+  <text x="24" y="34" font-size="19" font-weight="bold" fill="#2c3e50">MPFU — how firmware reaches the flash</text>
+  <text x="24" y="55" class="dim">Two ways into a PIC16F1789: over UART with a PC attached, or autonomously from an external EEPROM (the OTA case).</text>
+
+  <!-- ============================= PC ============================= -->
+  <rect x="24" y="96" width="196" height="158" rx="8" fill="#ffffff" stroke="#2980b9" stroke-width="2"/>
+  <text x="122" y="120" class="hdr" fill="#2980b9" text-anchor="middle">PC — host tool mpfu</text>
+  <line x1="40" y1="130" x2="204" y2="130" stroke="#dfe6e9"/>
+  <text x="40" y="150" class="body">-f app.hex   flash over UART</text>
+  <text x="40" y="169" class="body">-e img.bin   stage an image</text>
+  <text x="40" y="188" class="body">-u [addr]    arm OTA + reset</text>
+  <text x="40" y="207" class="body">--goto-bl    no button needed</text>
+  <text x="40" y="230" class="dim">builds the image the MCU only</text>
+  <text x="40" y="241" class="dim">has to write, never interpret</text>
+
+  <!-- ======================= Wi-Fi / OTA source ==================== -->
+  <rect x="812" y="96" width="184" height="86" rx="8" fill="#ffffff" stroke="#8e44ad" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="904" y="120" class="hdr" fill="#8e44ad" text-anchor="middle">Wi-Fi module</text>
+  <text x="904" y="139" class="dim" text-anchor="middle">the OTA use case</text>
+  <text x="904" y="162" class="body" text-anchor="middle">hands the image to the</text>
+  <text x="904" y="176" class="body" text-anchor="middle">application, no PC</text>
+
+  <!-- ============================= MCU ============================ -->
+  <rect x="286" y="96" width="434" height="486" rx="10" fill="#ffffff" stroke="#2c3e50" stroke-width="2.5"/>
+  <text x="503" y="122" font-size="15" font-weight="bold" fill="#2c3e50" text-anchor="middle">PIC16F1789 — internal flash</text>
+
+  <rect x="330" y="140" width="366" height="84" rx="6" fill="#eaf4fb" stroke="#2980b9"/>
+  <text x="344" y="162" class="hdr" fill="#2980b9">BOOTLOADER</text>
+  <text x="684" y="162" class="addr">0x37C0–0x3FBF</text>
+  <text x="344" y="181" class="body">serves UART commands, writes flash rows</text>
+  <text x="344" y="198" class="body">guards its own region, verifies the image</text>
+  <text x="344" y="215" class="body">reads the EEPROM image when told to</text>
+
+  <rect x="330" y="238" width="366" height="72" rx="6" fill="#fdf3e3" stroke="#d35400"/>
+  <text x="344" y="259" class="hdr" fill="#d35400">FLAGS ROW</text>
+  <text x="684" y="259" class="addr">0x3FC0</text>
+  <text x="344" y="278" class="body">IsBLStart · IsExtUpgrade · image address · status</text>
+  <text x="344" y="296" class="dim">the switch that starts an autonomous upgrade</text>
+
+  <rect x="330" y="324" width="366" height="50" rx="6" fill="#eef7ef" stroke="#1e8449"/>
+  <text x="344" y="345" class="hdr" fill="#1e8449">APP RESET VECTOR</text>
+  <text x="684" y="345" class="addr">0x3FE0</text>
+  <text x="344" y="363" class="body">the jump the host computed — how the app starts</text>
+
+  <rect x="330" y="388" width="366" height="96" rx="6" fill="#f4f6f7" stroke="#7f8c8d"/>
+  <text x="344" y="409" class="hdr" fill="#2c3e50">APPLICATION</text>
+  <text x="684" y="409" class="addr">0x0000–0x37BF</text>
+  <text x="344" y="428" class="body">compiled completely normally, ISR stays at 0x0004</text>
+  <text x="344" y="446" class="body">can stage an image, set the flag and reset itself</text>
+  <text x="344" y="464" class="body">can hand over to the bootloader on request</text>
+  <text x="344" y="479" class="dim">holding RB0 at reset does the same, by hand</text>
+
+  <rect x="330" y="498" width="366" height="50" rx="6" fill="#ffffff" stroke="#b2bec3" stroke-dasharray="5 4"/>
+  <text x="344" y="519" font-size="12" font-weight="bold" fill="#636e72">WATCHDOG — about 4.3 min</text>
+  <text x="344" y="537" class="body">an idle bootloader or a stuck upgrade resets into the app</text>
+
+  <!-- =========================== EEPROM =========================== -->
+  <rect x="812" y="300" width="184" height="116" rx="8" fill="#fdf3e3" stroke="#d35400" stroke-width="2"/>
+  <text x="904" y="324" class="hdr" fill="#d35400" text-anchor="middle">25LC512 EEPROM</text>
+  <text x="904" y="341" class="dim" text-anchor="middle">external, on SPI</text>
+  <text x="904" y="364" class="body" text-anchor="middle">keeps the firmware image</text>
+  <text x="904" y="380" class="body" text-anchor="middle">until the next reset</text>
+  <text x="904" y="402" class="dim" text-anchor="middle">survives a power cut</text>
+
+  <!-- ==================== ① UART: PC → bootloader ================= -->
+  <path d="M220 166 H286" stroke="#2980b9" stroke-width="2.5" fill="none" marker-end="url(#aBlue)"/>
+  <text x="262" y="192" font-size="10.5" fill="#2980b9" text-anchor="middle">UART 115200</text>
+  <circle cx="253" cy="166" r="11" class="badge" stroke="#2980b9"/>
+  <text x="253" y="170" class="bnum" fill="#2980b9">1</text>
+
+  <!-- bootloader writes the application (inside, left corridor) -->
+  <path d="M330 200 C302 200, 302 420, 326 428" stroke="#2980b9" stroke-width="2" fill="none" marker-end="url(#aBlue)"/>
+  <text x="252" y="300" font-size="10.5" fill="#2980b9" text-anchor="middle">writes</text>
+  <text x="252" y="313" font-size="10.5" fill="#2980b9" text-anchor="middle">the app</text>
+
+  <!-- app starts through the vector row -->
+  <path d="M330 350 C310 350, 310 400, 326 404" stroke="#1e8449" stroke-width="2" fill="none" marker-end="url(#aGreen)"/>
+  <text x="252" y="360" font-size="10.5" fill="#1e8449" text-anchor="middle">start</text>
+
+  <!-- ============ ② image into EEPROM, ④ back on reset ============ -->
+  <path d="M720 330 H812" stroke="#d35400" stroke-width="2.5" fill="none" marker-end="url(#aOrange)"/>
+  <circle cx="766" cy="330" r="11" class="badge" stroke="#d35400"/>
+  <text x="766" y="334" class="bnum" fill="#d35400">2</text>
+
+  <path d="M812 374 H720" stroke="#d35400" stroke-width="2.5" fill="none" marker-end="url(#aOrange)"/>
+  <circle cx="766" cy="374" r="11" class="badge" stroke="#d35400"/>
+  <text x="766" y="378" class="bnum" fill="#d35400">4</text>
+  <text x="766" y="404" font-size="10.5" fill="#d35400" text-anchor="middle">SPI</text>
+
+  <!-- ③ the flag, marked on the flags row itself -->
+  <circle cx="710" cy="272" r="11" class="badge" stroke="#d35400"/>
+  <text x="710" y="276" class="bnum" fill="#d35400">3</text>
+
+  <!-- Wi-Fi hands the image to the application -->
+  <path d="M812 168 C770 180, 762 300, 726 430" stroke="#8e44ad" stroke-width="2" fill="none"
+        stroke-dasharray="6 4" marker-end="url(#aPurple)"/>
+
+  <!-- ========================= steps / legend ===================== -->
+  <rect x="24" y="404" width="240" height="178" rx="8" fill="#ffffff" stroke="#dfe6e9"/>
+  <text x="38" y="426" class="hdr" fill="#2c3e50">An autonomous (OTA) update</text>
+
+  <circle cx="48" cy="444" r="9" class="badge" stroke="#d35400"/>
+  <text x="48" y="448" font-size="11" font-weight="bold" fill="#d35400" text-anchor="middle">2</text>
+  <text x="66" y="442" class="body">the image is written into</text>
+  <text x="66" y="456" class="body">the EEPROM over SPI</text>
+
+  <circle cx="48" cy="478" r="9" class="badge" stroke="#d35400"/>
+  <text x="48" y="482" font-size="11" font-weight="bold" fill="#d35400" text-anchor="middle">3</text>
+  <text x="66" y="476" class="body">the flag and its address</text>
+  <text x="66" y="490" class="body">are set, then a reset</text>
+
+  <circle cx="48" cy="512" r="9" class="badge" stroke="#d35400"/>
+  <text x="48" y="516" font-size="11" font-weight="bold" fill="#d35400" text-anchor="middle">4</text>
+  <text x="66" y="510" class="body">the bootloader reads and</text>
+  <text x="66" y="524" class="body">verifies it, writes the flash,</text>
+  <text x="66" y="538" class="body">clears the flag, starts the app</text>
+
+  <line x1="38" y1="556" x2="62" y2="556" stroke="#8e44ad" stroke-width="3" stroke-dasharray="5 3"/>
+  <text x="70" y="560" class="dim">Wi-Fi does ② and ③ itself</text>
+  <line x1="38" y1="573" x2="62" y2="573" stroke="#2980b9" stroke-width="3"/>
+  <text x="70" y="577" class="dim">① the same, but from a PC</text>
+
+  <text x="24" y="620" class="dim">A rejected image never runs: the flash is left untouched, and if no host turns up the watchdog boots the previous application.</text>
+  <text x="24" y="640" class="dim">The host resolves the reset vector and lays out every block — the bootloader only writes them and protects its own rows.</text>
+  <text x="24" y="660" class="dim">Diagram: docs/update-paths.svg · details in docs/MEMORY.md and docs/PROTOCOL.md</text>
+</svg>

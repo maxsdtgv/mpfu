@@ -5,6 +5,8 @@ It lets you reprogram the application over a UART link (and, optionally, from an
 external SPI EEPROM) without a hardware programmer after the bootloader itself
 has been installed once.
 
+![How firmware reaches the flash: the UART path and the autonomous EEPROM path](docs/update-paths.svg)
+
 ## Highlights
 
 - Bootloader lives at the **end** of flash (`0x37C0`–`0x3FBF` by default); the
